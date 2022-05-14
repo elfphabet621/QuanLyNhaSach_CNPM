@@ -1,0 +1,51 @@
+{% extends 'book/main.html' %}
+{% load static %}
+{% block title %}Mua hàng{% endblock %}
+{% block content %}
+<div>
+    <div class="box-element" id="form-wrapper">
+        <form id="form">
+            <div id="shipping-info">
+                <p>Địa chỉ nhận hàng:</p>
+                <hr>
+                <div class="form-field">
+                    <input required class="form-control" type="text" name="name" placeholder="Khách hàng">
+                </div>   
+                <div class="form-field">
+                    <input class="form-control" type="text" name="state" placeholder="Tỉnh">
+                </div>
+                <div class="form-field">
+                    <input class="form-control" type="text" name="city" placeholder="Thành phố">
+                </div>
+                <div class="form-field">
+                    <input class="form-control" type="text" name="address" placeholder="Số nhà">
+                </div>
+            </div>
+            <hr>
+            <input id="form-button" class="btn btn-success btn-block" type="submit" value="Xác nhận">
+        </form>
+    </div>
+
+    <br>
+    <div class="box-element hidden" id="payment-info">
+        <small>Paypal Options</small>
+    </div>
+    
+    <div class="box-element">
+        <div class="box-element">
+            <a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Trở lại giỏ</a>
+            <hr>
+            <h3>Đơn hàng</h3>
+            <hr>
+            <div class="cart-row">
+                <div style="flex:2"><img class="row-image" src="{% static 'images/placeholder.png' %}"></div>
+                <div style="flex:2"><p>tên sách</p></div>
+                <div style="flex:1"><p>giá</p></div>
+                <div style="flex:1"><p>sl</p></div>
+            </div>
+            <h5>SL:   2</h5>
+            <h5>Tổng tiền:   $40</h5>
+        </div>
+    </div>
+</div>
+{% endblock %}
