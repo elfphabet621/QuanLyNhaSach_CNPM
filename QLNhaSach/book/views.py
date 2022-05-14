@@ -7,7 +7,15 @@ from django.contrib.auth import authenticate, login, logout
 def home(request):
 
     # context = {}
-    return render(request, 'book/main.html')
+    return render(request, 'book/home.html')
+
+def cart(request):
+    context = {}
+    return render(request, 'book/cart.html', context)
+
+def checkout(request):
+    context = {}
+    return render(request, 'book/checkout.html', context)
 
 # Trang đăng ký tài khoản
 def registerPage(request):
