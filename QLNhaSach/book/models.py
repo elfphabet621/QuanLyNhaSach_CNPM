@@ -25,8 +25,8 @@ class Person(models.Model):
     profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
     
     def __str__(self):
-	    return self.id
- 
+        return self.id
+
 class Sach(models.Model):
     id = models.CharField(max_length=100, primary_key=True) # PK: id và ngay_nhap
     ten_sach = models.CharField(max_length=100, null=True)
@@ -44,7 +44,7 @@ class Sach(models.Model):
     # ton_cuoi = 
     
     def __str__(self):
-	    return f'{self.ten_sach}_{self.ngay_nhap}'
+        return f'{self.ten_sach}_{self.ngay_nhap}'
     
     def clean(self):
         if self.nguoi_nhap.chuc_vu != 'thủ kho':
@@ -71,7 +71,7 @@ class HoaDon(models.Model):
     da_tra = models.FloatField(null=True)
     
     def __str__(self):
-	    return self.id_HD
+        return self.id_HD
     
     def clean(self):
         # constraint: khách hàng phải có chuc_vu='khách hàng'

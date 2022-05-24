@@ -3,6 +3,7 @@ from .forms import CreateUserForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from .forms import *
 
 # Trang chủ
 def home(request):
@@ -18,17 +19,28 @@ def checkout(request):
     context = {}
     return render(request, 'book/checkout.html', context)
 
+def customer_info(request):
+    form = CustomerInfo()
+    context = {'form': form}
+    if request.method == "POST":
+        form = CustomerInfo(request.POST)
+
+        context['form'] = form
+    return render(request, 'book/customer_info.html', context)
+
 # Trang đăng ký tài khoản
 # @unauthenticated_user
 def registerPage(request):
     form = CreateUserForm()
+
     if request.method == "POST":
         form = CreateUserForm(request.POST)
-        # if form.is_valid():
-        #     user = form.save()
-        #     username = form.cleaned_data.get('username')
-        #     messages.success(request, 'Account was created for '+ username)
-        #     return redirect('login')
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('username')
+            
+            messages.success(request, 'Account was created for '+ username)
+            return redirect('login')
 
     context = {'form': form}
     return render(request, 'book/register.html', context)
@@ -51,7 +63,7 @@ def loginPage(request):
 # Đăng xuất
 def logoutUser(request):
     logout(request)
-    return redirect('login')
+    return redirect('home')
 
 # Tạo một cuốn sách mới
 # @login_required(login_url='login')
