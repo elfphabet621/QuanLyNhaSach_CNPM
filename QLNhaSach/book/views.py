@@ -32,11 +32,13 @@ def customer_info(request):
 # @unauthenticated_user
 def registerPage(request):
     form = CreateUserForm()
+
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
+            
             messages.success(request, 'Account was created for '+ username)
             return redirect('login')
 
@@ -61,7 +63,7 @@ def loginPage(request):
 # Đăng xuất
 def logoutUser(request):
     logout(request)
-    return redirect('login')
+    return redirect('home')
 
 # Tạo một cuốn sách mới
 # @login_required(login_url='login')
