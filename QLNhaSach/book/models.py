@@ -28,7 +28,7 @@ class Person(models.Model):
         return self.id
 
 class Sach(models.Model):
-    id = models.CharField(max_length=100, primary_key=True)
+    id = models.CharField(max_length=100, primary_key=True) # PK: id và ngay_nhap
     ten_sach = models.CharField(max_length=100, null=True)
     ngay_nhap = models.DateField(null=True, editable=True)
     so_luong = models.PositiveIntegerField(null=True)
@@ -39,6 +39,9 @@ class Sach(models.Model):
     nha_xuat_ban = models.CharField(max_length=100, null=True)
     nam_xuat_ban = models.PositiveIntegerField(null=True)
     nguoi_nhap = models.ForeignKey(Person, null=True, on_delete=models.PROTECT) 
+    # ton_dau = 
+    # phat_sinh = 
+    # ton_cuoi = 
     
     def __str__(self):
         return f'{self.ten_sach}_{self.ngay_nhap}'
@@ -48,7 +51,7 @@ class Sach(models.Model):
             raise ValidationError('người nhập phải là thủ kho!')
         
     class Meta: # vì django ko cho tạo PK 2 thuộc tính nên làm cách này
-        # unique_together = ('id', 'ngay_nhap',)
+        unique_together = ('id', 'ngay_nhap',)
         verbose_name_plural = "Sách"
 
 class HoaDon(models.Model):
@@ -65,7 +68,7 @@ class HoaDon(models.Model):
     nguoi_lap_HD = models.ForeignKey(Person, verbose_name='Nhân viên', null=True, blank=True, related_name="nhan_vien", on_delete=models.PROTECT)
     khach_hang = models.ForeignKey(Person, verbose_name='Khách hàng', null=True, blank=True, related_name="khach_hang", on_delete=models.PROTECT)
     phuong_thuc_thanh_toan = models.CharField('Phương thức thanh toán', max_length=100, null=False, choices=pttt)
-    da_tra = models.FloatField(null=False)
+    da_tra = models.FloatField(null=True)
     
     def __str__(self):
         return self.id_HD
@@ -86,19 +89,15 @@ class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
     hoa_don = models.ForeignKey(HoaDon, verbose_name='Hóa đơn', on_delete=models.PROTECT)
     # khach_hang = models.ForeignKey(Person, verbose_name='Khách hàng', on_delete=models.PROTECT)
     sach = models.ForeignKey(Sach, verbose_name='Sản phẩm', on_delete=models.PROTECT)
-    so_luong = models.PositiveIntegerField(null=True)
+    so_luong = models.PositiveIntegerField(null=True, default=1, editable=True)
     # giá bán 1 sản phẩm
     # gia_ban = models.FloatField(null=True)
     
     def __str__(self):
-        return self.hoa_don.id_HD
-
-# def clean(self):
-    #     # constraint: khách hàng phải tồn tại trong HoaDon có mã id_HD
-    #     try:
-    #         kh_by_id = HoaDon.objects.get(khach_hang=self.khach_hang)
-    #     except:
-    #         raise ValidationError(f'khách hàng không tồn tại trong hóa đơn {self.hoa_don.id_HD}') 
+	    return self.hoa_don.id_HD
+ 
+    # def clean(self):
+    #     # constraint: sách sau khi bán vẫn còn ít nhất 20 cuốn trong kho Sach
         
     
     class Meta:
