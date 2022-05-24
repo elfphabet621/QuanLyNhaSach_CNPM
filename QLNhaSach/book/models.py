@@ -20,8 +20,8 @@ class NhanVien(models.Model):
     chuc_vu = models.CharField('Chức vụ', max_length=100, null=True, choices=list_chucvu)
     
     def __str__(self):
-	    return self.id
- 
+        return self.id
+
 class Sach(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
     ten_sach = models.CharField(max_length=100, null=True)
@@ -36,7 +36,7 @@ class Sach(models.Model):
     nguoi_nhap = models.ForeignKey(NhanVien, null=True, on_delete=models.SET_NULL) # models.CharField(max_length=100, null=True)
     
     def __str__(self):
-	    return f'{self.ten_sach}_{self.ngay_nhap}'
+        return f'{self.ten_sach}_{self.ngay_nhap}'
     
     def clean(self):
         if self.nguoi_nhap.chuc_vu != 'thủ kho':
@@ -54,11 +54,11 @@ class KhachHang(models.Model):
     ngay_lap_tk = models.DateTimeField(auto_now_add=True, null=True) # sau cùng nên thêm auto_now_add=True
     # than_thiet = models.BinaryField(default=0, editable=True)
     # user = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE) # 1 khachhang chỉ có 1 tài khoản
-    profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
+    # profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
     password = models.CharField('Mật khẩu', max_length=20, null=True) # nâng cấp: https://stackoverflow.com/questions/17523263/how-to-create-password-field-in-model-django
     
     def __str__(self):
-	    return self.ho_ten
+        return self.ho_ten
 
 class HoaDon(models.Model):
     pttt = (
@@ -73,7 +73,7 @@ class HoaDon(models.Model):
     phuong_thuc_thanh_toan = models.CharField('Phương thức thanh toán', max_length=100, null=False, choices=pttt)
     
     def __str__(self):
-	    return self.id_HD
+        return self.id_HD
     
     def clean(self):
         if self.nguoi_lap_HD.chuc_vu != 'nhân viên':
