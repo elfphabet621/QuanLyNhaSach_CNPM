@@ -3,6 +3,7 @@ from .forms import CreateUserForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from .forms import *
 
 # Trang chủ
 def home(request):
@@ -17,6 +18,17 @@ def cart(request):
 def checkout(request):
     context = {}
     return render(request, 'book/checkout.html', context)
+
+def customer_info(request):
+    form = CustomerInfo()
+    
+    if request.method == "POST":
+        form = CustomerInfo(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+
+        context = {'form': form}
+    return render(request, 'book/customer_info.html', context)
 
 # Trang đăng ký tài khoản
 # @unauthenticated_user
