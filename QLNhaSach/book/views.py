@@ -21,13 +21,11 @@ def checkout(request):
 
 def customer_info(request):
     form = CustomerInfo()
-    
+    context = {'form': form}
     if request.method == "POST":
         form = CustomerInfo(request.POST)
-        if form.is_valid():
-            print(form.cleaned_data)
 
-        context = {'form': form}
+        context['form'] = form
     return render(request, 'book/customer_info.html', context)
 
 # Trang đăng ký tài khoản
