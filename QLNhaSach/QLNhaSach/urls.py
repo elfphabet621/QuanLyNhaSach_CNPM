@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-urlpatterns = [
+urlpatterns = [ # what view connects to the url pattern
     path('admin/', admin.site.urls),
     path('', include('book.urls')),
 ]
