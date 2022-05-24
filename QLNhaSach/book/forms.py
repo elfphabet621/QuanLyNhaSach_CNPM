@@ -9,7 +9,7 @@ class CreateUserForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
-class CustomerInfo(ModelForm):
-    class Meta:
-        model = Person
-        fields = ['ho_ten', 'so_dien_thoai', 'email']
+# class CustomerInfo(ModelForm):
+#     class Meta:
+#         model = KhachHang
+#         fields = ['ho_ten', 'so_dien_thoai', 'email']
