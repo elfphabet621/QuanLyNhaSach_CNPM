@@ -11,5 +11,5 @@ class CreateUserForm(UserCreationForm):
 
 class CustomerInfo(ModelForm):
     class Meta:
-        model = KhachHang
+        model = Person
         fields = ['ho_ten', 'so_dien_thoai', 'email']
