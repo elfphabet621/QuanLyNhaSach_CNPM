@@ -1,5 +1,6 @@
 {% extends 'book/main.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %}Mua hàng{% endblock %}
 {% block content %}
 <div>
@@ -12,7 +13,7 @@
                     <input required class="form-control" type="text" name="name" placeholder="Khách hàng">
                 </div>   
                 <div class="form-field">
-                    <input class="form-control" type="text" name="state" placeholder="Tỉnh">
+                    <input class="form-control" type="text" name="province" placeholder="Tỉnh">
                 </div>
                 <div class="form-field">
                     <input class="form-control" type="text" name="city" placeholder="Thành phố">
@@ -35,14 +36,16 @@
             <hr>
             <h3>Đơn hàng</h3>
             <hr>
+            {% for mh in mat_hang %}
             <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src="{% static 'images/placeholder.png' %}"></div>
-                <div style="flex:2"><p>tên sách</p></div>
-                <div style="flex:1"><p>giá</p></div>
-                <div style="flex:1"><p>sl</p></div>
+                <div style="flex:2"><img class="row-image" src="{{mh.sach.imageURL}}"></div>
+                <div style="flex:2">{{mh.sach.ten_sach}}</div>
+                <div style="flex:1">{{mh.sach.don_gia|floatformat:0|intcomma}} đ</div>
+                <div style="flex:1">{{mh.so_luong}}</div>
             </div>
-            <h5>SL:   2</h5>
-            <h5>Tổng tiền:   $40</h5>
+            {% endfor %}
+            <h5>SL: {{hd.get_cart_items}}</h5>
+            <h5>Tổng tiền: {{hd.get_cart_total|floatformat:0|intcomma}} đ</h5>
         </div>
     </div>
 </div>

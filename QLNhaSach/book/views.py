@@ -4,20 +4,35 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
+from .models import *
 
 
 # Trang chủ
 def home(request):
-
-    # context = {}
-    return render(request, 'book/home.html')
+    sach = Sach.objects.all()
+    context = {'sach': sach}
+    return render(request, 'book/home.html', context)
 
 def cart(request):
-    context = {}
+    if request.user.is_authenticated:
+        kh = request.user.person
+        hd, created = HoaDon.objects.get_or_create(khach_hang = kh)
+        mat_hang = hd.chitiethoadon_set.all()
+    else:
+        mat_hang = []
+        hd = {'get_cart_total': 0, 'get_cart_item': 0}
+    context = {'mat_hang': mat_hang, 'hd':hd}
     return render(request, 'book/cart.html', context)
 
 def checkout(request):
-    context = {}
+    if request.user.is_authenticated:
+        kh = request.user.person
+        hd, created = HoaDon.objects.get_or_create(khach_hang = kh)
+        mat_hang = hd.chitiethoadon_set.all()
+    else:
+        mat_hang = []
+        hd = {'get_cart_total': 0, 'get_cart_item': 0}
+    context = {'mat_hang': mat_hang, 'hd':hd}
     return render(request, 'book/checkout.html', context)
 
 def customer_info(request):

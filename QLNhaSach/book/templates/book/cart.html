@@ -1,5 +1,6 @@
 {% extends 'book/main.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %}Giỏ hàng{% endblock %}
 {% block content %}
 <div class="row">
@@ -13,20 +14,22 @@
                 <div style="flex:1"><strong>Giá tiền</strong></div>
             </div>
             
+            {% for mh in mat_hang %}
             <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src="{% static 'images/placeholder.png' %}"></div>
-                <div style="flex:2"><p>tên sách 1</p></div>
-                <div style="flex:1"><p>giá</p></div>
+                <div style="flex:2"><img class="row-image" src="{{mh.sach.imageURL}}"></div>
+                <div style="flex:2">{{mh.sach.ten_sach}}</div>
+                <div style="flex:1">{{mh.sach.don_gia|floatformat:0|intcomma}} đ</div>
                 <div style="flex:1">
-                    <p class="quantity">2</p>
+                    <p class="quantity">{{mh.so_luong}}</p>
                     <div class="quantity">
                         <img class="chg-quantity" src="{% static  'images/arrow-up.png' %}">
                 
                         <img class="chg-quantity" src="{% static  'images/arrow-down.png' %}">
                     </div>
                 </div>
-                <div style="flex:1"><p>$32</p></div>
+                <div style="flex:1">{{mh.get_total|floatformat:0|intcomma}} đ</div>
             </div>
+            {% endfor %}
         </div>
         <br>
         <br>
@@ -36,8 +39,8 @@
             <br>
             <table class="table">
                 <tr>
-                    <th><h5>SL: <strong>3</strong></h5></th>
-                    <th><h5>Tổng tiền:<strong> $42</strong></h5></th>
+                    <th><h5>SL: <strong>{{hd.get_cart_items}}</strong></h5></th>
+                    <th><h5>Tổng tiền:<strong> {{hd.get_cart_total|floatformat:0|intcomma}} đ</strong></h5></th>
                     <th>
                         <a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Thanh toán</a>
                     </th>

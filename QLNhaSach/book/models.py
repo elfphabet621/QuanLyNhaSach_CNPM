@@ -40,6 +40,7 @@ class Sach(models.Model):
     nha_xuat_ban = models.CharField(max_length=100, null=True)
     nam_xuat_ban = models.PositiveIntegerField(null=True)
     nguoi_nhap = models.ForeignKey(Person, null=True, on_delete=models.PROTECT) 
+    anh_sach = models.ImageField(null=True, blank=True)
     # ton_dau = 
     # phat_sinh = 
     # ton_cuoi = 
@@ -50,6 +51,14 @@ class Sach(models.Model):
     def clean(self):
         if self.nguoi_nhap.chuc_vu != 'thủ kho':
             raise ValidationError('người nhập phải là thủ kho!')
+
+    @property
+    def imageURL(self):
+        try:
+            url = self.anh_sach.url
+        except:
+            url = ''
+        return url
         
     class Meta: # vì django ko cho tạo PK 2 thuộc tính nên làm cách này
         unique_together = ('id', 'ngay_nhap',)
@@ -84,7 +93,19 @@ class HoaDon(models.Model):
         # constraint: chỉ nợ tối đa 20.000d
         if self.tong_tien - self.da_tra > 20000:
             raise ValidationError('khách hàng chỉ được phép nợ tối đa 20.000d')
-        
+
+    @property 
+    def get_cart_total(self):
+        cac_mat_hang = self.chitiethoadon_set.all()
+        tong_tien = sum([mh.get_total for mh in cac_mat_hang])
+        return tong_tien
+
+    @property
+    def get_cart_items(self):
+        cac_mat_hang = self.chitiethoadon_set.all()
+        total = sum([mh.so_luong for mh in cac_mat_hang])
+        return total
+
 class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
     # cthd của hóa đơn nào
     hoa_don = models.ForeignKey(HoaDon, verbose_name='Hóa đơn', on_delete=models.PROTECT)
@@ -99,7 +120,11 @@ class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
 
     # def clean(self):
     #     # constraint: sách sau khi bán vẫn còn ít nhất 20 cuốn trong kho Sach
-        
+    
+    @property
+    def get_total(self):
+        total = self.sach.don_gia * self.so_luong
+        return total
     
     class Meta:
         verbose_name_plural = 'Chi tiết hóa đơn'
