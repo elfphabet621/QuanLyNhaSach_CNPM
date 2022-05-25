@@ -1,39 +1,97 @@
 from django.shortcuts import render, redirect
 from .forms import CreateUserForm
-from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
 from .models import *
-
+from django.http import JsonResponse
+import json
 
 # Trang chủ
 def home(request):
+    if request.user.is_authenticated:
+        kh = request.user.person
+
+        if len(HoaDon.objects.filter(khach_hang = kh)) == 0:
+            newid_hd = len(HoaDon.objects.all())+1
+            if int(newid_hd) <= 9:
+                newid_hd = '0'+ str(newid_hd)
+            newid_hd = 'HD_0'+ str(newid_hd)
+            hd = HoaDon.objects.create(khach_hang = kh, id_HD=newid_hd)
+        else:
+            hd = HoaDon.objects.get(khach_hang = kh)
+        mat_hang = hd.chitiethoadon_set.all()
+        cartItems = hd.get_cart_items
+    else:
+        mat_hang = []
+        hd = {'get_cart_total': 0, 'get_cart_items': 0}
+        cartItems = hd['get_cart_items']
+
     sach = Sach.objects.all()
-    context = {'sach': sach}
+    context = {'sach': sach, 'cartItems': cartItems}
     return render(request, 'book/home.html', context)
 
 def cart(request):
     if request.user.is_authenticated:
         kh = request.user.person
-        hd, created = HoaDon.objects.get_or_create(khach_hang = kh)
+        if len(HoaDon.objects.filter(khach_hang = kh)) == 0:
+            newid_hd = len(HoaDon.objects.all())+1
+            if int(newid_hd) <= 9:
+                newid_hd = '0'+ str(newid_hd)
+            newid_hd = 'HD_0'+ str(newid_hd)
+            hd = HoaDon.objects.create(khach_hang = kh, id_HD=newid_hd)
+        else:
+            hd = HoaDon.objects.get(khach_hang = kh)
         mat_hang = hd.chitiethoadon_set.all()
+        cartItems = hd.get_cart_items
     else:
         mat_hang = []
         hd = {'get_cart_total': 0, 'get_cart_item': 0}
-    context = {'mat_hang': mat_hang, 'hd':hd}
+        cartItems = hd['get_cart_items']
+    context = {'mat_hang': mat_hang, 'hd':hd, 'cartItems': cartItems}
     return render(request, 'book/cart.html', context)
 
 def checkout(request):
     if request.user.is_authenticated:
         kh = request.user.person
-        hd, created = HoaDon.objects.get_or_create(khach_hang = kh)
+        if len(HoaDon.objects.filter(khach_hang = kh)) == 0:
+            newid_hd = len(HoaDon.objects.all())+1
+            if int(newid_hd) <= 9:
+                newid_hd = '0'+ str(newid_hd)
+            newid_hd = 'HD_0'+ str(newid_hd)
+            hd = HoaDon.objects.create(khach_hang = kh, id_HD=newid_hd)
+        else:
+            hd = HoaDon.objects.get(khach_hang = kh)
         mat_hang = hd.chitiethoadon_set.all()
+        cartItems = hd.get_cart_items
     else:
         mat_hang = []
         hd = {'get_cart_total': 0, 'get_cart_item': 0}
-    context = {'mat_hang': mat_hang, 'hd':hd}
+        cartItems = hd.get_cart_items
+    context = {'mat_hang': mat_hang, 'hd':hd, 'cartItems': cartItems}
     return render(request, 'book/checkout.html', context)
+
+def updateItem(request):
+    data = json.loads(request.body)
+    bookId = data['bookId']
+    action = data['action']
+
+    kh = request.user.person
+    sach = Sach.objects.get(id=bookId)
+    hd, created = HoaDon.objects.get_or_create(khach_hang = kh)
+    mat_hang, created = ChiTietHoaDon.objects.get_or_create(hoa_don=hd, sach=sach)
+
+    if action == 'add':
+        mat_hang.so_luong = (mat_hang.so_luong + 1)
+    elif action == 'remove':
+        mat_hang.so_luong = (mat_hang.so_luong - 1)
+    mat_hang.save()
+
+    if mat_hang.so_luong <= 0:
+        mat_hang.delete()
+
+    return JsonResponse('Item was added', safe=False)
 
 def customer_info(request):
     customer = request.user.person
@@ -69,6 +127,8 @@ def registerPage(request):
             
             messages.success(request, 'Account was created for '+ username)
             return redirect('login')
+        else:
+            messages.error(request, "Unsuccessful registration. Invalid information.")
 
     context = {'form': form}
     return render(request, 'book/register.html', context)

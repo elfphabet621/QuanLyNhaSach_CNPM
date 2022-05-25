@@ -14,80 +14,11 @@
 						<h6>{{s.ten_sach}}</h6>
 					</div>	
 					<hr>		
-					<h5 style="float: right; color:darkred"><strong>{{s.don_gia|floatformat:0|intcomma}} đ</strong></h5>
-					<button class="w-100 btn btn-outline-success add-btn">Thêm vào giỏ</button>
+					<h5 style="float: right; color:darkred"><strong>Giá tiền: {{s.don_gia|floatformat:0|intcomma}} đ</strong></h5>
+					<button data-book="{{s.id}}" data-action="add" class="w-100 btn btn-outline-success add-btn update-cart">Thêm vào giỏ</button>
 				</div>
 			</div>
 		</div>
 		{% endfor %}
-		<!-- <div class="col-md-3 mb-4">
-			<div class="card h-100 book-card">
-				<a href="#" class="img-card"><img class="mx-auto" src="{% static 'images/harry_potter.png' %}"></a>
-				<div class="card-body">
-					<div class="card-title">
-						<h6>Harry Potter và cái chén tử thần (Harry Potter and the deathly hallows)</h6>	
-					</div>
-					<hr>		
-					<h5 style="float: right; color:darkred"><strong>10.000 vnd</strong></h5>
-					<button class="w-100 btn btn-outline-success add-btn">Thêm vào giỏ</button>
-				</div>
-			</div>
-		</div>
-		
-		<div class="col-md-3 mb-4">
-			<div class="card h-100 book-card">
-				<a href="#" class="img-card"><img class="mx-auto" src="{% static 'images/tam_quoc.jpg' %}"></a>
-				<div class="card-body">
-					<div class="card-title">
-						<h6>Tam Quốc diễn nghĩa (tập 2)</h6>	
-					</div>
-					<hr>		
-					<h5 style="float: right; color:darkred"><strong>10.000 vnd</strong></h5>
-					<button class="w-100 btn btn-outline-success add-btn">Thêm vào giỏ</button>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-md-3 mb-4">
-			<div class="card h-100 book-card">
-				<a href="#" class="img-card"><img class="mx-auto" src="{% static 'images/truyen_kieu.jpg' %}"></a>
-				<div class="card-body">
-					<div class="card-title">
-						<h6>Truyện Kiều</h6>	
-					</div>
-					<hr>		
-					<h5 style="float: right; color:darkred"><strong>10.000 vnd</strong></h5>
-					<button class="w-100 btn btn-outline-success add-btn">Thêm vào giỏ</button>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-md-3 mb-4">
-			<div class="card h-100 book-card">
-				<a href="#" class="img-card"><img class="mx-auto" src="{% static 'images/de-men-phieu-luu-ky.jpg' %}"></a>
-				<div class="card-body">
-					<div class="card-title">
-						<h6>Dế mèn phiêu lưu ký</h6>	
-					</div>
-					<hr>		
-					<h5 style="float: right; color:darkred"><strong>10.000 vnd</strong></h5>
-					<button class="w-100 btn btn-outline-success add-btn">Thêm vào giỏ</button>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-md-3 mb-4">
-			<div class="card h-100 book-card">
-				<a href="#" class="img-card"><img class="mx-auto" src="{% static 'images/tieng_viet_5_1.jpg' %}"></a>
-				<div class="card-body">
-					<div class="card-title">
-						<h6>Tiếng Việt 5 (tập 1)</h6>	
-					</div>
-					<hr>		
-					<h5 style="float: right; color:darkred"><strong>10.000 vnd</strong></h5>
-					<button class="w-100 btn btn-outline-success add-btn">Thêm vào giỏ</button>
-				</div>
-			</div>
-		</div> -->
 	</div>
 {% endblock %}

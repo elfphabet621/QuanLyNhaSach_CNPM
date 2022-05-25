@@ -28,8 +28,11 @@
     </div>
 
     <br>
-    <div class="box-element hidden" id="payment-info">Phương thức thanh toán</div>
-    
+    <div class="box-element hidden" id="payment-info">Phương thức thanh toán
+        <button id="make-payment">Chọn phương thức thanh toán</button>
+    </div>
+    <br>
+
     <div class="box-element">
         <div class="box-element">
             <a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Trở lại giỏ</a>
@@ -49,4 +52,71 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    // var total = '{{order.get_cart_total|floatformat:0}}'
+    var form = document.getElementById('form')
+
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log('Form submitted...')
+        document.getElementById('form-button').classList.add("hidden")
+        document.getElementById('payment-info').classList.remove("hidden")
+
+    })
+
+    document.getElementById('make-payment').addEventListener('click', function(e){
+        submitFormData()
+    })
+
+    function submitFormData(){
+        alert('Đã thanh toán')
+
+        // var userFormData = {
+        //     'name': null,
+        //     'total': total,
+        // }
+
+        // var shippingInfo = {
+        //     'address': null,
+        //     'city': null,
+        //     'province': total,
+        // }
+
+        // shippingInfo.address = form.address.value
+        // shippingInfo.city = form.city.value
+        // shippingInfo.province = form.province.value
+
+        // if(user == "AnonymousUser"){
+        //     userFormData.name = form.name.value
+        // }
+
+        // var url= '/process_order/'
+
+        // fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'X-CSRFToken': csrftoken,
+        //     },
+        //     body:JSON.stringify({'form': userFormData, 'shipping': shippingInfo})
+        // })
+
+        // .then((response) => response.json())
+
+        // .then((data) => {
+        //     console.log('Success: ', data);
+        //     alert('Thanh toán thành công')
+
+        //     cart = {}
+        //     document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
+
+        //     window.location.href = "{% url 'home' %}"
+        // })
+    }
+
+    
+
+</script>
+
 {% endblock %}
