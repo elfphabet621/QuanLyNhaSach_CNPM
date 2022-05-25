@@ -4,32 +4,14 @@ from .forms import CreateUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
-from .models import *
-from django.http import JsonResponse
-import json
+from django.contrib.auth.models import Group
+import math
 
 # Trang chủ
 def home(request):
-    if request.user.is_authenticated:
-        kh = request.user.person
-
-        if len(HoaDon.objects.filter(khach_hang = kh)) == 0:
-            newid_hd = len(HoaDon.objects.all())+1
-            if int(newid_hd) <= 9:
-                newid_hd = '0'+ str(newid_hd)
-            newid_hd = 'HD_0'+ str(newid_hd)
-            hd = HoaDon.objects.create(khach_hang = kh, id_HD=newid_hd)
-        else:
-            hd = HoaDon.objects.get(khach_hang = kh)
-        mat_hang = hd.chitiethoadon_set.all()
-        cartItems = hd.get_cart_items
-    else:
-        mat_hang = []
-        hd = {'get_cart_total': 0, 'get_cart_items': 0}
-        cartItems = hd['get_cart_items']
-
-    sach = Sach.objects.all()
-    context = {'sach': sach, 'cartItems': cartItems}
+    books = Sach.objects.all() # truy vấn all sách từ csdl
+    
+    context = {'books': books} 
     return render(request, 'book/home.html', context)
 
 def cart(request):
@@ -125,6 +107,8 @@ def registerPage(request):
             user = form.save()
             username = form.cleaned_data.get('username')
             
+            group = Group.objects.get(name='customer')
+            
             messages.success(request, 'Account was created for '+ username)
             return redirect('login')
         else:
@@ -189,3 +173,9 @@ def deleteBook(request):
 
     context = {}
     return render(request, 'book/delete_book.html', context)
+
+def book_details(request, pk):
+    book = Sach.objects.get(id=pk) # truy vấn sách có mã pk từ csdl
+    
+    context = {'book': book}
+    return render(request, 'book/book.html', context= context)

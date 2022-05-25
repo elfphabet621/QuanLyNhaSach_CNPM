@@ -4,21 +4,108 @@
 {% block title %}Trang chủ{% endblock %}
 
 {% block content %}
-    <div class="row">
-		{% for s in sach %}
-        <div class="col-md-3 mb-4">
-			<div class="card h-100 book-card">
-				<a href="#" class="img-card"><img class="mx-auto" src="{{s.imageURL}}"></a>
-				<div class="card-body">
-					<div class="card-title">
-						<h6>{{s.ten_sach}}</h6>
-					</div>	
-					<hr>		
-					<h5 style="float: right; color:darkred"><strong>Giá tiền: {{s.don_gia|floatformat:0|intcomma}} đ</strong></h5>
-					<button data-book="{{s.id}}" data-action="add" class="w-100 btn btn-outline-success add-btn update-cart">Thêm vào giỏ</button>
-				</div>
+	<div class="container">
+		<div class="row">
+			{% for book in books %}
+			<div class="col-md-4">
+				<div class="card" style="margin-bottom: 30px;">
+					<img src="{{ book.anh_bia.url }}" style="width: 100%; height: 360px">
+					<div class="card-body">
+						<div class="card-title">
+							<h6><strong> {{book.ten_sach}} </strong></h6>
+						</div>
+						<div class="card-text">
+							<h7>Giá: {{ book.gia_ban|floatformat:"-3g" }}d </h7>
+						</div>
+						<button class="btn btn-outline-secondary add-btn">Thêm vào giỏ</button>
+						<a class="btn btn-outline-success" href={{book.get_absolute_url}}>Xem</a>
+					</div>
+				</div>   
+			</div>
+			{% endfor %}
+		</div>
+	</div> 
+
+    {% comment %} <div class="row">
+        <div class="col-lg-4">
+			<img src= {{book.anh_bia.url}} style="width: 100%; height: 360px;">
+			<div class="box-element product">
+				<h6><strong> {{book.ten_sach}} </strong></h6>
+				<hr>
+
+				<button  class="btn btn-outline-secondary add-btn">Thêm vào giỏ</button>
+				<a class="btn btn-outline-success" href="#">Xem</a>
+				<h4 style="display: inline-block; float: right"><strong>vnd</strong></h4>
+
 			</div>
 		</div>
-		{% endfor %}
-	</div>
+
+        <div class="col-lg-4">
+			<img class="thumbnail" src="{% static 'images/harry_potter.png' %}" style="width: 100%; height: 360px;">
+			<div class="box-element product">
+				<h6><strong>Harry Potter và cái chén tử thần</strong></h6>
+				<hr>
+
+				<button  class="btn btn-outline-secondary add-btn">Thêm vào giỏ</button>
+				<a class="btn btn-outline-success" href="#">Xem</a>
+				<h4 style="display: inline-block; float: right"><strong>vnd</strong></h4>
+
+			</div>
+		</div>
+
+        <div class="col-lg-4">
+			<img class="thumbnail" src="{% static 'images/tam_quoc.jpg' %}" style="width: 100%; height: 360px;">
+			<div class="box-element product">
+				<h6><strong>Tam Quốc diễn nghĩa (tập 2)</strong></h6>
+				<hr>
+
+				<button  class="btn btn-outline-secondary add-btn">Thêm vào giỏ</button>
+				<a class="btn btn-outline-success" href="#">Xem</a>
+				<h4 style="display: inline-block; float: right"><strong>vnd</strong></h4>
+
+			</div>
+		</div>
+    </div>
+
+	<div class="row">
+        <div class="col-lg-4">
+			<img src="{% static 'images/truyen_kieu.jpg' %}" style="width: 100%; height: 360px;">
+			<div class="box-element product">
+				<h6><strong>Truyện Kiều</strong></h6>
+				<hr>
+
+				<button  class="btn btn-outline-secondary add-btn">Thêm vào giỏ</button>
+				<a class="btn btn-outline-success" href="#">Xem</a>
+				<h4 style="display: inline-block; float: right"><strong>vnd</strong></h4>
+
+			</div>
+		</div>
+
+        <div class="col-lg-4">
+			<img class="thumbnail" src="{% static 'images/de-men-phieu-luu-ky.jpg' %}" style="width: 100%; height: 360px;">
+			<div class="box-element product">
+				<h6><strong>Dế mèn phiêu lưu ký</strong></h6>
+				<hr>
+
+				<button  class="btn btn-outline-secondary add-btn">Thêm vào giỏ</button>
+				<a class="btn btn-outline-success" href="#">Xem</a>
+				<h4 style="display: inline-block; float: right"><strong>vnd</strong></h4>
+
+			</div>
+		</div>
+
+        <div class="col-lg-4">
+			<img class="thumbnail" src="{% static 'images/tieng_viet_5_1.jpg' %}" style="width: 100%; height: 360px;">
+			<div class="box-element product">
+				<h6><strong>Tiếng Việt 5 (tập 1)</strong></h6>
+				<hr>
+
+				<button  class="btn btn-outline-secondary add-btn">Thêm vào giỏ</button>
+				<a class="btn btn-outline-success" href="#">Xem</a>
+				<h4 style="display: inline-block; float: right"><strong>vnd</strong></h4>
+
+			</div>
+		</div>
+    </div>  {% endcomment %}
+	
 {% endblock %}
