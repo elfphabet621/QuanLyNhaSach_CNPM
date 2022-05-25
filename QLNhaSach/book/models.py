@@ -102,8 +102,8 @@ class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
     # gia_ban = models.FloatField(null=True)
     
     def __str__(self):
-	    return self.hoa_don.id_HD
- 
+        return self.hoa_don.id_HD
+
     # def clean(self):
     #     # constraint: sách sau khi bán vẫn còn ít nhất 20 cuốn trong kho Sach
     

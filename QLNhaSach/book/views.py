@@ -23,13 +23,33 @@ def checkout(request):
     return render(request, 'book/checkout.html', context)
 
 def customer_info(request):
-    form = CustomerInfo()
-    context = {'form': form}
+    customer = request.user.person
+    form = CustomerInfo(instance=customer)
+    
     if request.method == "POST":
-        form = CustomerInfo(request.POST)
-
-        context['form'] = form
+        form = CustomerInfo(request.POST, request.FILES, instance=customer)
+        if form.is_valid():
+            print(form.cleaned_data['profile_pic'])
+            form.save()
+    
+    context = {'form': form}
     return render(request, 'book/customer_info.html', context)
+
+def listInvoice(request):
+    user = request.user.person
+    
+    invoices = HoaDon.objects.filter(khach_hang__id=user.id)
+    print(invoices)
+
+    context = {'invoices': invoices}
+    return render(request, 'book/list_invoice.html', context)
+
+def reviewInvoice(request, pk):
+    invoice = HoaDon.objects.get(id_HD=pk)
+    details = ChiTietHoaDon.objects.filter(hoa_don=invoice)
+    remain = invoice.tong_tien - invoice.da_tra
+    context = {'invoice': invoice, 'remain': remain, 'details': details}
+    return render(request, 'book/invoice.html', context)
 
 # Trang đăng ký tài khoản
 # @unauthenticated_user
