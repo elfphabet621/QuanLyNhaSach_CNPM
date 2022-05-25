@@ -17,11 +17,11 @@ Cơ sở dữ liệu : SQL
 ## Link Google Drive hoặc Youtube video demo
 ---
 ## Current status: tóm tắt những gì đã hoàn thành 
-Chapter 4 : Implementation
-Khởi tạo repo github 
-Tạo các form
-Khởi tạo Narvbar và background
-1 số page : Hóa đơn, thông tin cá nhân, nhập sách, giỏ hàng
+Chapter 4 : Implementation  
+Khởi tạo repo github  
+Tạo các form  
+Khởi tạo Narvbar và background  
+1 số page : Hóa đơn, thông tin cá nhân, nhập sách, giỏ hàng  
 
 ---
 ## Future works: tóm tắt những gì cần làm thêm
