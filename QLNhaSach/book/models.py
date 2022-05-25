@@ -111,7 +111,7 @@ class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
     hoa_don = models.ForeignKey(HoaDon, verbose_name='Hóa đơn', on_delete=models.PROTECT)
     # khach_hang = models.ForeignKey(Person, verbose_name='Khách hàng', on_delete=models.PROTECT)
     sach = models.ForeignKey(Sach, verbose_name='Sản phẩm', on_delete=models.PROTECT)
-    so_luong = models.PositiveIntegerField(null=True, default=1, editable=True)
+    so_luong = models.PositiveIntegerField(null=True, default=0, editable=True)
     # giá bán 1 sản phẩm
     # gia_ban = models.FloatField(null=True)
     
