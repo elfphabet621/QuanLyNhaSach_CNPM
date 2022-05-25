@@ -4,29 +4,57 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
+from .models import *
+
 
 # Trang chủ
 def home(request):
-
-    # context = {}
-    return render(request, 'book/home.html')
+    sach = Sach.objects.all()
+    context = {'sach': sach}
+    return render(request, 'book/home.html', context)
 
 def cart(request):
-    context = {}
+    if request.user.is_authenticated:
+        kh = request.user.person
+        hd, created = HoaDon.objects.get_or_create(khach_hang = kh)
+        mat_hang = hd.chitiethoadon_set.all()
+    else:
+        mat_hang = []
+        hd = {'get_cart_total': 0, 'get_cart_item': 0}
+    context = {'mat_hang': mat_hang, 'hd':hd}
     return render(request, 'book/cart.html', context)
 
 def checkout(request):
-    context = {}
+    if request.user.is_authenticated:
+        kh = request.user.person
+        hd, created = HoaDon.objects.get_or_create(khach_hang = kh)
+        mat_hang = hd.chitiethoadon_set.all()
+    else:
+        mat_hang = []
+        hd = {'get_cart_total': 0, 'get_cart_item': 0}
+    context = {'mat_hang': mat_hang, 'hd':hd}
     return render(request, 'book/checkout.html', context)
 
 def customer_info(request):
-    form = CustomerInfo()
-    context = {'form': form}
+    customer = request.user.person
+    form = CustomerInfo(instance=customer)
+    
     if request.method == "POST":
-        form = CustomerInfo(request.POST)
-
-        context['form'] = form
+        form = CustomerInfo(request.POST, request.FILES, instance=customer)
+        if form.is_valid():
+            print(form.cleaned_data['profile_pic'])
+            form.save()
+    
+    context = {'form': form}
     return render(request, 'book/customer_info.html', context)
+
+
+def reviewInvoice(request):
+    invoice = HoaDon.objects.all()[0]
+    details = ChiTietHoaDon.objects.filter(hoa_don=invoice)
+    remain = invoice.tong_tien - invoice.da_tra
+    context = {'invoice': invoice, 'remain': remain, 'details': details}
+    return render(request, 'book/invoice.html', context)
 
 # Trang đăng ký tài khoản
 # @unauthenticated_user

@@ -1,9 +1,47 @@
+.container {
+	max-width: 82% !important;
+}
+
+/* home */
+.book-card{
+	width: 260px;
+	display: block; 
+	background-color: rgb(244, 243, 243);
+	border-radius: 2px;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12); 
+	transition: box-shadow .20s; 
+	padding: 14px;
+  }
+
+.book-card:hover {
+box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.img-card {
+display: block;
+overflow: hidden;
+}
+
+.img-card img{
+display: block;
+width: 190px;
+height: 248px;
+object-fit: cover; 
+
+} 
+
+.card-title{
+	height: 40px;
+}
+/* endhome */
+
+/* cart */
 body{
 	background-color: hsl(0, 0%, 98%);
 }
 
 h1,h2,h3,h4,h5,h6{
-	color:hsl(0, 0%, 30%);
+	color:hsl(0, 0%, 21%);
 }
 
 .box-element{
@@ -25,12 +63,8 @@ h1,h2,h3,h4,h5,h6{
 	border-radius: 0 0 4px 4px;
 }
 
-.col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12{
+.col-md-4, .col-md-6, .col-md-8, .col-md-12{
 	margin-top: 10px;
-}
-
-.btn{
-	border-radius: 0;
 }
 
 .row-image{
@@ -55,8 +89,6 @@ h1,h2,h3,h4,h5,h6{
 	display: inline-block;
 	font-weight: 700;
 	padding-right:10px;
-	
-
 }
 
 .chg-quantity{
@@ -71,7 +103,7 @@ h1,h2,h3,h4,h5,h6{
 	opacity: .6;
 }
 
-
 .hidden{
 	display: none!important;
 }
+/* endcart */

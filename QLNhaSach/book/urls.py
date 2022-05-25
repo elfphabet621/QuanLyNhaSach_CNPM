@@ -14,6 +14,7 @@ urlpatterns = [
     path('login/', views.loginPage, name='login'),
     path('logout/', views.logoutUser, name='logout'),
 
+
     # path('user/', views.userPage, name='user-page'),
 
     # path('account/', views.accountSetting, name='account'),
@@ -25,4 +26,5 @@ urlpatterns = [
     path('update_book/<str:pk>', views.updateBook, name='update_Book'),
     path('delete_book/<str:pk>', views.deleteBook, name='delete_Book'),
 
+    path('invoice/', views.reviewInvoice, name='review_invoice'),
 ]
