@@ -3,7 +3,7 @@
 }
 
 /* home */
-.card {
+.book-card{
 	width: 260px;
 	display: block; 
 	background-color: rgb(244, 243, 243);
@@ -13,7 +13,7 @@
 	padding: 14px;
   }
 
-.card:hover {
+.book-card:hover {
 box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
