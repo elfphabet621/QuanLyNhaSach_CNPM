@@ -23,28 +23,36 @@ class Person(models.Model):
     email = models.CharField('Email', max_length=50, null=True)
     chuc_vu = models.CharField('Chức vụ', max_length=100, null=True, choices=list_chucvu)
     profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
+    user = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE) # a user can have 1 customer, a customer have a user
     
     def __str__(self):
         return self.id
 
+# class TheLoai(models.Model):
+    
 class Sach(models.Model):
-    id = models.CharField(max_length=100, primary_key=True) # PK: id và ngay_nhap
+    # id = models.CharField(max_length=100, primary_key=True) # PK: id và ngay_nhap
     ten_sach = models.CharField(max_length=100, null=True)
     ngay_nhap = models.DateField(null=True, editable=True)
     so_luong = models.PositiveIntegerField(null=True)
     the_loai = models.CharField(max_length=100, null=True)
     tac_gia = models.CharField(max_length=100, null=True)
-    don_gia = models.FloatField(null=True)
-    gia_ban = models.FloatField(null=True)
+    don_gia = models.PositiveBigIntegerField(null=True)
+    gia_ban = models.PositiveBigIntegerField(null=True)
     nha_xuat_ban = models.CharField(max_length=100, null=True)
     nam_xuat_ban = models.PositiveIntegerField(null=True)
     nguoi_nhap = models.ForeignKey(Person, null=True, on_delete=models.PROTECT) 
+    anh_bia = models.ImageField(default="static/placeholder.png", null=True, blank=True)
+    mo_ta = models.TextField("Mô tả ngắn", max_length=1000, null=True, blank=True)
     # ton_dau = 
     # phat_sinh = 
     # ton_cuoi = 
     
     def __str__(self):
         return f'{self.ten_sach}_{self.ngay_nhap}'
+    
+    def get_absolute_url(self):
+        return f"/book/{self.id}/" 
     
     def clean(self):
         if self.nguoi_nhap.chuc_vu != 'thủ kho':
@@ -98,7 +106,6 @@ class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
  
     # def clean(self):
     #     # constraint: sách sau khi bán vẫn còn ít nhất 20 cuốn trong kho Sach
-        
     
     class Meta:
         verbose_name_plural = 'Chi tiết hóa đơn'

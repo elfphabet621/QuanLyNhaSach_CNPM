@@ -4,12 +4,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
+from django.contrib.auth.models import Group
+import math
 
 # Trang chủ
 def home(request):
-
-    # context = {}
-    return render(request, 'book/home.html')
+    books = Sach.objects.all() # truy vấn all sách từ csdl
+    
+    context = {'books': books} 
+    return render(request, 'book/home.html', context)
 
 def cart(request):
     context = {}
@@ -38,6 +41,8 @@ def registerPage(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
+            
+            group = Group.objects.get(name='customer')
             
             messages.success(request, 'Account was created for '+ username)
             return redirect('login')
@@ -101,3 +106,9 @@ def deleteBook(request):
 
     context = {}
     return render(request, 'book/delete_book.html', context)
+
+def book_details(request, pk):
+    book = Sach.objects.get(id=pk) # truy vấn sách có mã pk từ csdl
+    
+    context = {'book': book}
+    return render(request, 'book/book.html', context= context)

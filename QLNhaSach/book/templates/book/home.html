@@ -4,11 +4,33 @@
 {% block title %}Trang chủ{% endblock %}
 
 {% block content %}
-    <div class="row">
+	<div class="container">
+		<div class="row">
+			{% for book in books %}
+			<div class="col-md-4">
+				<div class="card" style="margin-bottom: 30px;">
+					<img src="{{ book.anh_bia.url }}" style="width: 100%; height: 360px">
+					<div class="card-body">
+						<div class="card-title">
+							<h6><strong> {{book.ten_sach}} </strong></h6>
+						</div>
+						<div class="card-text">
+							<h7>Giá: {{ book.gia_ban|floatformat:"-3g" }}d </h7>
+						</div>
+						<button class="btn btn-outline-secondary add-btn">Thêm vào giỏ</button>
+						<a class="btn btn-outline-success" href={{book.get_absolute_url}}>Xem</a>
+					</div>
+				</div>   
+			</div>
+			{% endfor %}
+		</div>
+	</div> 
+
+    {% comment %} <div class="row">
         <div class="col-lg-4">
-			<img src="{% static 'images/hinh_hoc_10.jpg' %}" style="width: 100%; height: 360px;">
+			<img src= {{book.anh_bia.url}} style="width: 100%; height: 360px;">
 			<div class="box-element product">
-				<h6><strong>Hình học 10 (tập 1)</strong></h6>
+				<h6><strong> {{book.ten_sach}} </strong></h6>
 				<hr>
 
 				<button  class="btn btn-outline-secondary add-btn">Thêm vào giỏ</button>
@@ -84,6 +106,6 @@
 
 			</div>
 		</div>
-    </div>
+    </div>  {% endcomment %}
 	
 {% endblock %}
