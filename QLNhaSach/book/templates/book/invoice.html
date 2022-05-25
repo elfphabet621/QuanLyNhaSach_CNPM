@@ -90,7 +90,7 @@
                                         <th>Thể loại</th>
                                         <th>Tác giả</th>
                                         <th>Giá bán</th>
-                                        <th>Xem</th>
+                                        <th>Số lượng</th>
                                     </tr>
 
                                     {% for detail in details %}
@@ -103,7 +103,7 @@
                                         <td>{{detail.sach.gia_ban}}</td>
                                         
 
-                                        <td><a class="btn btn-sm btn-infor" href="#">Xem</a></td>
+                                        <td>{{detail.sach.so_luong}}</td>
                                     </tr>
                                     {% endfor %}
 
