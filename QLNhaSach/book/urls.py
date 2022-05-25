@@ -26,4 +26,5 @@ urlpatterns = [
     path('update_book/<str:pk>', views.updateBook, name='update_Book'),
     path('delete_book/<str:pk>', views.deleteBook, name='delete_Book'),
 
+    path('invoice/', views.reviewInvoice, name='review_invoice'),
 ]
