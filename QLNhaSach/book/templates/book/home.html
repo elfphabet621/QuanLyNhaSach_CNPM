@@ -8,7 +8,7 @@
 		{% for s in sach %}
         <div class="col-md-3 mb-4">
 			<div class="card h-100 book-card">
-				<a href="#" class="img-card"><img class="mx-auto" src="{{s.imageURL}}"></a>
+				<a href={{s.get_absolute_url}} class="img-card"><img class="mx-auto" src="{{s.imageURL}}"></a>
 				<div class="card-body">
 					<div class="card-title">
 						<h6>{{s.ten_sach}}</h6>

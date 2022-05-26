@@ -29,10 +29,24 @@
 
     <br>
     <div class="box-element hidden" id="payment-info">Phương thức thanh toán
-        <button id="make-payment">Chọn phương thức thanh toán</button>
+        {% comment %} <button id="make-payment">Chọn phương thức thanh toán</button> {% endcomment %}
+        <select id="pet-select">
+            <option value="">--phương thức thanh toán--</option>
+            <option value="atm">Thẻ ngân hàng</option>
+            <option value="cash">Tiền mặt</option>
+        </select>
     </div>
     <br>
+    <br>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form}}
 
+        <input type="submit" name="Thanh toán">
+    </form>
+    
+    <br>
+    <br>
     <div class="box-element">
         <div class="box-element">
             <a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Trở lại giỏ</a>
@@ -65,9 +79,9 @@
 
     })
 
-    document.getElementById('make-payment').addEventListener('click', function(e){
+    {% comment %} document.getElementById('make-payment').addEventListener('click', function(e){
         submitFormData()
-    })
+    }) {% endcomment %}
 
     function submitFormData(){
         alert('Đã thanh toán')

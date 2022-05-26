@@ -60,6 +60,12 @@ def cart(request):
 
 @login_required(login_url='login')
 def checkout(request):
+    form = InvoiceForm()
+    if request.method == "POST":
+        form = InvoiceForm(request.POST)
+        if form.is_valid():
+            form.save()
+        
     if request.user.is_authenticated:
         kh = request.user.person
         if len(HoaDon.objects.filter(khach_hang = kh)) == 0:
@@ -76,7 +82,7 @@ def checkout(request):
         mat_hang = []
         hd = {'get_cart_total': 0, 'get_cart_item': 0}
         cartItems = hd.get_cart_items
-    context = {'mat_hang': mat_hang, 'hd':hd, 'cartItems': cartItems}
+    context = {'mat_hang': mat_hang, 'hd': hd, 'cartItems': cartItems}
     return render(request, 'book/checkout.html', context)
 
 def updateItem(request):

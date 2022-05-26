@@ -89,11 +89,11 @@ class HoaDon(models.Model):
     
     def clean(self):
         # constraint: khách hàng phải có chuc_vu='khách hàng'
-        if self.khach_hang.chuc_vu != 'khách hàng':
-            raise ValidationError('nhân viên không hợp lệ')
+        # if self.khach_hang.chuc_vu != 'khách hàng':
+        #     raise ValidationError('nhân viên không hợp lệ')
         # constraint: người lập HD phải là nhân viên
-        if self.nguoi_lap_HD.chuc_vu != 'nhân viên':
-            raise ValidationError('người lập hóa đơn phải là nhân viên!')
+        # if self.nguoi_lap_HD.chuc_vu != 'nhân viên':
+        #     raise ValidationError('người lập hóa đơn phải là nhân viên!')
         # constraint: chỉ nợ tối đa 20.000d
         if self.tong_tien - self.da_tra > 20000:
             raise ValidationError('khách hàng chỉ được phép nợ tối đa 20.000d')

@@ -13,3 +13,8 @@ class CustomerInfo(ModelForm):
     class Meta:
         model = Person
         fields = ['ho_ten', 'so_dien_thoai', 'email', 'profile_pic']
+
+class InvoiceForm(ModelForm):
+    class Meta:
+        model = HoaDon
+        fields = ['id_HD']
