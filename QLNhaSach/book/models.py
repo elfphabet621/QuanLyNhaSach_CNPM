@@ -125,13 +125,11 @@ class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
         return self.hoa_don.id_HD
 
     # def clean(self):
-    #     # constraint: sách sau khi bán vẫn còn ít nhất 20 cuốn trong kho Sach
-    
+    #     # constraint: sách sau khi bán vẫn còn ít nhất 20 cuốn trong kho Sach   
     @property
     def get_total(self):
         total = self.sach.don_gia * self.so_luong
         return total
 
-    
     class Meta:
         verbose_name_plural = 'Chi tiết hóa đơn'
