@@ -95,7 +95,7 @@ def updateItem(request):
         mat_hang.so_luong = (mat_hang.so_luong - 1)
     mat_hang.save()
 
-    if mat_hang.so_luong <= 0:
+    if action == 'clear' or mat_hang.so_luong <= 0:
         mat_hang.delete()
 
     return JsonResponse('Item was added', safe=False)

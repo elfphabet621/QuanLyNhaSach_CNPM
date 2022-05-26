@@ -12,6 +12,7 @@
                 <div style="flex:1"><strong>Giá bán</strong></div>
                 <div style="flex:1"><strong>Số lượng</strong></div>
                 <div style="flex:1"><strong>Giá tiền</strong></div>
+                <div style="flex:1"></div>
             </div>
             
             {% for mh in mat_hang %}
@@ -28,6 +29,9 @@
                     </div>
                 </div>
                 <div style="flex:1">{{mh.get_total|floatformat:0|intcomma}} đ</div>
+                <div style="flex:1">
+                    <img data-book={{mh.sach.id}} data-action="clear" class="chg-quantity update-cart" src="{% static  'images/remove.png' %}" style="width:12px; height:12px">
+                </div>
             </div>
             {% endfor %}
         </div>
