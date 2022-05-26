@@ -38,9 +38,8 @@
       <ul class="navbar-nav">
         {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="btn btn-light" style="border-radius: 40px;" href="/customer_info/">{{request.user}}</a>
+            <a class="btn" style="background-color: #FFBA81; border-radius: 40px;" href="/customer_info/">{{grp}} {{request.user}}</a>
         </li>
-        
         <a href="{% url 'cart' %}">
           <img id="cart-icon" src="{% static 'images/cart.png' %}" alt="cart-icon">
         </a>

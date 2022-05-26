@@ -1,27 +1,25 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-import random
-import uuid
 
 # Create your models here.
 class Person(models.Model):
     class Meta:
         verbose_name_plural = 'Thành viên'
         
-    list_chucvu = (
-			('nhân viên', 'nhân viên'),
-			('thủ kho', 'thủ kho'),
-            ('chủ nhà sách', 'chủ nhà sách'),
-            ('khách hàng', 'khách hàng')
-			) 
+    # list_chucvu = (
+	# 		('nhân viên', 'nhân viên'),
+	# 		('thủ kho', 'thủ kho'),
+    #         ('chủ nhà sách', 'chủ nhà sách'),
+    #         ('khách hàng', 'khách hàng')
+	# 		) 
     id = models.CharField(max_length=100, primary_key=True, editable=True)
     ho_ten = models.CharField('Họ tên', max_length=100, null=True)
     ngay_sinh = models.DateField('Ngày sinh', null=True, editable=True)
     so_dien_thoai = models.CharField('Số điện thoại', max_length=13, null=True)
     dia_chi = models.CharField('Địa chỉ', max_length=1000, null=True)
     email = models.CharField('Email', max_length=50, null=True)
-    chuc_vu = models.CharField('Chức vụ', max_length=100, null=True, choices=list_chucvu)
+    # chuc_vu = models.CharField('Chức vụ', max_length=100, null=True, choices=list_chucvu)
     profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
     user = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE) # a user can have 1 customer, a customer have a user
     
