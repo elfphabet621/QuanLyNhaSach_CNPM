@@ -57,14 +57,6 @@ class Sach(models.Model):
     def clean(self):
         if self.nguoi_nhap.chuc_vu != 'thủ kho':
             raise ValidationError('người nhập phải là thủ kho!')
-
-    @property
-    def imageURL(self):
-        try:
-            url = self.anh_sach.url
-        except:
-            url = ''
-        return url
         
     class Meta: # vì django ko cho tạo PK 2 thuộc tính nên làm cách này
         unique_together = ('id', 'ngay_nhap',)
@@ -99,31 +91,19 @@ class HoaDon(models.Model):
         # constraint: chỉ nợ tối đa 20.000d
         if self.tong_tien - self.da_tra > 20000:
             raise ValidationError('khách hàng chỉ được phép nợ tối đa 20.000d')
-
-    @property 
-    def get_cart_total(self):
-        cac_mat_hang = self.chitiethoadon_set.all()
-        tong_tien = sum([mh.get_total for mh in cac_mat_hang])
-        return tong_tien
-
-    @property
-    def get_cart_items(self):
-        cac_mat_hang = self.chitiethoadon_set.all()
-        total = sum([mh.so_luong for mh in cac_mat_hang])
-        return total
-
+        
 class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
     # cthd của hóa đơn nào
     hoa_don = models.ForeignKey(HoaDon, verbose_name='Hóa đơn', on_delete=models.PROTECT)
     # khach_hang = models.ForeignKey(Person, verbose_name='Khách hàng', on_delete=models.PROTECT)
     sach = models.ForeignKey(Sach, verbose_name='Sản phẩm', on_delete=models.PROTECT)
-    so_luong = models.PositiveIntegerField(null=True, default=0, editable=True)
+    so_luong = models.PositiveIntegerField(null=True, default=1, editable=True)
     # giá bán 1 sản phẩm
     # gia_ban = models.FloatField(null=True)
     
     def __str__(self):
         return self.hoa_don.id_HD
-
+ 
     # def clean(self):
     #     # constraint: sách sau khi bán vẫn còn ít nhất 20 cuốn trong kho Sach
     
