@@ -24,7 +24,7 @@
       </li>
       {% if user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'review_invoice' %}">Hóa đơn</a>
+        <a class="nav-link" href="{% url 'list_invoice' %}">Hóa đơn</a>
       </li>
       {% endif %}
  
@@ -37,13 +37,15 @@
     <div class="form-inline my-2 my-lg-0">
       <ul class="navbar-nav">
         {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="btn btn-light" style="border-radius: 40px;" href="/customer_info/">{{request.user}}</a>
+        </li>
+        
         <a href="{% url 'cart' %}">
           <img id="cart-icon" src="{% static 'images/cart.png' %}" alt="cart-icon">
         </a>
         <p id="cart-total">{{cartItems}}</p>
-        <li class="nav-item">
-          <a class="btn btn-light" style="border-radius: 40px;" href="customer_info/">{{request.user}}</a>
-        </li>
+        
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Đăng xuất</a>
         </li>

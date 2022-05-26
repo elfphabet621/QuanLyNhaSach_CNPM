@@ -4,9 +4,10 @@ from .forms import CreateUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
+from django.contrib.auth.models import Group
+import math, json
 from .models import *
 from django.http import JsonResponse
-import json
 
 # Trang chủ
 def home(request):
@@ -106,9 +107,17 @@ def customer_info(request):
     context = {'form': form}
     return render(request, 'book/customer_info.html', context)
 
+def listInvoice(request):
+    user = request.user.person
+    
+    invoices = HoaDon.objects.filter(khach_hang__id=user.id)
+    print(invoices)
 
-def reviewInvoice(request):
-    invoice = HoaDon.objects.all()[0]
+    context = {'invoices': invoices}
+    return render(request, 'book/list_invoice.html', context)
+
+def reviewInvoice(request, pk):
+    invoice = HoaDon.objects.get(id_HD=pk)
     details = ChiTietHoaDon.objects.filter(hoa_don=invoice)
     remain = invoice.tong_tien - invoice.da_tra
     context = {'invoice': invoice, 'remain': remain, 'details': details}
@@ -124,6 +133,8 @@ def registerPage(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
+            
+            group = Group.objects.get(name='customer')
             
             messages.success(request, 'Account was created for '+ username)
             return redirect('login')
@@ -189,3 +200,9 @@ def deleteBook(request):
 
     context = {}
     return render(request, 'book/delete_book.html', context)
+
+def book_details(request, pk):
+    book = Sach.objects.get(id=pk) # truy vấn sách có mã pk từ csdl
+    
+    context = {'book': book}
+    return render(request, 'book/book.html', context= context)

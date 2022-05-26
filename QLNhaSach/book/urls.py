@@ -20,12 +20,14 @@ urlpatterns = [
 
     # path('account/', views.accountSetting, name='account'),
 
-    # path('book/', views.products, name='products'),
+    path('book/<str:pk>/', views.book_details, name='book'), # xem chi tiết sách
     # path('customer/<str:pk_test>', views.customer, name='customer'),
     
     path('create_book/<str:pk>', views.createBook, name='create_Book'),
     path('update_book/<str:pk>', views.updateBook, name='update_Book'),
     path('delete_book/<str:pk>', views.deleteBook, name='delete_Book'),
 
-    path('invoice/', views.reviewInvoice, name='review_invoice'),
+    path('review_invoice/<str:pk>/', views.reviewInvoice, name='review_invoice'),
+
+    path('list_invoice/', views.listInvoice, name='list_invoice'),
 ]
