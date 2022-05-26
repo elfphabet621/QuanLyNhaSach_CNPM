@@ -2,7 +2,9 @@
 ## Giới thiệu project
 ### Project quản lý nhà sách bộ môn CNPM trường đại học Khoa học tự nhiên ĐHQG TPHCM
 ---
-## Tham khảo chéo các project liên quan : hiện tại None
+## Tham khảo chéo các project liên quan : 
+- [link 1]
+- link 2
 ---
 ## Môi trường thực thi (phiên bản hệ điều hành, SDK, Dev Tools, cơ sở dữ liệu, etc.)
 Sử dụng Django
