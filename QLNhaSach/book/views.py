@@ -211,3 +211,18 @@ def book_details(request, pk):
     
     context = {'book': book}
     return render(request, 'book/book.html', context= context)
+
+
+@login_required(login_url='login')
+def debt_report(request):
+    #book = Sach.objects.get(id=pk) # truy vấn sách có mã pk từ csdl
+    
+    context = {}
+    return render(request, 'book/debt_report.html', context= context)
+
+@login_required(login_url='login')
+def inventory_report(request):
+    #book = Sach.objects.get(id=pk) # truy vấn sách có mã pk từ csdl
+    
+    context = {}
+    return render(request, 'book/inventory_report.html', context= context)

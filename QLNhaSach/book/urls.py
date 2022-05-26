@@ -30,4 +30,7 @@ urlpatterns = [
     path('review_invoice/<str:pk>/', views.reviewInvoice, name='review_invoice'),
 
     path('list_invoice/', views.listInvoice, name='list_invoice'),
+
+    path('debt_report/', views.debt_report, name='debt_report'),
+    path('inventory_report/', views.inventory_report, name='inventory_report'),
 ]
