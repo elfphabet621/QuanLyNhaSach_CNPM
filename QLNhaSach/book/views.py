@@ -5,13 +5,32 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
 from django.contrib.auth.models import Group
-import math
+import math, json
+from .models import *
+from django.http import JsonResponse
 
 # Trang chủ
 def home(request):
-    books = Sach.objects.all() # truy vấn all sách từ csdl
-    
-    context = {'books': books} 
+    if request.user.is_authenticated:
+        kh = request.user.person
+
+        if len(HoaDon.objects.filter(khach_hang = kh)) == 0:
+            newid_hd = len(HoaDon.objects.all())+1
+            if int(newid_hd) <= 9:
+                newid_hd = '0'+ str(newid_hd)
+            newid_hd = 'HD_0'+ str(newid_hd)
+            hd = HoaDon.objects.create(khach_hang = kh, id_HD=newid_hd)
+        else:
+            hd = HoaDon.objects.get(khach_hang = kh)
+        mat_hang = hd.chitiethoadon_set.all()
+        cartItems = hd.get_cart_items
+    else:
+        mat_hang = []
+        hd = {'get_cart_total': 0, 'get_cart_items': 0}
+        cartItems = hd['get_cart_items']
+
+    sach = Sach.objects.all()
+    context = {'sach': sach, 'cartItems': cartItems}
     return render(request, 'book/home.html', context)
 
 def cart(request):
@@ -88,9 +107,17 @@ def customer_info(request):
     context = {'form': form}
     return render(request, 'book/customer_info.html', context)
 
+def listInvoice(request):
+    user = request.user.person
+    
+    invoices = HoaDon.objects.filter(khach_hang__id=user.id)
+    print(invoices)
 
-def reviewInvoice(request):
-    invoice = HoaDon.objects.all()[0]
+    context = {'invoices': invoices}
+    return render(request, 'book/list_invoice.html', context)
+
+def reviewInvoice(request, pk):
+    invoice = HoaDon.objects.get(id_HD=pk)
     details = ChiTietHoaDon.objects.filter(hoa_don=invoice)
     remain = invoice.tong_tien - invoice.da_tra
     context = {'invoice': invoice, 'remain': remain, 'details': details}

@@ -42,7 +42,7 @@ class Sach(models.Model):
     nha_xuat_ban = models.CharField(max_length=100, null=True)
     nam_xuat_ban = models.PositiveIntegerField(null=True)
     nguoi_nhap = models.ForeignKey(Person, null=True, on_delete=models.PROTECT) 
-    anh_bia = models.ImageField(default="static/placeholder.png", null=True, blank=True)
+    anh_sach = models.ImageField(default="static/placeholder.png",null=True, blank=True)
     mo_ta = models.TextField("Mô tả ngắn", max_length=1000, null=True, blank=True)
     # ton_dau = 
     # phat_sinh = 
@@ -125,7 +125,11 @@ class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
         return self.hoa_don.id_HD
 
     # def clean(self):
-    #     # constraint: sách sau khi bán vẫn còn ít nhất 20 cuốn trong kho Sach
-    
+    #     # constraint: sách sau khi bán vẫn còn ít nhất 20 cuốn trong kho Sach   
+    @property
+    def get_total(self):
+        total = self.sach.don_gia * self.so_luong
+        return total
+
     class Meta:
         verbose_name_plural = 'Chi tiết hóa đơn'
