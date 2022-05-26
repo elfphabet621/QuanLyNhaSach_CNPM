@@ -17,7 +17,7 @@
             
             {% for mh in mat_hang %}
             <div class="cart-row">
-                <div style="flex:2"><img class="row-image" src="{{mh.sach.imageURL}}"></div>
+                <div style="flex:2"><img class="row-image" style="width: 190px; height: 248px" src="{{mh.sach.imageURL}}"></div>
                 <div style="flex:2">{{mh.sach.ten_sach}}</div>
                 <div style="flex:1">{{mh.sach.don_gia|floatformat:0|intcomma}} đ</div>
                 <div style="flex:1">
