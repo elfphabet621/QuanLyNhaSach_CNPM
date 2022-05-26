@@ -1,19 +1,43 @@
 from django.shortcuts import render, redirect
 from .forms import CreateUserForm
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
-from django.contrib.auth.models import Group
-import math
+from .models import *
+from .utils import get_user_group
+from django.http import JsonResponse
+from .decorators import unauthenticated_user, allowed_users
+import math, json
 
 # Trang chủ
 def home(request):
-    books = Sach.objects.all() # truy vấn all sách từ csdl
-    
-    context = {'books': books} 
+    if request.user.is_authenticated:
+        grp = get_user_group(request)
+
+        kh = request.user.person
+
+        if len(HoaDon.objects.filter(khach_hang = kh)) == 0:
+            newid_hd = len(HoaDon.objects.all())+1
+            if int(newid_hd) <= 9:
+                newid_hd = '0'+ str(newid_hd)
+            newid_hd = 'HD_0'+ str(newid_hd)
+            hd = HoaDon.objects.create(khach_hang = kh, id_HD=newid_hd)
+        else:
+            hd = HoaDon.objects.get(khach_hang = kh)
+        mat_hang = hd.chitiethoadon_set.all()
+        cartItems = hd.get_cart_items
+    else:
+        mat_hang = []
+        hd = {'get_cart_total': 0, 'get_cart_items': 0}
+        cartItems = hd['get_cart_items']
+        grp = ''
+
+    sach = Sach.objects.all()
+    context = {'sach': sach, 'cartItems': cartItems, 'grp': grp}
     return render(request, 'book/home.html', context)
 
+@login_required(login_url='login')
 def cart(request):
     if request.user.is_authenticated:
         kh = request.user.person
@@ -34,6 +58,7 @@ def cart(request):
     context = {'mat_hang': mat_hang, 'hd':hd, 'cartItems': cartItems}
     return render(request, 'book/cart.html', context)
 
+@login_required(login_url='login')
 def checkout(request):
     if request.user.is_authenticated:
         kh = request.user.person
@@ -75,6 +100,7 @@ def updateItem(request):
 
     return JsonResponse('Item was added', safe=False)
 
+@login_required(login_url='login')
 def customer_info(request):
     customer = request.user.person
     form = CustomerInfo(instance=customer)
@@ -88,16 +114,25 @@ def customer_info(request):
     context = {'form': form}
     return render(request, 'book/customer_info.html', context)
 
+@login_required(login_url='login')
+def listInvoice(request):
+    user = request.user.person
+    
+    invoices = HoaDon.objects.filter(khach_hang__id=user.id)
+    print(invoices)
 
-def reviewInvoice(request):
-    invoice = HoaDon.objects.all()[0]
+    context = {'invoices': invoices}
+    return render(request, 'book/list_invoice.html', context)
+
+@login_required(login_url='login')
+def reviewInvoice(request, pk):
+    invoice = HoaDon.objects.get(id_HD=pk)
     details = ChiTietHoaDon.objects.filter(hoa_don=invoice)
     remain = invoice.tong_tien - invoice.da_tra
     context = {'invoice': invoice, 'remain': remain, 'details': details}
     return render(request, 'book/invoice.html', context)
 
-# Trang đăng ký tài khoản
-# @unauthenticated_user
+@unauthenticated_user
 def registerPage(request):
     form = CreateUserForm()
 
@@ -107,8 +142,7 @@ def registerPage(request):
             user = form.save()
             username = form.cleaned_data.get('username')
             
-            group = Group.objects.get(name='customer')
-            
+            #Create Customer have been taken care of (in signals)
             messages.success(request, 'Account was created for '+ username)
             return redirect('login')
         else:
@@ -117,8 +151,7 @@ def registerPage(request):
     context = {'form': form}
     return render(request, 'book/register.html', context)
 
-# Trang đăng nhập
-# @unauthenticated_user
+@unauthenticated_user
 def loginPage(request):
     if request.method == "POST":
         username = request.POST.get('username')
@@ -132,14 +165,13 @@ def loginPage(request):
             messages.info(request, 'Username Or Password is incorrect')
     return render(request, 'book/login.html')
 
-# Đăng xuất
 def logoutUser(request):
     logout(request)
     return redirect('home')
 
 # Tạo một cuốn sách mới
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['admin'])
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['thủ kho'])
 def createBook(request, ):
     # if request.method == "POST":
         # if formset.is_valid():
@@ -151,8 +183,8 @@ def createBook(request, ):
     return render(request, 'book/book_form.html', context)
 
 # Cập nhật một cuốn sách
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['admin'])
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['thủ kho'])
 def updateBook(request):
     # if request.method == "POST":
         # if form.is_valid() :
@@ -163,8 +195,8 @@ def updateBook(request):
     return render(request, 'book/book_form.html', context)
 
 # Xóa một cuốn sách
-# @login_required(login_url='login')
-# @allowed_users(allowed_roles=['admin'])
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['thủ kho'])
 def deleteBook(request):
 
     # if request.method == "POST":
