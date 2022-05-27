@@ -54,10 +54,11 @@ Tên môi trường ảo đã đặt như trên\Scripts\activate.bat
 <br>
 - Bước 5 : open folder project bằng visual studio code <br> <br>
 - Bước 6 : chạy code <br> 
-```sh
+
+```console
 python manage.py makemigrations 
 python manage.py migrate 
-python manage.py runserver 
+python manage.py runserver
 ```
 <br>
 
