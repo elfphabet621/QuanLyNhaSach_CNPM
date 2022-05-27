@@ -11,6 +11,7 @@
         <!-- Images -->
 		<div class="col-md-4">
 			<img id="zoom_01" data-zoom-image={{book.imageURL}} src={{book.imageURL}} class="card-img-top" alt="{{book.ten_sach}}">
+
 		</div>
         <div class="col-md-8">
             <p>{{book.mo_ta}}</p>
@@ -36,10 +37,11 @@
             <div class="input-group my-3" style="width:30%;">
                 <input type="number" value="1" class="form-control product-qty-{{book.id}}" id="productQty" />
                 <div class="input-group-append">
-                    <input type="hidden" class="product-image-{{book.id}}" value="{{book.anh_bia.url}}" />
-                    <input type="hidden" class="product-id-{{book.id}}" value="{{book.id}}" />
-                    <input type="hidden" class="product-title-{{book.id}}" value="{{book.ten_sach}}" />
-                  <button class="btn btn-outline-success add-btn update-cart" data-index="{{book.id}}" data-book="{{book.id}}" data-action="add-amount" type="button" id="addToCartBtn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+					<input type="hidden" class="product-image-{{book.id}}" value="{{book.anh_bia.url}}" />
+					<input type="hidden" class="product-id-{{book.id}}" value="{{book.id}}" />
+					<input type="hidden" class="product-title-{{book.id}}" value="{{book.ten_sach}}" />
+                  	<button class="btn btn-success add-btn update-cart" data-index="{{book.id}}" data-book="{{book.id}}" data-action="add-amount" type="button" id="addToCartBtn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+
                 </div>
               </div>
         </div>

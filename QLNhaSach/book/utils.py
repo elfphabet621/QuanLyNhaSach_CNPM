@@ -1,4 +1,5 @@
 from .models import *
+from django.contrib.auth.models import Group
 
 def get_cart_info(request):
     if request.user.is_authenticated:

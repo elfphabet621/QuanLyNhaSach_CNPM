@@ -9,12 +9,14 @@
         <div class="col-md-3 mb-4">
 			<div class="card h-100 book-card">
 				<a href="{% url 'book' s.id %}" class="img-card"><img class="mx-auto" src="{{s.imageURL}}"></a>
+
 				<div class="card-body">
 					<div class="card-title">
 						<h6>{{s.ten_sach}}</h6>
 					</div>	
 					<hr>		
 					<h5 style="float: right; color:darkred"><strong>{{s.don_gia|floatformat:0|intcomma}} VND</strong></h5>
+
 					{% if user.is_authenticated %}
 						<button data-book="{{s.id}}" data-action="add" class="w-100 btn btn-outline-success add-btn update-cart">Thêm vào giỏ</button>
 					{% endif %}

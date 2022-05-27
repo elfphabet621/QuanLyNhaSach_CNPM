@@ -34,8 +34,6 @@ class Person(models.Model):
             query_set = ''
         else:
             query_set = query_set[0].name.capitalize()
-            if query_set == 'Khách hàng':
-                query_set = ''
 
         return query_set
 
@@ -111,6 +109,7 @@ class HoaDon(models.Model):
         if self.tong_tien - self.da_tra > 20000:
             raise ValidationError('khách hàng chỉ được phép nợ tối đa 20.000d')
 
+
     @property 
     def get_cart_total(self):
         cac_mat_hang = self.chitiethoadon_set.all()
@@ -144,3 +143,4 @@ class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
 
     class Meta:
         verbose_name_plural = 'Chi tiết hóa đơn'
+

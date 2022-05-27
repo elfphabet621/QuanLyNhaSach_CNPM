@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
 from .models import *
-from .utils import get_cart_info
+from .utils import *
 from django.http import JsonResponse
 from .decorators import unauthenticated_user, allowed_users
 import math, json
@@ -16,6 +16,7 @@ def home(request):
         kh = request.user.person
         chd = list(filter(lambda x: x.da_tra - x.tong_tien == -1 ,HoaDon.objects.filter(khach_hang = kh)))
         if len(chd) <= 0:
+
             newid_hd = len(HoaDon.objects.all())+1
             if int(newid_hd) <= 9:
                 newid_hd = '0'+ str(newid_hd)
@@ -29,18 +30,21 @@ def home(request):
         cartItems = 0
     sach = Sach.objects.all()
     context = {'sach': sach, 'cartItems': cartItems}
+
     return render(request, 'book/home.html', context)
 
 @login_required(login_url='login')
 def cart(request):
     cart_info = get_cart_info(request)
     context = {'mat_hang': cart_info['mat_hang'], 'hd': cart_info['hd'], 'cartItems':cart_info['cartItems']}
+
     return render(request, 'book/cart.html', context)
 
 @login_required(login_url='login')
 def checkout(request):
     cart_info = get_cart_info(request)
     context = {'mat_hang': cart_info['mat_hang'], 'hd': cart_info['hd'], 'cartItems':cart_info['cartItems']}
+
     return render(request, 'book/checkout.html', context)
 
 def updateItem(request):
@@ -57,8 +61,10 @@ def updateItem(request):
         mat_hang.so_luong = (mat_hang.so_luong + 1)
     elif action == 'remove':
         mat_hang.so_luong = (mat_hang.so_luong - 1)
+
     elif action == 'add-amount':
         mat_hang.so_luong = (mat_hang.so_luong + int(data['quantity']))
+
     mat_hang.save()
 
     if action == 'clear' or mat_hang.so_luong <= 0:
@@ -135,6 +141,20 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['thủ kho'])
+def book_entry(request):
+    tk = request.user.person
+    form = CreateBook()
+    if request.method == "POST":
+        form = CreateBook(request.POST, request.FILES)
+        form.nguoi_nhap = request.user.person
+        if form.is_valid():
+            form.save()
+
+    context = {'form': form}
+    return render(request, 'book/book_entry.html', context)
+
 # Tạo một cuốn sách mới
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['thủ kho'])
@@ -178,4 +198,5 @@ def book_details(request, pk):
         cart_info = get_cart_info(request)
         
     context = {'book': book, 'cartItems':cart_info['cartItems']}
+
     return render(request, 'book/book.html', context= context)

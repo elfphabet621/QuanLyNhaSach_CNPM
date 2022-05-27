@@ -20,6 +20,7 @@
                 <div style="flex:2"><img class="row-image" style="width: 190px; height: 248px" src="{{mh.sach.imageURL}}"></div>
                 <div style="flex:2">{{mh.sach.ten_sach}}</div>
                 <div style="flex:1">{{mh.sach.don_gia|floatformat:0|intcomma}} VND</div>
+
                 <div style="flex:1">
                     <p class="quantity">{{mh.so_luong}}</p>
                     <div class="quantity">
@@ -29,6 +30,7 @@
                     </div>
                 </div>
                 <div style="flex:1">{{mh.get_total|floatformat:0|intcomma}} VND</div>
+
                 <div style="flex:1">
                     <img data-book={{mh.sach.id}} data-action="clear" class="chg-quantity update-cart" src="{% static  'images/remove.png' %}" style="width:12px; height:12px">
                 </div>
@@ -47,6 +49,7 @@
                     <th><h5>Tổng tiền:<strong> {{hd.get_cart_total|floatformat:0|intcomma}} VND</strong></h5></th>
                     <th>
                         <a  style="float:right; margin:5px;" class="btn btn-warning" href="{% url 'checkout' %}">Thanh toán</a>
+
                     </th>
                 </tr>
             </table>
