@@ -44,7 +44,7 @@ pip install django
 ```
 <br>
 - Bước 4 : download và bật môi trường ảo trên terminal (Hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
-```sh
+```console
 pip install virtualenv <br>
 virtual + [`tên môi trường ảo`] 
 Tên môi trường ảo đã đặt như trên\Scripts\activate.bat 
