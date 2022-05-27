@@ -46,6 +46,9 @@ Xây dựng một hệ thống quản lý thuận tiện cho nhà sách trên n�
 > python manage.py makemigrations <br>
 > python manage.py migrate <br>
 > python manage.py runserver <br>
+```js
+function () { return "This code is highlighted as Javascript!"}
+```
 
 ---
 ## Hướng dẫn deploy project lên Heroku.
