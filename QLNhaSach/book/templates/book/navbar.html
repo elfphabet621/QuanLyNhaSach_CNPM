@@ -23,7 +23,6 @@
         </div>
       </li>
       {% if user.is_authenticated %}
-      
         {% if user.person.get_group_name == 'Thủ kho' %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'book_entry' %}">Nhập sách</a>
@@ -35,7 +34,16 @@
           
         {% endif %}
       {% endif %}
- 
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Báo cáo
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'inventory_report' %}">Báo cáo tồn</a>
+          <a class="dropdown-item" href="{% url 'debt_report' %}">Báo cáo nợ</a>
+          
+        </div>
+      </li>
     </ul>
     <!-- <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
