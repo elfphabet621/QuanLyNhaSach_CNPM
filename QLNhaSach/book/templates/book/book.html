@@ -10,7 +10,7 @@
     <div class="row">
         <!-- Images -->
 		<div class="col-md-4">
-			<img id="zoom_01" data-zoom-image={{book.anh_bia.url}} src={{book.anh_bia.url}} class="card-img-top" alt="{{book.ten_sach}}">
+			<img id="zoom_01" data-zoom-image={{book.imageURL}} src={{book.imageURL}} class="card-img-top" alt="{{book.ten_sach}}">
 		</div>
         <div class="col-md-8">
             <p>{{book.mo_ta}}</p>
@@ -39,7 +39,7 @@
                     <input type="hidden" class="product-image-{{book.id}}" value="{{book.anh_bia.url}}" />
                     <input type="hidden" class="product-id-{{book.id}}" value="{{book.id}}" />
                     <input type="hidden" class="product-title-{{book.id}}" value="{{book.ten_sach}}" />
-                  <button class="btn btn-primary btn-sm add-to-cart" data-index="{{book.id}}" type="button" id="addToCartBtn"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                  <button class="btn btn-outline-success add-btn update-cart" data-index="{{book.id}}" data-book="{{book.id}}" data-action="add-amount" type="button" id="addToCartBtn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
                 </div>
               </div>
         </div>
@@ -73,6 +73,41 @@
     </div>
 </main>
 
+<script>
+	var addBtn = document.getElementById('addToCartBtn')
+	
 
+	addBtn.addEventListener('click', function(){
+		var bookId = this.dataset.book
+		var action = this.dataset.action
+		var quantity = Number(document.getElementById('productQty').value)
+
+		updateCart(bookId, action, quantity)
+	})
+
+
+function updateCart(bookId, action, quantity)
+{
+    var url= '/update_item/'
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body:JSON.stringify({'bookId': bookId, 'action': action, 'quantity': quantity})
+    })
+
+    .then((response) => {
+        return response.json()
+    })
+
+    .then((data) => {
+        console.log('data: ', data)
+        location.reload()
+    })
+}
+</script>
 
 {% endblock %}

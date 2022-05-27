@@ -6,30 +6,49 @@
 <div>
     <div class="box-element" id="form-wrapper">
         <form id="form">
-            <div id="shipping-info">
-                <p>Địa chỉ nhận hàng:</p>
-                <hr>
-                <div class="form-field">
-                    <input required class="form-control" type="text" name="name" placeholder="Khách hàng">
-                </div>   
-                <div class="form-field">
-                    <input class="form-control" type="text" name="province" placeholder="Tỉnh">
+            <div class="form-row">
+                <div class="col-md-8 mb-3">
+                    <label for="name">Khách hàng</label>
+                    <input required class="form-control" type="text" name="name" id="customer-name" value="{{request.user.person.ho_ten}}">
                 </div>
-                <div class="form-field">
-                    <input class="form-control" type="text" name="city" placeholder="Thành phố">
+                <div class="col-md-4 mb-3">
+                    <label for="sdt">SĐT</label>
+                    <input required class="form-control" type="text" name="sdt" value="{{request.user.person.so_dien_thoai}}">
                 </div>
-                <div class="form-field">
-                    <input class="form-control" type="text" name="address" placeholder="Số nhà">
-                </div>
+            </div> 
+            <br>
+            <h5><strong>Địa chỉ nhận hàng</strong></h5>
+            <div class="col-md-12 mb-3">
+                <label for="address"></label>
+                <input class="form-control" type="text" name="address" value="{{request.user.person.dia_chi}}">
             </div>
-            <hr>
+
+            <!-- <div class="form-row" id="shipping-info">  
+                <div class="col-md-4 mb-3">
+                    <label for="province-city">Tỉnh/Thành phố</label>
+                    <input required class="form-control" type="text" name="province-city" placeholder="TP Hồ Chí Minh">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="district">Quận/Huyện</label>
+                    <input class="form-control" type="text" name="district" placeholder="Quận 1">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="address">Địa chỉ cụ thể</label>
+                    <input class="form-control" type="text" name="address" placeholder="Số nhà, tên đường, phường">
+                </div>
+            </div> -->
             <input id="form-button" class="btn btn-success btn-block" type="submit" value="Xác nhận">
         </form>
     </div>
 
     <br>
     <div class="box-element hidden" id="payment-info">Phương thức thanh toán
-        <button id="make-payment">Chọn phương thức thanh toán</button>
+        <select id="payment-option">
+            <option value="tien-mat">Tiền mặt</option>
+            <option value="the">Thẻ ngân hàng</option>
+        </select>
+        <hr>
+        <button id="select-payment" class="btn btn-warning">Thanh toán</button>
     </div>
     <br>
 
@@ -38,17 +57,18 @@
             <a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Trở lại giỏ</a>
             <hr>
             <h3>Đơn hàng</h3>
+            <h5>SL: {{hd.get_cart_items}}</h5>
+            <h5>Tổng tiền: {{hd.get_cart_total|floatformat:0|intcomma}} VND</h5>
             <hr>
             {% for mh in mat_hang %}
             <div class="cart-row">
                 <div style="flex:2"><img class="row-image" src="{{mh.sach.imageURL}}"></div>
                 <div style="flex:2">{{mh.sach.ten_sach}}</div>
-                <div style="flex:1">{{mh.sach.don_gia|floatformat:0|intcomma}} đ</div>
+                <div style="flex:1">{{mh.sach.don_gia|floatformat:0|intcomma}} VND</div>
                 <div style="flex:1">{{mh.so_luong}}</div>
             </div>
             {% endfor %}
-            <h5>SL: {{hd.get_cart_items}}</h5>
-            <h5>Tổng tiền: {{hd.get_cart_total|floatformat:0|intcomma}} đ</h5>
+            
         </div>
     </div>
 </div>
@@ -59,18 +79,30 @@
 
     form.addEventListener('submit', function(e){
         e.preventDefault()
-        console.log('Form submitted...')
+        // console.log('Form submitted...')
         document.getElementById('form-button').classList.add("hidden")
         document.getElementById('payment-info').classList.remove("hidden")
 
     })
 
-    document.getElementById('make-payment').addEventListener('click', function(e){
-        submitFormData()
+    document.getElementById('select-payment').addEventListener('click', function(e){
+        selectPaymentType()
     })
 
-    function submitFormData(){
-        alert('Đã thanh toán')
+    function selectPaymentType(){
+        var paytype = document.getElementById("payment-option").value;
+
+        if (paytype == 'the'){
+            alert('Thanh toán thành công');
+            window.location.href = "{% url 'list_invoice' %}"
+        }
+        else{
+            
+        }
+    }
+    // function submitFormData(){
+
+        // alert('Đã thanh toán')
 
         // var userFormData = {
         //     'name': null,
@@ -113,7 +145,7 @@
 
         //     window.location.href = "{% url 'home' %}"
         // })
-    }
+    // }
 
     
 

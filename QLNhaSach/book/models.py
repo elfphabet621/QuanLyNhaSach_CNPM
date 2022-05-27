@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 
 # Create your models here.
 class Person(models.Model):
@@ -25,6 +26,18 @@ class Person(models.Model):
     
     def __str__(self):
         return self.id
+
+    @property
+    def get_group_name(self):
+        query_set = Group.objects.filter(user = self.user)
+        if not query_set:
+            query_set = ''
+        else:
+            query_set = query_set[0].name.capitalize()
+            if query_set == 'Khách hàng':
+                query_set = ''
+
+        return query_set
 
 # class TheLoai(models.Model):
     
@@ -89,14 +102,15 @@ class HoaDon(models.Model):
     
     def clean(self):
         # constraint: khách hàng phải có chuc_vu='khách hàng'
-        if self.khach_hang.chuc_vu != 'khách hàng':
-            raise ValidationError('nhân viên không hợp lệ')
-        # constraint: người lập HD phải là nhân viên
-        if self.nguoi_lap_HD.chuc_vu != 'nhân viên':
-            raise ValidationError('người lập hóa đơn phải là nhân viên!')
+        # if self.khach_hang.chuc_vu != 'khách hàng':
+        #     raise ValidationError('nhân viên không hợp lệ')
+        # # constraint: người lập HD phải là nhân viên
+        # if self.nguoi_lap_HD.chuc_vu != 'nhân viên':
+        #     raise ValidationError('người lập hóa đơn phải là nhân viên!')
         # constraint: chỉ nợ tối đa 20.000d
-        if self.tong_tien - self.da_tra > 20000:
-            raise ValidationError('khách hàng chỉ được phép nợ tối đa 20.000d')
+        # if self.tong_tien - self.da_tra > 20000:
+        #     raise ValidationError('khách hàng chỉ được phép nợ tối đa 20.000d')
+        pass
 
     @property 
     def get_cart_total(self):
