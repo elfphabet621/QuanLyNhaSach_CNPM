@@ -7,7 +7,7 @@ Project môn học thuộc bộ môn Công nghệ phần mềm trường đại 
 - Nguyễn Phạm Quang Dũng – 19120485 
 - Nguyễn Phát Minh	– 19120586
 
-#### Context
+#### Bối cảnh
 Với xu thế mua hàng trên Internet ngày một tăng của người dùng ở mọi độ tuổi, chúng ta cần có 1 cách nào đấy để tư vấn khách hàng về thông tin của 1 cuốn sách (nội dung, giá cả, bestselling,…). Ngoài ra, phía nhà quản lý sách cũng có thể kiểm soát và theo dõi tình hình nhà sách (số lượng sách, số lượng khách ghé thăm,…) một cách sát sao cũng như hỗ trợ khách hàng được chu đáo hơn. Nền tảng online BookManager cho phép chủ nhà sách có thể:
 
 #### Mục tiêu project
