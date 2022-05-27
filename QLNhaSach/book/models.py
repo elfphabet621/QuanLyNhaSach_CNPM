@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 
 # Create your models here.
 class Person(models.Model):
@@ -25,6 +26,16 @@ class Person(models.Model):
     
     def __str__(self):
         return self.id
+
+    @property
+    def get_group_name(self):
+        query_set = Group.objects.filter(user = self.user)
+        if not query_set:
+            query_set = ''
+        else:
+            query_set = query_set[0].name.capitalize()
+
+        return query_set
 
 # class TheLoai(models.Model):
     
@@ -52,9 +63,9 @@ class Sach(models.Model):
     def get_absolute_url(self):
         return f"/book/{self.id}/" 
     
-    def clean(self):
-        if self.nguoi_nhap.chuc_vu != 'thủ kho':
-            raise ValidationError('người nhập phải là thủ kho!')
+    # def clean(self):
+    #     if self.nguoi_nhap.chuc_vu != 'thủ kho':
+    #         raise ValidationError('người nhập phải là thủ kho!')
 
     @property
     def imageURL(self):
@@ -98,6 +109,7 @@ class HoaDon(models.Model):
         if self.tong_tien is not None and self.da_tra is not None and self.tong_tien - self.da_tra > 20000:
             raise ValidationError('khách hàng chỉ được phép nợ tối đa 20.000d')
 
+
     @property 
     def get_cart_total(self):
         cac_mat_hang = self.chitiethoadon_set.all()
@@ -131,3 +143,4 @@ class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
 
     class Meta:
         verbose_name_plural = 'Chi tiết hóa đơn'
+
