@@ -33,24 +33,32 @@ Xây dựng một hệ thống quản lý thuận tiện cho nhà sách trên n�
 ---
 ## Hướng dẫn cấu hình project chạy local PC. <br>
 - Bước 1 : clone project django về máy <br>
-> git clone {link project} <br> <br> 
+```console
+git clone {link project} 
+``` 
+<br> 
 - Bước 2 : Mở visual studio code <br> <br>
 - Bước 3 : download django bằng terminal <br>
-> pip install django <br> <br>
+```console
+pip install django
+```
+<br>
 - Bước 4 : download và bật môi trường ảo trên terminal (Hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
-> pip install virtualenv <br>
-> virtual + tên môi trường ảo muốn đặt <br>
-> Tên môi trường ảo đã đặt như trên\Scripts\activate.bat <br> <br>
+```console
+pip install virtualenv <br>
+virtual + [`tên môi trường ảo`] 
+Tên môi trường ảo đã đặt như trên\Scripts\activate.bat 
+```
+<br>
 - Bước 5 : open folder project bằng visual studio code <br> <br>
 - Bước 6 : chạy code <br> 
-> python manage.py makemigrations <br>
-> python manage.py migrate <br>
-> python manage.py runserver <br>
-```js
-function () { return "This code is highlighted as Javascript!"}
+```console
+> python manage.py makemigrations 
+> python manage.py migrate 
+> python manage.py runserver 
 ```
+<br>
 
----
 ## Hướng dẫn deploy project lên Heroku.
 <Điền vào đây>
 
