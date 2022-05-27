@@ -41,12 +41,11 @@ git clone {link project}
 - Bước 3 : download django bằng terminal <br>
 
 ```console
-```
-```console
-pip install django
+  pip install django
 ```
 <br>
 - Bước 4 : download và bật môi trường ảo trên terminal (Hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
+
 ```console
 pip install virtualenv <br>
 virtual + [`tên môi trường ảo`] 
