@@ -39,6 +39,9 @@ git clone {link project}
 <br> 
 - Bước 2 : Mở visual studio code <br> <br>
 - Bước 3 : download django bằng terminal <br>
+
+```console
+```
 ```console
 pip install django
 ```
