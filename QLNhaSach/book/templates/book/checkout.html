@@ -43,12 +43,19 @@
 
     <br>
     <div class="box-element hidden" id="payment-info">Phương thức thanh toán
-        <select id="payment-option">
+        <select id="payment-option" name="payment-option">
+            <option value="none">--Chọn phương thức thanh toán--</option>
+            <option value="the-ngan-hang">Thẻ ngân hàng</option>
             <option value="tien-mat">Tiền mặt</option>
-            <option value="the">Thẻ ngân hàng</option>
         </select>
         <hr>
-        <button id="select-payment" class="btn btn-warning">Thanh toán</button>
+        <div class="hidden" id="payment-cash">
+            <div class="col-md-12 mb-3 mt-2">
+                <label for="pay">Số tiền trả</label>
+                <input class="form-control" type="text" name="pay" id="pay" placeholder="{{hd.get_cart_total}}">
+            </div>
+        </div>
+        <button id="payment" class="btn btn-warning hidden">Thanh toán</button>
     </div>
     <br>
 
@@ -79,27 +86,41 @@
 
     form.addEventListener('submit', function(e){
         e.preventDefault()
-        // console.log('Form submitted...')
         document.getElementById('form-button').classList.add("hidden")
         document.getElementById('payment-info').classList.remove("hidden")
 
     })
 
-    document.getElementById('select-payment').addEventListener('click', function(e){
-        selectPaymentType()
+    document.getElementById('payment-option').addEventListener('click', function(e){
+        selectPaymentOption()})
+
+    function selectPaymentOption(){
+        let selector = document.getElementById("payment-option"); 
+
+            selector.addEventListener("change", () => {
+                switch (selector.value) {
+                    case "the-ngan-hang":
+                        document.getElementById('payment-cash').classList.add("hidden");
+                        document.getElementById('payment').classList.remove("hidden");
+                        break; 
+                    case "tien-mat":
+                        document.getElementById('payment-cash').classList.remove("hidden");
+                        document.getElementById('payment').classList.remove("hidden");
+                        break;
+                    case 'none':
+                        document.getElementById('payment').classList.add("hidden");
+                        document.getElementById('payment-cash').classList.add("hidden");
+                        break;
+                }
+            });
+    }
+
+    document.getElementById('payment').addEventListener('click', function(){
+        alert('Đã thanh toán');
+
+        window.location.href = "{% url 'home' %}"
     })
 
-    function selectPaymentType(){
-        var paytype = document.getElementById("payment-option").value;
-
-        if (paytype == 'the'){
-            alert('Thanh toán thành công');
-            window.location.href = "{% url 'list_invoice' %}"
-        }
-        else{
-            
-        }
-    }
     // function submitFormData(){
 
         // alert('Đã thanh toán')
@@ -148,7 +169,6 @@
     // }
 
     
-
 </script>
 
 {% endblock %}
