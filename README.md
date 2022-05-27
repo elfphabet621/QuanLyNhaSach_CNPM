@@ -36,8 +36,8 @@ code > python manage.py migrate <br>
 
 ---
 ## Hướng dẫn deploy project lên Heroku.
-<Điền vào đây>
-
+(Link hướng dẫn)[https://docs.google.com/document/d/1vBemN9QKKlEHl0a9cXVem1iwH00dEsFnypPcr1AUeFA/edit?usp=sharing]
+  
 ---
 ## Link Google Drive hoặc Youtube video demo
 [link]
