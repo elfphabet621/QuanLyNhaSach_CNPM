@@ -39,12 +39,12 @@ git clone {link project}
 <br> 
 - Bước 2 : Mở visual studio code <br> <br>
 - Bước 3 : download django bằng terminal <br>
-```console
+```sh
 pip install django
 ```
 <br>
 - Bước 4 : download và bật môi trường ảo trên terminal (Hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
-```console
+```sh
 pip install virtualenv <br>
 virtual + [`tên môi trường ảo`] 
 Tên môi trường ảo đã đặt như trên\Scripts\activate.bat 
@@ -52,7 +52,7 @@ Tên môi trường ảo đã đặt như trên\Scripts\activate.bat
 <br>
 - Bước 5 : open folder project bằng visual studio code <br> <br>
 - Bước 6 : chạy code <br> 
-```console
+```sh
 python manage.py makemigrations 
 python manage.py migrate 
 python manage.py runserver 
