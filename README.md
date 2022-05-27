@@ -39,7 +39,7 @@ Cơ sở dữ liệu : sqlite3
 > pip install django <br> <br>
 - Bước 4 : download và bật môi trường ảo trên terminal (Hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
 > pip install virtualenv <br>
-> virtual + tên môi trường ảo <br>
+> virtual + [`tên môi trường ảo`] <br>
 > env\Scripts\activate.bat <br> <br>
 - Bước 5 : open folder project bằng visual studio code <br> <br>
 - Bước 6 : chạy code <br> 
