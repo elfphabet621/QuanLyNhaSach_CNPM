@@ -23,9 +23,17 @@
         </div>
       </li>
       {% if user.is_authenticated %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'list_invoice' %}">Hóa đơn</a>
-      </li>
+      
+        {% if user.person.get_group_name == 'Thủ kho' %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'book_entry' %}">Nhập sách</a>
+          </li>
+        {% elif user.person.get_group_name == 'Khách hàng' %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'list_invoice' %}">Hóa đơn</a>
+          </li>
+          
+        {% endif %}
       {% endif %}
  
     </ul>
@@ -38,13 +46,14 @@
       <ul class="navbar-nav">
         {% if user.is_authenticated %}
         <li class="nav-item">
-            <a class="btn" style="background-color: #FFBA81; border-radius: 40px;" href="/customer_info/">{{grp}} {{request.user}}</a>
+          <a class="btn" style="background-color: #FFBA81; border-radius: 40px;" href="/customer_info/">{{request.user.person.get_group_name}} {{request.user}}</a>
         </li>
-        <a href="{% url 'cart' %}">
-          <img id="cart-icon" src="{% static 'images/cart.png' %}" alt="cart-icon">
-        </a>
-        <p id="cart-total">{{cartItems}}</p>
-        
+          {% if user.person.get_group_name == 'Khách hàng' %}
+          <a href="{% url 'cart' %}">
+            <img id="cart-icon" src="{% static 'images/cart.png' %}" alt="cart-icon">
+          </a>
+          <p id="cart-total">{{cartItems}}</p>
+          {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Đăng xuất</a>
         </li>
