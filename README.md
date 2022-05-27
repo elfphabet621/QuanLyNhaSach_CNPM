@@ -27,17 +27,13 @@ Xây dựng một hệ thống quản lý thuận tiện cho nhà sách trên n�
 ## Môi trường thực thi (phiên bản hệ điều hành, SDK, Dev Tools, cơ sở dữ liệu, etc.)
 Framework: Django <br>
 Ngôn ngữ lập trình : python3
-Chạy trên hầu hết mọi máy tính có thể chạy ngôn ngữ lập trình Python 3: <br>
-- Windows : Từ window 8 trở đi, bản python 3.9.13(mới nhất) ko thể chạy được trên win 7 
-- macOS : 64bit
-- Linux / Unix 
-- Solaris <br>
+Hệ điều hành: hầu hết mọi máy tính có thể chạy ngôn ngữ lập trình Python 3: Windows (Từ window 8 trở đi), bản python 3.9.13(mới nhất) ko thể chạy được trên win 7, macOS(64bit), Linux / Unix, Solaris <br>
 Cơ sở dữ liệu : sqlite3
 
 ---
 ## Hướng dẫn cấu hình project chạy local PC. <br>
 - Bước 1 : clone project django về máy <br>
-> git clone {link project} ''' <br> <br> 
+> git clone {link project} <br> <br> 
 - Bước 2 : Mở visual studio code <br> <br>
 - Bước 3 : download django bằng terminal <br>
 > pip install django <br> <br>
