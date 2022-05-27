@@ -37,20 +37,20 @@ Cơ sở dữ liệu : sqlite3
 ---
 ## Hướng dẫn cấu hình project chạy local PC. <br>
 - Bước 1 : clone project django về máy <br>
-VD : git clone {link project} <br> <br>
+> git clone {link project} ''' <br> <br> 
 - Bước 2 : Mở visual studio code <br> <br>
 - Bước 3 : download django bằng terminal <br>
-pip install django <br> <br>
+> pip install django <br> <br>
 - Bước 4 : download và bật môi trường ảo trên terminal (Hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
-code > pip install virtualenv <br>
-code > virtual + tên môi trường ảo <br>
-code > env\Scripts\activate.bat <br> <br>
+> pip install virtualenv <br>
+> virtual + tên môi trường ảo <br>
+> env\Scripts\activate.bat <br> <br>
 - Bước 5 : open folder project bằng visual studio code <br> <br>
 - Bước 6 : chạy code <br> 
-code > python manage.py runserver <br>
+> python manage.py runserver <br>
 Nếu bị lỗi thì thử migrate trước <br>
-code > python manage.py makemigrations <br>
-code > python manage.py migrate <br>
+> python manage.py makemigrations <br>
+> python manage.py migrate <br>
 
 ---
 ## Hướng dẫn deploy project lên Heroku.
