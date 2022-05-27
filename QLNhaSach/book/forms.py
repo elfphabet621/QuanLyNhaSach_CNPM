@@ -17,4 +17,4 @@ class CustomerInfo(ModelForm):
 class InvoiceForm(ModelForm):
     class Meta:
         model = HoaDon
-        fields = ['id_HD']
+        fields = ['id_HD', 'ngay_lap_HD']

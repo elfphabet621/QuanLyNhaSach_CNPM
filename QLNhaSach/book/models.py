@@ -95,7 +95,7 @@ class HoaDon(models.Model):
         # if self.nguoi_lap_HD.chuc_vu != 'nhân viên':
         #     raise ValidationError('người lập hóa đơn phải là nhân viên!')
         # constraint: chỉ nợ tối đa 20.000d
-        if self.tong_tien - self.da_tra > 20000:
+        if self.tong_tien is not None and self.da_tra is not None and self.tong_tien - self.da_tra > 20000:
             raise ValidationError('khách hàng chỉ được phép nợ tối đa 20.000d')
 
     @property 
