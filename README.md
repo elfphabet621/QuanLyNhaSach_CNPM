@@ -25,10 +25,10 @@ Xây dựng một hệ thống quản lý thuận tiện cho nhà sách trên n�
 
 ---
 ## Môi trường thực thi (phiên bản hệ điều hành, SDK, Dev Tools, cơ sở dữ liệu, etc.)
-Framework: Django <br>
-Ngôn ngữ lập trình : python3
-Hệ điều hành: hầu hết mọi máy tính có thể chạy ngôn ngữ lập trình Python 3: Windows (Từ window 8 trở đi), bản python 3.9.13(mới nhất) ko thể chạy được trên win 7, macOS(64bit), Linux / Unix, Solaris <br>
-Cơ sở dữ liệu : sqlite3
+- Framework: Django <br>
+- Ngôn ngữ lập trình : python3
+- Hệ điều hành: hầu hết mọi máy tính có thể chạy ngôn ngữ lập trình Python 3: Windows (Từ window 8 trở đi), bản python 3.9.13(mới nhất) ko thể chạy được trên win 7, macOS(64bit), Linux / Unix, Solaris <br>
+- Cơ sở dữ liệu : sqlite3
 
 ---
 ## Hướng dẫn cấu hình project chạy local PC. <br>
@@ -39,14 +39,13 @@ Cơ sở dữ liệu : sqlite3
 > pip install django <br> <br>
 - Bước 4 : download và bật môi trường ảo trên terminal (Hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
 > pip install virtualenv <br>
-> virtual + [`tên môi trường ảo`] <br>
-> env\Scripts\activate.bat <br> <br>
+> virtual + tên môi trường ảo muốn đặt <br>
+> Tên môi trường ảo đã đặt như trên\Scripts\activate.bat <br> <br>
 - Bước 5 : open folder project bằng visual studio code <br> <br>
 - Bước 6 : chạy code <br> 
-> python manage.py runserver <br>
-Nếu bị lỗi thì thử migrate trước <br>
 > python manage.py makemigrations <br>
 > python manage.py migrate <br>
+> python manage.py runserver <br>
 
 ---
 ## Hướng dẫn deploy project lên Heroku.
