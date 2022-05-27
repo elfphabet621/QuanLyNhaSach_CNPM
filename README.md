@@ -1,7 +1,6 @@
 # QuanLyNhaSach_CNPM
 ## Giới thiệu project
 ### Project quản lý nhà sách bộ môn CNPM trường đại học Khoa học tự nhiên ĐHQG TPHCM
----
 
 ## Tham khảo chéo các project liên quan : 
 - Project: [điền link]
