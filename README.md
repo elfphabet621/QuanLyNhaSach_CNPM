@@ -35,7 +35,7 @@ Xây dựng một hệ thống quản lý thuận tiện cho nhà sách trên n�
 - Bước 1 : clone project django về máy <br>
 ```console
 git clone {link project} 
-``` 
+```
 <br> 
 - Bước 2 : Mở visual studio code <br> <br>
 - Bước 3 : download django bằng terminal <br>
@@ -53,9 +53,9 @@ Tên môi trường ảo đã đặt như trên\Scripts\activate.bat
 - Bước 5 : open folder project bằng visual studio code <br> <br>
 - Bước 6 : chạy code <br> 
 ```console
-> python manage.py makemigrations 
-> python manage.py migrate 
-> python manage.py runserver 
+python manage.py makemigrations 
+python manage.py migrate 
+python manage.py runserver 
 ```
 <br>
 
