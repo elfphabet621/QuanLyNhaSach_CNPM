@@ -37,13 +37,13 @@ Xây dựng một hệ thống quản lý thuận tiện cho nhà sách trên n�
 git clone {link project} 
 ```
 <br> 
-- Bước 2 : Mở bất kỳ IDE (ở đây nhóm sử dụng VSCode) và trỏ tới thư mục `source code/QLNhaSach`
-- Bước 3 : Cài đặt django bằng terminal <br>
+- Bước 1 : Mở bất kỳ IDE (ở đây nhóm sử dụng VSCode) và trỏ tới thư mục `source code/QLNhaSach`
+- Bước 2 : Cài đặt django bằng terminal <br>
 ```console
   pip install django
 ```
-
-- Bước 4 : Cài đặt và bật môi trường ảo trên terminal (hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
+<br>
+- Bước 3 : Cài đặt và bật môi trường ảo trên terminal (hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
   - Cài môi trường ảo: <br>
   ```console
   pip install virtualenv
@@ -57,7 +57,7 @@ git clone {link project}
   \Scripts\activate.bat
   ```
   
-- Bước 5: tích hợp database và khởi động server <br> 
+- Bước 4: tích hợp database và khởi động server <br> 
 
 ```console
 python manage.py makemigrations 
