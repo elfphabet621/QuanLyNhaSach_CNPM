@@ -46,14 +46,17 @@ git clone {link project}
 <br>
 - Bước 4 : Cài đặt và bật môi trường ảo trên terminal (hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
   - Cài môi trường ảo:
+  
 ```console
 pip install virtualenv
 ```
   - Tạo môi trường ảo với tên tự đặt:
+  
 ```console
 virtual + {tên môi trường ảo}
 ```
   - Kích hoạt môi trường ảo:
+  
 ```console
 \Scripts\activate.bat
 ```
