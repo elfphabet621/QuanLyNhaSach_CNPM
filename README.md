@@ -43,25 +43,23 @@ git clone {link project}
 ```console
   pip install django
 ```
-<br>
+
 - Bước 4 : Cài đặt và bật môi trường ảo trên terminal (hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
   - Cài môi trường ảo:
   
-```console
-pip install virtualenv
-```
+  ```console
+  pip install virtualenv
+  ```
   - Tạo môi trường ảo với tên tự đặt:
   
-```console
-virtual + {tên môi trường ảo}
-```
+  ```console
+  virtual + {tên môi trường ảo}
+  ```
   - Kích hoạt môi trường ảo:
-  
-```console
-\Scripts\activate.bat
-```
 
-<br>
+  ```console
+  \Scripts\activate.bat
+  ```
 - Bước 5: tích hợp database và khởi động server <br> 
 
 ```console
