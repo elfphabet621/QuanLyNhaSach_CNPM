@@ -229,11 +229,25 @@ def book_details(request, pk):
 
 @login_required(login_url='login')
 def debt_report(request):
+    # advance: lấy thời điểm hiện tại
+    current_year, current_month = 2022, 5
+    hd_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
+                                    ngay_lap_HD__month=current_month)
+    
+    hd_prev_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
+                                    ngay_lap_HD__month=current_month-1)
+    list_debt = [prev_hd for prev_hd in hd_prev_month if prev_hd.tong_tien - prev_hd.da_tra != 0]
+    
     if request.method == "POST":
         month = request.POST.get('month')
         year = request.POST.get('year')
+        hd_month = HoaDon.objects.filter(ngay_lap_HD__year=year, 
+                                         ngay_lap_HD__month=month)
+        
+        
+        
             
-    context = {}
+    context = {'hd_month': hd_month, 'list_debt': list_debt}
     return render(request, 'book/debt_report.html', context= context)
 
 @login_required(login_url='login')

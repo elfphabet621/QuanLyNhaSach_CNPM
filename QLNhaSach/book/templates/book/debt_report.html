@@ -13,13 +13,12 @@
             <tr>
              {% csrf_token %}
 
-                <td><select name="month" value="">
-
+                <td><select name="month" value="5">
                    <option value="1">1</option>
                    <option value="2">2</option>
                    <option value="3">3</option>
                    <option value="4">4</option>
-                   <option value="5">5</option>
+                   <option value="5" selected>5</option>
                    <option value="6">6</option>
                    <option value="7">7</option>
                    <option value="8">8</option>
@@ -30,18 +29,10 @@
                 </select></td>
 
                 <td><select name="year">
-                   <option value="2010">2010</option>
-                   <option value="2011">2011</option>
-                   <option value="2012">2012</option>
-                   <option value="2013">2013</option>
-                   <option value="2014">2014</option>
-                   <option value="2015">2015</option>
-                   <option value="2016">2016</option>
-                   <option value="2017">2017</option>
-                   <option value="2018">2018</option>
                    <option value="2019">2019</option>
                    <option value="2020">2020</option>
-                   <option value="2021">2021</option>
+                   <option value="2020">2021</option>
+                   <option value="2021" selected>2022</option>
                 </select></td>
            <td>
            <input type='submit' value='search' />
@@ -65,7 +56,7 @@
     <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
         <thead class="bg-none bgc-default-tp1">
             <tr class="text-black">
-                <th>STT</th>
+                <th>ID_HoaDon</th>
                 <th>Khách hàng</th>
                 <th>Nợ đầu</th>
                 <th>Phát sinh</th>
@@ -74,19 +65,22 @@
             </tr>
         </thead>
 
-        <!-- <tbody class="text-95 text-secondary-d3">
-            {% for invoice in invoices %}
+        <tbody class="text-95 text-secondary-d3">
+            {% for debt in list_debt %}
             <tr></tr>
             <tr>
-                <td>{{invoice.id_HD}}</td>
-                <td>{{invoice.nguoi_lap_HD.ho_ten}}</td>
-                <td>{{invoice.ngay_lap_HD}}</td>
-                <td>{{invoice.phuong_thuc_thanh_toan}}</td>
-                <td>{{invoice.tong_tien}}</td>
-                <th><a class="btn btn-sm btn-info" href="{% url 'review_invoice' invoice.id_HD %}">Xem</a></th>
+                <td>{{debt.id_HD}}</td>
+                <td>{{debt.khach_hang.ho_ten}}</td>
+                
+                {% load subtract %}
+                <td>{{debt.tong_tien|subtract:debt.da_tra}}</td>
+
+                <td>phát sinh gì đấy</td>
+                <td>nợ cuối gì đấy</td>
+                {% comment %} <th><a class="btn btn-sm btn-info" href="{% url 'review_invoice' invoice.id_HD %}">Xem</a></th> {% endcomment %}
             </tr> 
             {% endfor %}
-        </tbody> -->
+            
     </table>
 </div>
 
