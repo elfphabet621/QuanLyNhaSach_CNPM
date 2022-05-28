@@ -27,7 +27,7 @@ Xây dựng một hệ thống quản lý thuận tiện cho nhà sách trên n�
 ## Môi trường thực thi (phiên bản hệ điều hành, SDK, Dev Tools, cơ sở dữ liệu, etc.)
 - Framework: Django <br>
 - Ngôn ngữ lập trình : python3
-- Hệ điều hành: hầu hết mọi máy tính có thể chạy ngôn ngữ lập trình Python 3: Windows (Từ window 8 trở đi), bản python 3.9.13(mới nhất) ko thể chạy được trên win 7, macOS(64bit), Linux / Unix, Solaris <br>
+- Hệ điều hành: hầu hết trên mọi hệ điều hành: Windows (Từ Windows 8 trở đi), Windows 7 (lưu ý: python < 3.9.13), macOS (64bit), Linux/Unix, Solaris <br>
 - Cơ sở dữ liệu : sqlite3
 
 ---
@@ -45,12 +45,19 @@ git clone {link project}
 ```
 <br>
 - Bước 4 : Cài đặt và bật môi trường ảo trên terminal (hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
-
+  - Cài môi trường ảo:
 ```console
-pip install virtualenv <br>
-virtual + [`tên môi trường ảo`] 
+pip install virtualenv
 ```
-Tên môi trường ảo đã đặt như trên \Scripts\activate.bat 
+  - Tạo môi trường ảo với tên tự đặt:
+```console
+virtual + {tên môi trường ảo}
+```
+  - Kích hoạt môi trường ảo:
+```console
+\Scripts\activate.bat
+```
+
 <br>
 - Bước 5: tích hợp database và khởi động server <br> 
 
