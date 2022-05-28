@@ -37,7 +37,7 @@ Xây dựng một hệ thống quản lý thuận tiện cho nhà sách trên n�
 git clone {link project} 
 ```
 <br> 
-- Bước 2 : Mở bất kỳ IDE (ở đây nhóm sử dụng VSCode) và trỏ tới thư mục `source code/QLNhaSach`
+- Bước 2 : Mở bất kỳ IDE (ở đây nhóm sử dụng VSCode) và trỏ tới thư mục `source code/QLNhaSach` <br>
 - Bước 3 : Cài đặt django bằng terminal <br>
 ```console
   pip install django
