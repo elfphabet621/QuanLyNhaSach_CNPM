@@ -60,6 +60,7 @@ git clone {link project}
   ```console
   \Scripts\activate.bat
   ```
+  
 - Bước 5: tích hợp database và khởi động server <br> 
 
 ```console
