@@ -31,13 +31,13 @@ Xây dựng một hệ thống quản lý thuận tiện cho nhà sách trên n�
 - Cơ sở dữ liệu : sqlite3
 
 ---
-## Hướng dẫn cấu hình project chạy local PC. <br>
+## Hướng dẫn cấu hình project chạy local PC.
 - Bước 1 : clone project django về máy <br>
 ```console
 git clone {link project} 
 ```
 <br> 
-- Bước 2 : Mở bất kỳ IDE (ở đây nhóm sử dụng VSCode) và trỏ tới thư mục `source code/QLNhaSach` <br> <br>
+- Bước 2 : Mở bất kỳ IDE (ở đây nhóm sử dụng VSCode) và trỏ tới thư mục `source code/QLNhaSach` <br> 
 - Bước 3 : Cài đặt django bằng terminal <br>
 ```console
   pip install django
@@ -48,13 +48,11 @@ git clone {link project}
   ```console
   pip install virtualenv
   ```
-  - Tạo môi trường ảo với tên tự đặt:
-  
+  - Tạo môi trường ảo với tên tự đặt: <br>
   ```console
   virtual + {tên môi trường ảo}
   ```
-  - Kích hoạt môi trường ảo:
-
+  - Kích hoạt môi trường ảo: <br>
   ```console
   \Scripts\activate.bat
   ```
