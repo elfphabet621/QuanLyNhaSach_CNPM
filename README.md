@@ -38,11 +38,11 @@ git clone {link project}
 ```
 <br> 
 - Bước 2 : Mở bất kỳ IDE (ở đây nhóm sử dụng VSCode) và trỏ tới thư mục `source code/QLNhaSach`
-- Bước 3 : Cài đặt django bằng terminal <br>
+- Bước 3 : Cài đặt django bằng terminal 
 ```console
   pip install django
 ```
-<br>
+
 - Bước 4 : Cài đặt và bật môi trường ảo trên terminal (hoặc nếu có sẵn môi trường ảo khác thì vẫn được) <br>
   - Cài môi trường ảo: <br>
   ```console
