@@ -44,6 +44,7 @@ git clone {link project}
 ```
 <br>
 
+
 - Bước 4: Cài đặt và bật môi trường ảo trên terminal (hoặc nếu có sẵn môi trường ảo khác thì vẫn được)
   - Cài môi trường ảo: <br>
   ```console
