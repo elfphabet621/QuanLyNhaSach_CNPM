@@ -229,6 +229,7 @@ def book_details(request, pk):
 
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['thủ kho'])
 def debt_report(request):
     # advance: lấy thời điểm hiện tại
     current_year, current_month = 2022, 5
