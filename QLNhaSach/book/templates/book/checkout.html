@@ -59,7 +59,16 @@
         <button id="payment" class="btn btn-warning hidden">Thanh toán</button>
     </div>
     <br>
+    <br>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form}}
 
+        <input type="submit" name="Thanh toán">
+    </form>
+    
+    <br>
+    <br>
     <div class="box-element">
         <div class="box-element">
             <a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Trở lại giỏ</a>

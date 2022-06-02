@@ -10,6 +10,8 @@ from django.http import JsonResponse
 from .decorators import unauthenticated_user, allowed_users
 import math, json
 from .filters import BookFilter
+from collections import defaultdict
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Trang chủ
 def home(request):
@@ -29,9 +31,20 @@ def home(request):
         # print('ID HOA DON: ',hd.id_HD, hd.da_tra, hd.tong_tien)
     else:
         cartItems = 0
-    sach = Sach.objects.all()
+    # sach = Sach.objects.all()
+    
+    page = request.GET.get('page', 1)
+    sach = Sach.objects.order_by('ten_sach')
+    paginator = Paginator(sach, 8)
     myFilter = BookFilter(request.GET,  queryset=sach)
     sach = myFilter.qs
+   
+    try:
+        sach = paginator.page(page)
+    except PageNotAnInteger:
+        sach = paginator.page(1)
+    except EmptyPage:
+        sach = paginator.page(paginator.num_pages)
     context = {'sach': sach, 'cartItems': cartItems, 'myFilter': myFilter}
 
     return render(request, 'book/home.html', context)
@@ -45,6 +58,31 @@ def cart(request):
 
 @login_required(login_url='login')
 def checkout(request):
+    ########### Kiệt ###########
+    # form = InvoiceForm()
+    # if request.method == "POST":
+    #     form = InvoiceForm(request.POST)
+    #     if form.is_valid():
+    #         form.save()
+        
+    # if request.user.is_authenticated:
+    #     kh = request.user.person
+    #     if len(HoaDon.objects.filter(khach_hang = kh)) == 0:
+    #         newid_hd = len(HoaDon.objects.all())+1
+    #         if int(newid_hd) <= 9:
+    #             newid_hd = '0'+ str(newid_hd)
+    #         newid_hd = 'HD_0'+ str(newid_hd)
+    #         hd = HoaDon.objects.create(khach_hang = kh, id_HD=newid_hd)
+    #     else:
+    #         hd = HoaDon.objects.get(khach_hang = kh)
+    #     mat_hang = hd.chitiethoadon_set.all()
+    #     cartItems = hd.get_cart_items
+    # else:
+    #     mat_hang = []
+    #     hd = {'get_cart_total': 0, 'get_cart_item': 0}
+    #     cartItems = hd.get_cart_items
+    # context = {'mat_hang': mat_hang, 'hd': hd, 'cartItems': cartItems}
+    ############ Hạ ##############
     cart_info = get_cart_info(request)
     context = {'mat_hang': cart_info['mat_hang'], 'hd': cart_info['hd'], 'cartItems':cart_info['cartItems']}
 
@@ -215,3 +253,56 @@ def book_details(request, pk):
     context = {'book': book, 'cartItems':cart_info['cartItems']}
 
     return render(request, 'book/book.html', context= context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['thủ kho'])
+def debt_report(request):
+    # advance: lấy thời điểm hiện tại
+    current_year, current_month = 2022, 5
+    hd_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
+                                    ngay_lap_HD__month=current_month)
+    
+    # nợ đầu: accumulate từ tháng current_month-1 trở về trước
+    debt_users = defaultdict(int)
+    for i in range(1, current_month):
+        hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=current_year, ngay_lap_HD__month= i)
+        for hd in hd_month_i:
+            if hd.tong_tien - hd.da_tra != 0:
+                debt_users[hd.khach_hang] += (hd.tong_tien - hd.da_tra)
+    
+    # với những khách nợ, coi thử tháng current_month có phát sinh (nợ) thêm j ko
+    incur_user = defaultdict(int)
+    for user in debt_users.keys():
+        hd_cur_month = HoaDon.objects.filter(khach_hang = user,
+                                             ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month)
+        # print('kiem tra: ', hd_cur_month[0].tong_tien)
+        try:
+            phat_sinh = hd_cur_month[0].tong_tien - hd_cur_month[0].da_tra 
+            # if hd_cur_month[0].da_tra == -1: để sửa giỏ hàng, chưa test
+            #     phat_sinh = 0
+        except:
+            phat_sinh = 0
+        incur_user[user] += phat_sinh
+        
+    # biến các debt_users thành các instance thuộc model Debt
+    list_debt = []
+    for kh, no_dau in debt_users.items():
+        debt_user = Debt(khach_hang = kh, no_dau = no_dau, phat_sinh = incur_user[kh])
+        list_debt.append(debt_user)
+    
+    if request.method == "POST":
+        month = request.POST.get('month')
+        year = request.POST.get('year')
+        hd_month = HoaDon.objects.filter(ngay_lap_HD__year=year, 
+                                         ngay_lap_HD__month=month)
+        
+    context = {'hd_month': hd_month, 'list_debt': list_debt}
+    return render(request, 'book/debt_report.html', context= context)
+
+@login_required(login_url='login')
+def inventory_report(request):
+    #book = Sach.objects.get(id=pk) # truy vấn sách có mã pk từ csdl
+    
+    context = {}
+    return render(request, 'book/inventory_report.html', context= context)

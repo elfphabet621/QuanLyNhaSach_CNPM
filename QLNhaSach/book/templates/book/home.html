@@ -19,7 +19,7 @@
 			{% if s.get_book_quantity > 0 %}
 			<div class="col-md-3 mb-4">
 				<div class="card h-100 book-card">
-					<a href="{% url 'book' s.id %}" class="img-card"><img class="mx-auto" src="{{s.imageURL}}"></a>
+					<a href="{{s.get_absolute_url}}" class="img-card"><img class="mx-auto" src="{{s.imageURL}}"></a>
 
 					<div class="card-body">
 						<div class="card-title">
@@ -28,7 +28,7 @@
 						<hr>		
 						<h5 style="float: right; color:darkred"><strong>{{s.gia_ban|floatformat:0|intcomma}} VND</strong></h5><span class="badge badge-pill badge-warning">SL: {{s.get_book_quantity}}</span>
 
-						{% if user.is_authenticated %}
+						{% if user.is_authenticated and user.person.get_debt <= 20000 %}
 							<button data-book="{{s.id}}" data-action="add" class="w-100 btn btn-outline-success add-btn update-cart">Thêm vào giỏ</button>
 						{% endif %}
 					</div>
@@ -37,4 +37,43 @@
 			{% endif %}
 		{% endfor %}
 	</div>
+
+	<hr>
+	{% if sach.has_other_pages %}
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+		  {% if sach.has_previous %}
+			<li class="page-item">
+			  <a class="page-link" href="?page={{ sach.previous_page_number }}">&laquo;</a>
+			</li>
+		  {% else %}
+			<li class="page-item disabled">
+			  <a class="page-link" href="#" tabindex="-1" aria-disabled="True">&laquo;</a>
+			</li>
+		  {% endif %}
+		  {% for i in sach.paginator.page_range %}
+			{% if sach.number == i %}
+			  <li class="page-item active" aria-current="page">
+				<span class="page-link">
+				  {{ i }}
+				  <span class="sr-only">(current)</span>
+				</span>
+			  </li>
+			{% else %}
+			  <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+			{% endif %}
+		  {% endfor %}
+		  {% if sach.has_next %}
+			<li class="page-item">
+			  <a class="page-link" href="?page={{ sach.next_page_number }}">&raquo;</a>
+			</li>
+		  {% else %}
+			<li class="page-item disabled">
+			  <a class="page-link" href="#" tabindex="-1" aria-disabled="True">&raquo;</a>
+			</li>
+		  {% endif %}
+		</ul>
+	  </nav>
+	{% endif %}
+
 {% endblock %}
