@@ -73,7 +73,7 @@
             <div class="cart-row">
                 <div style="flex:2"><img class="row-image" src="{{mh.sach.imageURL}}"></div>
                 <div style="flex:2">{{mh.sach.ten_sach}}</div>
-                <div style="flex:1">{{mh.sach.don_gia|floatformat:0|intcomma}} VND</div>
+                <div style="flex:1">{{mh.sach.gia_ban|floatformat:0|intcomma}} VND</div>
                 <div style="flex:1">{{mh.so_luong}}</div>
             </div>
             {% endfor %}
@@ -123,52 +123,36 @@
         window.location.href = "{% url 'home' %}"
     })
 
-    // function submitFormData(){
+    function submitFormData(){
 
-        // alert('Đã thanh toán')
+        // lấy thông tin từ form, ví dụ
+        shippingInfo.address = form.address.value
 
+        // url của html muốn truyền post tới, theo video đã gửi trên group
+        var url= '/process_order/'
 
-        // var userFormData = {
-        //     'name': null,
-        //     'total': total,
-        // }
+        // câu lệnh fetch
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body:JSON.stringify({'shipping': shippingInfo}) // truyền thông data muốn gửi 
+        })
 
-        // var shippingInfo = {
-        //     'address': null,
-        //     'city': null,
-        //     'province': total,
-        // }
+        .then((response) => response.json()) 
 
-        // shippingInfo.address = form.address.value
-        // shippingInfo.city = form.city.value
-        // shippingInfo.province = form.province.value
+        .then((data) => {
+            console.log('Success: ', data); // send data thành công, xong
 
-        // if(user == "AnonymousUser"){
-        //     userFormData.name = form.name.value
-        // }
+            // clear cart, có thể bị lỗi vì mình làm hơi khác
+            // cart = {}
+            // document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
 
-        // var url= '/process_order/'
-
-        // fetch(url, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'X-CSRFToken': csrftoken,
-        //     },
-        //     body:JSON.stringify({'form': userFormData, 'shipping': shippingInfo})
-        // })
-
-        // .then((response) => response.json())
-
-        // .then((data) => {
-        //     console.log('Success: ', data);
-        //     alert('Thanh toán thành công')
-
-        //     cart = {}
-        //     document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
-
-        //     window.location.href = "{% url 'home' %}"
-        // })
+            window.location.href = "{% url 'home' %}" // chuyển hướng về home
+        })
+    }
 </script>
 
 {% endblock %}

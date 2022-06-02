@@ -9,6 +9,7 @@ from .utils import *
 from django.http import JsonResponse
 from .decorators import unauthenticated_user, allowed_users
 import math, json
+from .filters import BookFilter
 
 # Trang chủ
 def home(request):
@@ -25,11 +26,13 @@ def home(request):
         else:  
             hd = HoaDon.objects.get(khach_hang = kh, da_tra=-1, tong_tien=0)
         cartItems = hd.get_cart_items
-        print('ID HOA DON: ',hd.id_HD, hd.da_tra, hd.tong_tien)
+        # print('ID HOA DON: ',hd.id_HD, hd.da_tra, hd.tong_tien)
     else:
         cartItems = 0
     sach = Sach.objects.all()
-    context = {'sach': sach, 'cartItems': cartItems}
+    myFilter = BookFilter(request.GET,  queryset=sach)
+    sach = myFilter.qs
+    context = {'sach': sach, 'cartItems': cartItems, 'myFilter': myFilter}
 
     return render(request, 'book/home.html', context)
 
@@ -51,23 +54,35 @@ def updateItem(request):
     data = json.loads(request.body)
     bookId = data['bookId']
     action = data['action']
-
     kh = request.user.person
     sach = Sach.objects.get(id=bookId)
     hd = HoaDon.objects.get(khach_hang = kh, da_tra=-1, tong_tien=0)
     mat_hang, created = ChiTietHoaDon.objects.get_or_create(hoa_don=hd, sach=sach)
 
     if action == 'add':
-        mat_hang.so_luong = (mat_hang.so_luong + 1)
+        if mat_hang.so_luong > mat_hang.sach.get_book_quantity:
+            pass
+        else:
+            mat_hang.so_luong = (mat_hang.so_luong + 1)
+            sach.so_luong -= 1
+        
+
     elif action == 'remove':
         mat_hang.so_luong = (mat_hang.so_luong - 1)
+        sach.so_luong += 1
 
     elif action == 'add-amount':
         mat_hang.so_luong = (mat_hang.so_luong + int(data['quantity']))
+        sach.so_luong -= int(data['quantity'])
 
     mat_hang.save()
+    sach.save()
 
-    if action == 'clear' or mat_hang.so_luong <= 0:
+    if action == 'clear':
+        sach.so_luong += mat_hang.so_luong
+        sach.save()
+        mat_hang.delete()
+    if mat_hang.so_luong <= 0:
         mat_hang.delete()
 
     return JsonResponse('Item was added', safe=False)

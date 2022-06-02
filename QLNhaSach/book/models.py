@@ -37,6 +37,7 @@ class Person(models.Model):
 
         return query_set
 
+
 # class TheLoai(models.Model):
     
 class Sach(models.Model):
@@ -74,6 +75,10 @@ class Sach(models.Model):
         except:
             url = ''
         return url
+
+    @property
+    def get_book_quantity(self):
+        return self.so_luong-20
         
     class Meta: # vì django ko cho tạo PK 2 thuộc tính nên làm cách này
         unique_together = ('id', 'ngay_nhap',)
@@ -138,7 +143,7 @@ class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
     #     # constraint: sách sau khi bán vẫn còn ít nhất 20 cuốn trong kho Sach   
     @property
     def get_total(self):
-        total = self.sach.don_gia * self.so_luong
+        total = self.sach.gia_ban * self.so_luong
         return total
 
     class Meta:

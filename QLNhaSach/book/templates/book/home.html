@@ -3,26 +3,38 @@
 {% load humanize %}
 {% block title %}Trang chủ{% endblock %}
 
+
 {% block content %}
-    <div class="row">
+	<div class="row">
+		<div class="col-md-6 mx-auto">
+			<form class="form-inline my-2 my-lg-0 mb-4 " method="get">
+				{{myFilter.form}}
+				<button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+			</form>
+		</div>
+	</div>
+	<hr>
+    <div class="row mt-4">
 		{% for s in sach %}
-        <div class="col-md-3 mb-4">
-			<div class="card h-100 book-card">
-				<a href="{% url 'book' s.id %}" class="img-card"><img class="mx-auto" src="{{s.imageURL}}"></a>
+			{% if s.get_book_quantity > 0 %}
+			<div class="col-md-3 mb-4">
+				<div class="card h-100 book-card">
+					<a href="{% url 'book' s.id %}" class="img-card"><img class="mx-auto" src="{{s.imageURL}}"></a>
 
-				<div class="card-body">
-					<div class="card-title">
-						<h6>{{s.ten_sach}}</h6>
-					</div>	
-					<hr>		
-					<h5 style="float: right; color:darkred"><strong>{{s.don_gia|floatformat:0|intcomma}} VND</strong></h5>
+					<div class="card-body">
+						<div class="card-title">
+							<h6>{{s.ten_sach}}</h6>
+						</div>	
+						<hr>		
+						<h5 style="float: right; color:darkred"><strong>{{s.gia_ban|floatformat:0|intcomma}} VND</strong></h5><span class="badge badge-pill badge-warning">SL: {{s.get_book_quantity}}</span>
 
-					{% if user.is_authenticated %}
-						<button data-book="{{s.id}}" data-action="add" class="w-100 btn btn-outline-success add-btn update-cart">Thêm vào giỏ</button>
-					{% endif %}
+						{% if user.is_authenticated %}
+							<button data-book="{{s.id}}" data-action="add" class="w-100 btn btn-outline-success add-btn update-cart">Thêm vào giỏ</button>
+						{% endif %}
+					</div>
 				</div>
 			</div>
-		</div>
+			{% endif %}
 		{% endfor %}
 	</div>
 {% endblock %}
