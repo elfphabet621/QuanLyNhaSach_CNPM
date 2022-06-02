@@ -9,6 +9,7 @@ from .utils import *
 from django.http import JsonResponse
 from .decorators import unauthenticated_user, allowed_users
 import math, json
+from collections import defaultdict
 
 # Trang chủ
 def home(request):
@@ -234,9 +235,31 @@ def debt_report(request):
     hd_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
                                     ngay_lap_HD__month=current_month)
     
-    hd_prev_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
-                                    ngay_lap_HD__month=current_month-1)
-    list_debt = [prev_hd for prev_hd in hd_prev_month if prev_hd.tong_tien - prev_hd.da_tra != 0]
+    # nợ đầu: accumulate từ tháng current_month-1 trở về trước
+    debt_users = defaultdict(int)
+    for i in range(1, current_month):
+        hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=current_year, ngay_lap_HD__month= i)
+        for hd in hd_month_i:
+            if hd.tong_tien - hd.da_tra != 0:
+                debt_users[hd.khach_hang] += (hd.tong_tien - hd.da_tra)
+    
+    # với những khách nợ, coi thử tháng current_month có phát sinh (nợ) thêm j ko
+    incur_user = defaultdict(int)
+    for user in debt_users.keys():
+        hd_cur_month = HoaDon.objects.filter(khach_hang = user,
+                                             ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month)
+        # print('kiem tra: ', hd_cur_month[0].tong_tien)
+        try:
+            phat_sinh = hd_cur_month[0].tong_tien - hd_cur_month[0].da_tra 
+        except:
+            phat_sinh = 0
+        incur_user[user] += phat_sinh
+        
+    # biến các debt_users thành các instance thuộc model Debt
+    list_debt = []
+    for kh, no_dau in debt_users.items():
+        debt_user = Debt(khach_hang = kh, no_dau = no_dau, phat_sinh = incur_user[kh])
+        list_debt.append(debt_user)
     
     if request.method == "POST":
         month = request.POST.get('month')
@@ -244,9 +267,6 @@ def debt_report(request):
         hd_month = HoaDon.objects.filter(ngay_lap_HD__year=year, 
                                          ngay_lap_HD__month=month)
         
-        
-        
-            
     context = {'hd_month': hd_month, 'list_debt': list_debt}
     return render(request, 'book/debt_report.html', context= context)
 

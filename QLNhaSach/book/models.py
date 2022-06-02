@@ -53,9 +53,6 @@ class Sach(models.Model):
     nguoi_nhap = models.ForeignKey(Person, null=True, on_delete=models.PROTECT) 
     anh_sach = models.ImageField(default="static/placeholder.png",null=True, blank=True)
     mo_ta = models.TextField("Mô tả ngắn", max_length=1000, null=True, blank=True)
-    # ton_dau = 
-    # phat_sinh = 
-    # ton_cuoi = 
     
     def __str__(self):
         return f'{self.ten_sach}_{self.ngay_nhap}'
@@ -89,11 +86,11 @@ class HoaDon(models.Model):
             )
     id_HD = models.CharField('Mã hóa đơn', max_length=100, primary_key=True, default= 'HD_', editable=True)
     ngay_lap_HD = models.DateTimeField(null=True)
-    tong_tien = models.FloatField(null=True)
+    tong_tien = models.FloatField(null=True, default=0, editable=True)
     nguoi_lap_HD = models.ForeignKey(Person, verbose_name='Nhân viên', null=True, blank=True, related_name="nhan_vien", on_delete=models.PROTECT)
     khach_hang = models.ForeignKey(Person, verbose_name='Khách hàng', null=True, blank=True, related_name="khach_hang", on_delete=models.PROTECT)
     phuong_thuc_thanh_toan = models.CharField('Phương thức thanh toán', max_length=100, null=False, choices=pttt)
-    da_tra = models.FloatField(null=True)
+    da_tra = models.FloatField(null=True, default=0, editable=True)
     
     def __str__(self):
         return self.id_HD
@@ -144,3 +141,11 @@ class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
     class Meta:
         verbose_name_plural = 'Chi tiết hóa đơn'
 
+# util model để support hàm debt_report() trong view, phải database chính thức
+class Debt(models.Model):
+    khach_hang = models.ForeignKey(Person, null=True, blank=True, on_delete=models.PROTECT)
+    no_dau = models.FloatField(null=True)
+    phat_sinh = models.FloatField(null=True)
+    
+    @property
+    def no_cuoi(self): return self.no_dau + self.phat_sinh
