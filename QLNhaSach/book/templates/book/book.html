@@ -33,6 +33,7 @@
 					<th><span class="product-price-{{book.id}}">{{book.gia_ban|floatformat:"-3g"}} VND</span></th>
 				</tr>
 			</table>
+			{% if user.person.get_debt <= 20000 %}
             <div class="input-group my-3" style="width:30%;">
                 <input type="number" value="1" min="1" max="{{book.get_book_quantity}}" class="form-control product-qty-{{book.id}}" id="productQty" />
                 <div class="input-group-append">
@@ -43,6 +44,7 @@
 
                 </div>
 			</div>
+			{% endif %}
         </div>
     </div>
     <hr />

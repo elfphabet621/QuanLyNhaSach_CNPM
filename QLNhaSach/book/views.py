@@ -33,11 +33,13 @@ def home(request):
         cartItems = 0
     # sach = Sach.objects.all()
     
-    page = request.GET.get('page', 1)
+    
     sach = Sach.objects.order_by('ten_sach')
-    paginator = Paginator(sach, 8)
     myFilter = BookFilter(request.GET,  queryset=sach)
     sach = myFilter.qs
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(sach, 12)
    
     try:
         sach = paginator.page(page)
