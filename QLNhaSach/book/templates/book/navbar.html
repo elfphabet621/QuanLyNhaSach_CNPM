@@ -59,10 +59,10 @@
           <a class="btn" style="background-color: #FFBA81; border-radius: 40px;" href="/customer_info/">{{request.user.person.get_group_name}} {{request.user}}</a>
         </li>
           {% if user.person.get_group_name == 'Khách hàng' %}
-          <a href="{% url 'cart' %}">
-            <img id="cart-icon" src="{% static 'images/cart.png' %}" alt="cart-icon">
-          </a>
-          <p id="cart-total">{{cartItems}}</p>
+            <a href="{% url 'cart' %}">
+              <img id="cart-icon" src="{% static 'images/cart.png' %}" alt="cart-icon">
+            </a>
+            <p id="cart-total">{{cartItems}}</p>
           {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Đăng xuất</a>
