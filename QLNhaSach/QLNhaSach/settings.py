@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'book.apps.BookConfig',
     'django.contrib.humanize',
+    'django_filters',
 
 ]
 

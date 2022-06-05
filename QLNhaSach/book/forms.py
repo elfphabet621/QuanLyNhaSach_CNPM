@@ -14,6 +14,10 @@ class CustomerInfo(ModelForm):
         model = Person
         fields = ['ho_ten', 'so_dien_thoai', 'email', 'profile_pic']
 
+class InvoiceForm(ModelForm):
+    class Meta:
+        model = HoaDon
+        fields = ['id_HD', 'ngay_lap_HD']
 class CreateBook(ModelForm):
     class Meta:
         model = Sach
