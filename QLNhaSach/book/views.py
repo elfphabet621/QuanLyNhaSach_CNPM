@@ -9,8 +9,10 @@ from .utils import *
 from django.http import JsonResponse
 from .decorators import unauthenticated_user, allowed_users
 import math, json
+from .filters import BookFilter
 from collections import defaultdict
 import datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Trang chủ
 def home(request):
@@ -27,11 +29,26 @@ def home(request):
         else:  
             hd = HoaDon.objects.get(khach_hang = kh, da_tra=-1, tong_tien=0)
         cartItems = hd.get_cart_items
-        print('ID HOA DON: ',hd.id_HD, hd.da_tra, hd.tong_tien)
+        # print('ID HOA DON: ',hd.id_HD, hd.da_tra, hd.tong_tien)
     else:
         cartItems = 0
-    sach = Sach.objects.all()
-    context = {'sach': sach, 'cartItems': cartItems}
+    # sach = Sach.objects.all()
+    
+    
+    sach = Sach.objects.order_by('ten_sach')
+    myFilter = BookFilter(request.GET,  queryset=sach)
+    sach = myFilter.qs
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(sach, 12)
+   
+    try:
+        sach = paginator.page(page)
+    except PageNotAnInteger:
+        sach = paginator.page(1)
+    except EmptyPage:
+        sach = paginator.page(paginator.num_pages)
+    context = {'sach': sach, 'cartItems': cartItems, 'myFilter': myFilter}
 
     return render(request, 'book/home.html', context)
 
@@ -78,23 +95,35 @@ def updateItem(request):
     data = json.loads(request.body)
     bookId = data['bookId']
     action = data['action']
-
     kh = request.user.person
     sach = Sach.objects.get(id=bookId)
     hd = HoaDon.objects.get(khach_hang = kh, da_tra=-1, tong_tien=0)
     mat_hang, created = ChiTietHoaDon.objects.get_or_create(hoa_don=hd, sach=sach)
 
     if action == 'add':
-        mat_hang.so_luong = (mat_hang.so_luong + 1)
+        if mat_hang.so_luong > mat_hang.sach.get_book_quantity:
+            pass
+        else:
+            mat_hang.so_luong = (mat_hang.so_luong + 1)
+            sach.so_luong -= 1
+        
+
     elif action == 'remove':
         mat_hang.so_luong = (mat_hang.so_luong - 1)
+        sach.so_luong += 1
 
     elif action == 'add-amount':
         mat_hang.so_luong = (mat_hang.so_luong + int(data['quantity']))
+        sach.so_luong -= int(data['quantity'])
 
     mat_hang.save()
+    sach.save()
 
-    if action == 'clear' or mat_hang.so_luong <= 0:
+    if action == 'clear':
+        sach.so_luong += mat_hang.so_luong
+        sach.save()
+        mat_hang.delete()
+    if mat_hang.so_luong <= 0:
         mat_hang.delete()
 
     return JsonResponse('Item was added', safe=False)
@@ -230,6 +259,7 @@ def book_details(request, pk):
 
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['thủ kho'])
 def debt_report(request):
     current_year, current_month = 2022, 1
     hd_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 

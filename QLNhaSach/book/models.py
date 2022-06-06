@@ -37,6 +37,19 @@ class Person(models.Model):
 
         return query_set
 
+    @property
+    def get_debt(self):
+        if 'kh' in self.id: 
+            s = 0
+            cac_hd = HoaDon.objects.filter(khach_hang=self)
+            # print(cac_hd)
+            for hd in cac_hd:
+                if hd.tong_tien != hd.da_tra and hd.da_tra != -1:
+                    s += hd.tong_tien - hd.da_tra
+                    print(hd, s)
+            return s
+
+
 # class TheLoai(models.Model):
     
 class Sach(models.Model):
@@ -71,6 +84,10 @@ class Sach(models.Model):
         except:
             url = ''
         return url
+
+    @property
+    def get_book_quantity(self):
+        return self.so_luong-20
         
     class Meta: # vì django ko cho tạo PK 2 thuộc tính nên làm cách này
         unique_together = ('id', 'ngay_nhap',)
@@ -127,7 +144,7 @@ class ChiTietHoaDon(models.Model): # 1 lần nhập 1 sách
 
     @property
     def get_total(self):
-        total = self.sach.don_gia * self.so_luong
+        total = self.sach.gia_ban * self.so_luong
         return total
 
     class Meta:
