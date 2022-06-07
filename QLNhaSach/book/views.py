@@ -200,6 +200,7 @@ def logoutUser(request):
 @allowed_users(allowed_roles=['thủ kho'])
 def book_entry(request):
     tk = request.user.person
+    sach = Sach.objects.all()
     form = CreateBook()
     if request.method == "POST":
         form = CreateBook(request.POST, request.FILES)
@@ -207,7 +208,7 @@ def book_entry(request):
         if form.is_valid():
             form.save()
 
-    context = {'form': form}
+    context = {'form': form, 'sach': sach}
     return render(request, 'book/book_entry.html', context)
 
 # Tạo một cuốn sách mới

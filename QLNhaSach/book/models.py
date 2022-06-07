@@ -89,6 +89,10 @@ class Sach(models.Model):
     @property
     def get_book_quantity(self):
         return self.so_luong-20
+    
+    @property
+    def get_name(self):
+        return self.ten_sach
         
     class Meta: # vì django ko cho tạo PK 2 thuộc tính nên làm cách này
         unique_together = ('id', 'ngay_nhap',)
