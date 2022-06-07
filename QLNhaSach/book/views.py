@@ -316,3 +316,9 @@ def inventory_report(request):
     
     context = {}
     return render(request, 'book/inventory_report.html', context= context)
+
+@allowed_users(allowed_roles=['khách hàng'])
+def pay_debt(request):
+    context = {}
+    return render(request, 'book/pay_debt.html', context= context)
+
