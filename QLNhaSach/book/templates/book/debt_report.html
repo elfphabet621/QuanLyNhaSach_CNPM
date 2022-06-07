@@ -13,43 +13,37 @@
             <tr>
              {% csrf_token %}
 
-                <td><select name="month" value="5">
-                   <option value="1">1</option>
+                <td><select name="month">
+                   {% comment %} <option value="1">1</option>
                    <option value="2">2</option>
                    <option value="3">3</option>
                    <option value="4">4</option>
-                   <option value="5" selected>5</option>
+                   <option value="5">5</option>
                    <option value="6">6</option>
                    <option value="7">7</option>
                    <option value="8">8</option>
                    <option value="9">9</option>
                    <option value="10">10</option>
                    <option value="11">11</option>
-                   <option value="12">12</option>
+                   <option value="12">12</option> {% endcomment %}
+
+                   {% for m in months %}
+                        <option value="{{m}}" {% if m == current_month %}selected{% endif %}>{{m}}</option>
+                   {% endfor %}
+
                 </select></td>
 
                 <td><select name="year">
                    <option value="2019">2019</option>
                    <option value="2020">2020</option>
-                   <option value="2020">2021</option>
-                   <option value="2021" selected>2022</option>
+                   <option value="2021">2021</option>
+                   <option value="2022" selected>2022</option>
                 </select></td>
            <td>
            <input type='submit' value='search' />
            </td>
            </tr>
            </form>
-        {% comment %} <div class="page-tools">
-            <div class="action-buttons">
-                <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="Print">
-                    <i class=""></i>
-                </a>
-                <a class="btn bg-white btn-light mx-1px text-95" href="#" data-title="PDF">
-                    <i class=""></i>
-                </a>
-            </div>
-        </div>
-    </div> {% endcomment %}
 
 
 <div class="table-responsive">
