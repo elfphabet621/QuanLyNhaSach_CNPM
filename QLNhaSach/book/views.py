@@ -291,7 +291,7 @@ def debt_report(request):
         incur_user = defaultdict(int)
         for user in debt_users.keys():
             hd_cur_month = HoaDon.objects.filter(khach_hang = user,
-                                                ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month)
+                                                ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month, da_tra__gt=-1)
             # print('kiem tra: ', hd_cur_month[0].tong_tien)
             try:
                 phat_sinh = hd_cur_month[0].tong_tien - hd_cur_month[0].da_tra 
@@ -319,6 +319,25 @@ def inventory_report(request):
 
 @allowed_users(allowed_roles=['khách hàng'])
 def pay_debt(request):
-    context = {}
+    kh = Person.objects.filter(user = request.user)
+    debt_bills = HoaDon.objects.filter(khach_hang = kh[0], da_tra__gt=-1)
+    
+    hd_no = []
+    is_debt = False
+    for bill in debt_bills:
+        if bill.tong_tien - bill.da_tra != 0: 
+            hd_no.append(bill)
+    if hd_no:
+        is_debt = True 
+    
+    if request.method == "POST":
+        bill_id = request.POST.get('which')
+        which_bill = HoaDon.objects.get(id_HD=bill_id)
+        which_bill.da_tra = which_bill.tong_tien
+        which_bill.save()
+        
+        return redirect('/pay_debt')
+        
+    context = {'hd_no': hd_no, 'is_debt': is_debt}
     return render(request, 'book/pay_debt.html', context= context)
 
