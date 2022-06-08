@@ -265,7 +265,7 @@ def debt_report(request):
                                         ngay_lap_HD__month=current_month,
                                         da_tra__gt=-1)
     list_debt = []
-    
+    is_empty = True
     if request.method == "POST":
         current_month = int(request.POST.get('month'))
         current_year = int(request.POST.get('year'))
@@ -287,19 +287,19 @@ def debt_report(request):
         for user in debt_users.keys():
             hd_cur_month = HoaDon.objects.filter(khach_hang = user,
                                                 ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month, da_tra__gt=-1)
-            try:
-                phat_sinh = hd_cur_month[0].tong_tien - hd_cur_month[0].da_tra 
-            except:
-                phat_sinh = 0
-            incur_user[user] += phat_sinh
+            for hd in hd_cur_month: # 1 kh có thể có nhiều hd
+                phat_sinh = hd.tong_tien - hd.da_tra 
+                incur_user[user] += phat_sinh
             
         # biến các debt_users thành các instance thuộc model Debt
         list_debt = []
         for kh, no_dau in debt_users.items():
             debt_user = Debt(khach_hang = kh, no_dau = no_dau, phat_sinh = incur_user[kh])
             list_debt.append(debt_user)
+            
+        if list_debt: is_empty = False
     
-    context = {'hd_month': hd_month, 'list_debt': list_debt,
+    context = {'hd_month': hd_month, 'list_debt': list_debt, 'is_empty': is_empty,
                 'months': [i for i in range(1,13)], 'current_month': current_month,
                 'years': [2019, 2020, 2021, 2022], 'current_year': current_year}
     
