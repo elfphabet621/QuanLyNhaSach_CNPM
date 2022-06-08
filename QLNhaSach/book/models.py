@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
+from django.utils import timezone
 
 # Create your models here.
 class Person(models.Model):
@@ -56,7 +57,7 @@ class Sach(models.Model):
     # id = models.CharField(max_length=100, primary_key=True) # PK: id và ngay_nhap
     ten_sach = models.CharField(max_length=100, null=True)
     # ngay_nhap = models.DateField(auto_now_add=True)
-    ngay_nhap = models.DateField(null=True, editable=True)
+    ngay_nhap = models.DateField(null=True, default=timezone.now)
     so_luong = models.PositiveIntegerField(null=True)
     the_loai = models.CharField(max_length=100, null=True)
     tac_gia = models.CharField(max_length=100, null=True)

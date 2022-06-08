@@ -7,7 +7,7 @@ from django.contrib import messages
 from .forms import *
 from .models import *
 from .utils import *
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from .decorators import unauthenticated_user, allowed_users
 import math, json
 from .filters import BookFilter
@@ -202,18 +202,17 @@ def logoutUser(request):
 def book_entry(request):
     tk = request.user.person
     sach = Sach.objects.all()
+    
     form = CreateBook()
     if request.method == "POST":
-        print(request.POST)
-        form = forms.CreateBook(request.POST, request.FILES)
-        # form.nguoi_nhap = request.user.person
+        form = CreateBook(request.POST, request.FILES)
+        form.nguoi_nhap = request.user.person
         if form.is_valid():
             for s in sach :
-                print(form.ten_sach)
                 if s.ten_sach == form.cleaned_data.get('ten_sach') :
-                    if  form.cleaned_data.get('so_luong') <= 150 | s.so_luong >= 300 :
-                        print(form.cleaned_data.get('so_luong'))
-                        # messages.info(request, 'Number of book add must be higher 150 and Book in inventory must have lower 300 :')
+                    if  (form.cleaned_data.get('so_luong') <= 150) | (s.so_luong >= 300) :
+                        return redirect('book_entry')
+                        messages.info(request, 'Number of book add must be higher 150 and Book in inventory must have lower 300 :')
                     else :
                         s.ten_sach = form.cleaned_data.get('ten_sach')
                         s.ngay_nhap = form.cleaned_data.get('ngay_nhap')
@@ -224,24 +223,30 @@ def book_entry(request):
                         s.nha_xuat_ban = form.cleaned_data.get('nha_xuat_ban')
                         s.nam_xuat_ban = form.cleaned_data.get('nam_xuat_ban')
                         s.mo_ta = form.cleaned_data.get('mo_ta')
-                        s.so_luong = form.cleaned_data.get('so_luong') 
-                        s.save()    
-                else :
-                    if  form.cleaned_data.get('so_luong') <= 150 :
-                        print(form.cleaned_data.get('so_luong'))
-                        # messages.info(request, 'Number of book add must be higher 150')
-                    else :
-                        form.ten_sach = form.cleaned_data.get('ten_sach')
-                        form.ngay_nhap = form.cleaned_data.get('ngay_nhap')
-                        form.the_loai = form.cleaned_data.get('the_loai') 
-                        form.tac_gia = form.cleaned_data.get('tac_gia')
-                        form.don_gia = form.cleaned_data.get('don_gia')
-                        form.gia_ban = form.cleaned_data.get('gia_ban')
-                        form.nha_xuat_ban = form.cleaned_data.get('nha_xuat_ban')
-                        form.nam_xuat_ban = form.cleaned_data.get('nam_xuat_ban')
-                        form.mo_ta = form.cleaned_data.get('mo_ta')
-                        form.so_luong = form.cleaned_data.get('so_luong')
-                        form.save()
+                        s.so_luong += form.cleaned_data.get('so_luong')
+                        s.save()
+                        return redirect('book_entry')
+
+            if  form.cleaned_data.get('so_luong') <= 150 :
+                return redirect('book_entry')
+                messages.info(request, 'Number of book add must be higher 150')
+            else :
+                form.ten_sach = form.cleaned_data.get('ten_sach')
+                form.ngay_nhap = form.cleaned_data.get('ngay_nhap')
+                form.the_loai = form.cleaned_data.get('the_loai') 
+                form.tac_gia = form.cleaned_data.get('tac_gia')
+                form.don_gia = form.cleaned_data.get('don_gia')
+                form.gia_ban = form.cleaned_data.get('gia_ban')
+                form.nha_xuat_ban = form.cleaned_data.get('nha_xuat_ban')
+                form.nam_xuat_ban = form.cleaned_data.get('nam_xuat_ban')
+                form.mo_ta = form.cleaned_data.get('mo_ta')
+                form.so_luong = form.cleaned_data.get('so_luong')
+                form.save()
+                messages.info(request, 'Success')
+                return redirect('book_entry')
+        else:
+            return redirect('book_entry')
+            messages.info(request, 'form not valid')
 
     context = {'form': form, 'sach': sach}
     return render(request, 'book/book_entry.html', context)
