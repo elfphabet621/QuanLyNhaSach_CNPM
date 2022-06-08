@@ -29,10 +29,8 @@ def home(request):
         else:  
             hd = HoaDon.objects.get(khach_hang = kh, da_tra=-1, tong_tien=0)
         cartItems = hd.get_cart_items
-        # print('ID HOA DON: ',hd.id_HD, hd.da_tra, hd.tong_tien)
     else:
         cartItems = 0
-    # sach = Sach.objects.all()
     
     
     sach = Sach.objects.order_by('ten_sach')
@@ -273,7 +271,6 @@ def debt_report(request):
         hd_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
                                         ngay_lap_HD__month=current_month,
                                         da_tra__gt=-1)
-        print(current_month, current_year)
         
         # nợ đầu: accumulate từ tháng current_month-1 trở về trước
         debt_users = defaultdict(int)
@@ -281,18 +278,14 @@ def debt_report(request):
             hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=current_year, ngay_lap_HD__month= i, da_tra__gt=-1)
             
             for hd in hd_month_i:
-                print(hd)
                 if hd.tong_tien - hd.da_tra != 0:
                     debt_users[hd.khach_hang] += (hd.tong_tien - hd.da_tra)
-                    # print(hd)
-        print(debt_users)
         
         # với những khách nợ, coi thử tháng current_month có phát sinh (nợ) thêm j ko
         incur_user = defaultdict(int)
         for user in debt_users.keys():
             hd_cur_month = HoaDon.objects.filter(khach_hang = user,
                                                 ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month, da_tra__gt=-1)
-            # print('kiem tra: ', hd_cur_month[0].tong_tien)
             try:
                 phat_sinh = hd_cur_month[0].tong_tien - hd_cur_month[0].da_tra 
             except:
@@ -306,7 +299,8 @@ def debt_report(request):
             list_debt.append(debt_user)
     
     context = {'hd_month': hd_month, 'list_debt': list_debt,
-                'months': [i for i in range(1,13)], 'current_month': current_month}
+                'months': [i for i in range(1,13)], 'current_month': current_month,
+                'years': [2019, 2020, 2021, 2022], 'current_year': current_year}
     
     return render(request, 'book/debt_report.html', context= context)
 

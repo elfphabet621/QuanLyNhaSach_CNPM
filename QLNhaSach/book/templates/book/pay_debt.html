@@ -31,7 +31,7 @@
                     
                     <form method="POST">
                         {% csrf_token %}
-                        <th><button name="which" type="submit" value="{{ hd.id_HD }}">Thanh toán</button></th>
+                        <th><button class="btn btn-sm btn-info" name="which" type="submit" value="{{ hd.id_HD }}">Thanh toán</button></th>
                 </tr> 
                 {% endfor %}
                 

@@ -17,14 +17,12 @@
                    {% for m in months %}
                         <option value="{{m}}" {% if m == current_month %}selected{% endif %}>{{m}}</option>
                    {% endfor %}
-
                 </select></td>
 
                 <td><select name="year">
-                   <option value="2019">2019</option>
-                   <option value="2020">2020</option>
-                   <option value="2021">2021</option>
-                   <option value="2022" selected>2022</option>
+                    {% for y in years %}
+                        <option value="{{y}}" {% if y == current_year %}selected{% endif %}>{{y}}</option>
+                    {% endfor %}
                 </select></td>
            <td>
            <input type='submit' value='search' />
