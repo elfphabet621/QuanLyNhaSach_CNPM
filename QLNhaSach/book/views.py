@@ -198,11 +198,12 @@ def logoutUser(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['thủ kho'])
 def book_entry(request):
-    tk = request.user.person
     form = CreateBook()
+    
     if request.method == "POST":
         form = CreateBook(request.POST, request.FILES)
-        form.nguoi_nhap = request.user.person
+        # form.nguoi_nhap = request.user.person
+        
         if form.is_valid():
             form.save()
 

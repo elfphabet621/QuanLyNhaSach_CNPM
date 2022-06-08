@@ -21,5 +21,5 @@ class InvoiceForm(ModelForm):
 class CreateBook(ModelForm):
     class Meta:
         model = Sach
-        fields = ['ten_sach', 'ngay_nhap', 'so_luong', 'the_loai', 'tac_gia', 'don_gia', 'gia_ban', 'nha_xuat_ban', 'nam_xuat_ban', 'anh_sach', 'mo_ta']
+        fields = ['ten_sach', 'ngay_nhap', 'so_luong', 'the_loai', 'tac_gia', 'don_gia', 'gia_ban', 'nha_xuat_ban', 'nam_xuat_ban', 'mo_ta', 'anh_sach']
 
