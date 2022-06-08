@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import CreateUserForm
+from .forms import CreateBook
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -203,10 +204,44 @@ def book_entry(request):
     sach = Sach.objects.all()
     form = CreateBook()
     if request.method == "POST":
-        form = CreateBook(request.POST, request.FILES)
-        form.nguoi_nhap = request.user.person
+        print(request.POST)
+        form = forms.CreateBook(request.POST, request.FILES)
+        # form.nguoi_nhap = request.user.person
         if form.is_valid():
-            form.save()
+            for s in sach :
+                print(form.ten_sach)
+                if s.ten_sach == form.cleaned_data.get('ten_sach') :
+                    if  form.cleaned_data.get('so_luong') <= 150 | s.so_luong >= 300 :
+                        print(form.cleaned_data.get('so_luong'))
+                        # messages.info(request, 'Number of book add must be higher 150 and Book in inventory must have lower 300 :')
+                    else :
+                        s.ten_sach = form.cleaned_data.get('ten_sach')
+                        s.ngay_nhap = form.cleaned_data.get('ngay_nhap')
+                        s.the_loai = form.cleaned_data.get('the_loai') 
+                        s.tac_gia = form.cleaned_data.get('tac_gia')
+                        s.don_gia = form.cleaned_data.get('don_gia')
+                        s.gia_ban = form.cleaned_data.get('gia_ban')
+                        s.nha_xuat_ban = form.cleaned_data.get('nha_xuat_ban')
+                        s.nam_xuat_ban = form.cleaned_data.get('nam_xuat_ban')
+                        s.mo_ta = form.cleaned_data.get('mo_ta')
+                        s.so_luong = form.cleaned_data.get('so_luong') 
+                        s.save()    
+                else :
+                    if  form.cleaned_data.get('so_luong') <= 150 :
+                        print(form.cleaned_data.get('so_luong'))
+                        # messages.info(request, 'Number of book add must be higher 150')
+                    else :
+                        form.ten_sach = form.cleaned_data.get('ten_sach')
+                        form.ngay_nhap = form.cleaned_data.get('ngay_nhap')
+                        form.the_loai = form.cleaned_data.get('the_loai') 
+                        form.tac_gia = form.cleaned_data.get('tac_gia')
+                        form.don_gia = form.cleaned_data.get('don_gia')
+                        form.gia_ban = form.cleaned_data.get('gia_ban')
+                        form.nha_xuat_ban = form.cleaned_data.get('nha_xuat_ban')
+                        form.nam_xuat_ban = form.cleaned_data.get('nam_xuat_ban')
+                        form.mo_ta = form.cleaned_data.get('mo_ta')
+                        form.so_luong = form.cleaned_data.get('so_luong')
+                        form.save()
 
     context = {'form': form, 'sach': sach}
     return render(request, 'book/book_entry.html', context)
