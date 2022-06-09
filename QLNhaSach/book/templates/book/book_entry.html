@@ -361,6 +361,7 @@
         }
       }
     });
+<<<<<<< HEAD
     function addActive(x) {
       /*a function to classify an item as "active":*/
       if (!x) return false;
@@ -414,6 +415,70 @@
       console.log('{{s.anh_sach}}')
     }
     {% endfor %}
+=======
+  } );
+  </script>
+
+<div class="d-flex justify-content-center form_container">
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div style="flex:2"><strong>Tên sách</strong></div>
+        {{form.ten_sach}}
+           
+        {% comment %}
+        <div style="flex:2"><strong>Ngày nhập</strong></div>
+        {{form.ngay_nhap}}
+        <br>  
+
+        <div style="flex:2"><strong>Số lượng</strong></div>
+        {{form.so_luong}}
+        <br>
+
+        <div style="flex:2"><strong>Thể loại</strong></div>
+        {{form.the_loai}}
+        <br>    
+
+        <div style="flex:2"><strong>Tác giả</strong></div>
+        {{form.tac_gia}}
+        <br>    
+
+        <div style="flex:2"><strong>Đơn giá</strong></div>
+        {{form.don_gia}}
+        <br>    
+
+        <div style="flex:2"><strong>Giá bán</strong></div>
+        {{form.gia_ban}}
+        <br>    
+        
+        <div style="flex:2"><strong>Nhà xuất bản</strong></div>
+        {{form.nha_xuat_ban}}
+        <br>    
+
+        <div style="flex:2"><strong>Năm xuất bản</strong></div>
+        {{form.nam_xuat_ban}}
+        <br>      
+
+        <div style="flex:2"><strong>Mô tả</strong></div>
+        {{form.mo_ta}}
+        <br> 
+
+        <div style="flex:2"><strong>Ảnh sách</strong></div>
+        {{form.anh_sach}}
+<<<<<<< HEAD
+        <br>     {% endcomment %}
+=======
+>>>>>>> 5e888d22b325df42a56fef2ddcfde41e1452029f
+        <br>
+        <br>
+        <input type="submit" name="Submit">
+    </form>
+    <div class="ui-widget">
+        <label for="tags">Tags: </label>
+        <input id="tags" autocomplete="nope">
+      </div>
+    <br>     
+</div>
+>>>>>>> main
 
   };
   input.addEventListener('mousemove', onChange, false);

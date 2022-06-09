@@ -1,9 +1,4 @@
 from collections import defaultdict
 
-d = defaultdict(int)
-for i in range(10):
-    d[i] += 1
-
-for k in d.keys():
-    print(k)
-    
+d = [i for i in range(1,13)]
+print(d)
