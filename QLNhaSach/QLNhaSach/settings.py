@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'book.apps.BookConfig',
     'django.contrib.humanize',
     'django_filters',
-
+    
 ]
 
 MIDDLEWARE = [
