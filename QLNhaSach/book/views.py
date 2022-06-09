@@ -384,7 +384,7 @@ def inventory_report(request):
             # Lọc ra số sách bán từ tháng được chọn đến tháng hiện tại. 
             hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=select_year, ngay_lap_HD__month= i)
             for hd in hd_month_i:
-                cthds =  hd_month_i.objects.filter(hoadon=hd)
+                cthds =  ChiTietHoaDon.objects.filter(hoa_don=hd)
                 for cthd in cthds:
                     sell_book[cthd.sach.ten_sach] += cthd.so_luong
 
@@ -409,7 +409,7 @@ def inventory_report(request):
         entry_book_month = defaultdict(int)
         hd_month = HoaDon.objects.filter(ngay_lap_HD__year=select_year, ngay_lap_HD__month= select_month)
         for hd in hd_month:
-            cthds = hd_month.object.filter(hoadon=hd)
+            cthds = ChiTietHoaDon.objects.filter(hoa_don=hd)
             for cthd in cthds:
                 sell_book_month[cthd.sach.ten_sach] += cthd.so_luong
 
@@ -421,7 +421,7 @@ def inventory_report(request):
         phatsinh_1_month = {k: phatsinh_month.get(k,0) + phatsinh_month_book.get(k,0) for k in set(phatsinh_month) | set(phatsinh_month_book)}
 
         
-        for book in book_list():
+        for book in book_list:
             book_inventory = Inventory(ten_sach= book.ten_sach, ton_dau = book.so_luong, phat_sinh = phatsinh_1_month[book.ten_sach])
             inventory.append(book_inventory)
        
