@@ -138,7 +138,8 @@ def customer_info(request):
             print(form.cleaned_data['profile_pic'])
             form.save()
     
-    context = {'form': form}
+    cart_info = get_cart_info(request)
+    context = {'form': form, 'cartItems':cart_info['cartItems']}
     return render(request, 'book/customer_info.html', context)
 
 @login_required(login_url='login')
@@ -146,9 +147,10 @@ def listInvoice(request):
     user = request.user.person
     
     invoices = HoaDon.objects.filter(khach_hang__id=user.id)
-    print(invoices)
+    # print(invoices)
 
-    context = {'invoices': invoices}
+    cart_info = get_cart_info(request)
+    context = {'invoices': invoices, 'cartItems':cart_info['cartItems']}
     return render(request, 'book/list_invoice.html', context)
 
 @login_required(login_url='login')
@@ -156,7 +158,8 @@ def reviewInvoice(request, pk):
     invoice = HoaDon.objects.get(id_HD=pk)
     details = ChiTietHoaDon.objects.filter(hoa_don=invoice)
     remain = invoice.tong_tien - invoice.da_tra
-    context = {'invoice': invoice, 'remain': remain, 'details': details}
+    cart_info = get_cart_info(request)
+    context = {'invoice': invoice, 'remain': remain, 'details': details,  'cartItems':cart_info['cartItems']}
     return render(request, 'book/invoice.html', context)
 
 @unauthenticated_user
