@@ -349,10 +349,33 @@ def debt_report(request):
     return render(request, 'book/debt_report.html', context= context)
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['thủ kho'])
 def inventory_report(request):
-    #book = Sach.objects.get(id=pk) # truy vấn sách có mã pk từ csdl
-    
-    context = {}
+    # Sách sẽ bắt đầu bán vào tháng 1,2022 => Tồn đầu ở tháng 1 là list tất cả các sách và số lượng
+    # Phát sinh là số sách bán trong tháng, (nhập trong tháng)
+    # Tồn cuối: Tồn đầu + Phát sinh 
+    # Tồn đầu tháng sau bằng tồn cuối tháng trước.
+
+
+    book_list = Sach.objects.all()
+    current_year, current_month = 2022, 1
+    hd_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
+                                        ngay_lap_HD__month=current_month)
+
+    #mat_hang, created = ChiTietHoaDon.objects.get_or_create(hoa_don=hd_month, sach=sach)
+    if request.method == "POST":
+        current_month = int(request.POST.get('month'))
+        current_year = int(request.POST.get('year'))
+
+        remain_book = defaultdict(int)
+        for i in range(1, current_month):
+            hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=current_year, ngay_lap_HD__month= i)
+            for hd in hd_month_i:
+                cthd =  hd_month_i.objects.filter(hoadon=hd)
+                for book in book_list():
+                    return 0
+
+    context = {'book_list':book_list}
     return render(request, 'book/inventory_report.html', context= context)
 
 @allowed_users(allowed_roles=['khách hàng'])
