@@ -212,9 +212,9 @@ def book_entry(request):
         if form.is_valid():
             for s in sach :
                 if s.ten_sach == form.cleaned_data.get('ten_sach') :
-                    if  (form.cleaned_data.get('so_luong') <= 150) | (s.so_luong >= 300) :
+                    if  (form.cleaned_data.get('so_luong') < 150) | (s.so_luong >= 300) :
+                        messages.info(request, 'Number of book add must be higher 150 and Book in inventory must have lower 300')
                         return redirect('book_entry')
-                        messages.info(request, 'Number of book add must be higher 150 and Book in inventory must have lower 300 :')
                     else :
                         s.ten_sach = form.cleaned_data.get('ten_sach')
                         s.ngay_nhap = form.cleaned_data.get('ngay_nhap')
@@ -227,11 +227,12 @@ def book_entry(request):
                         s.mo_ta = form.cleaned_data.get('mo_ta')
                         s.so_luong += form.cleaned_data.get('so_luong')
                         s.save()
+                        messages.info(request, 'Success')
                         return redirect('book_entry')
 
-            if  form.cleaned_data.get('so_luong') <= 150 :
-                return redirect('book_entry')
+            if  form.cleaned_data.get('so_luong') < 150 :
                 messages.info(request, 'Number of book add must be higher 150')
+                return redirect('book_entry')
             else :
                 form.ten_sach = form.cleaned_data.get('ten_sach')
                 form.ngay_nhap = form.cleaned_data.get('ngay_nhap')
@@ -247,8 +248,8 @@ def book_entry(request):
                 messages.info(request, 'Success')
                 return redirect('book_entry')
         else:
-            return redirect('book_entry')
             messages.info(request, 'form not valid')
+            return redirect('book_entry')
 
     context = {'form': form, 'sach': sach}
     return render(request, 'book/book_entry.html', context)
