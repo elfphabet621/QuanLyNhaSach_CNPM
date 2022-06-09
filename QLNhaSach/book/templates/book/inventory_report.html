@@ -15,13 +15,13 @@
 
                 <td><select name="month">
                    {% for m in months %}
-                        <option value="{{m}}" {% if m == current_month %}selected{% endif %}>{{m}}</option>
+                        <option value="{{m}}" {% if m == select_month %}selected{% endif %}>{{m}}</option>
                    {% endfor %}
                 </select></td>
 
                 <td><select name="year">
                     {% for y in years %}
-                        <option value="{{y}}" {% if y == current_year %}selected{% endif %}>{{y}}</option>
+                        <option value="{{y}}" {% if y == select_year %}selected{% endif %}>{{y}}</option>
                     {% endfor %}
                 </select></td>
            <td>
