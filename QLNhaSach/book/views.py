@@ -202,21 +202,13 @@ def logoutUser(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['thủ kho'])
 def book_entry(request):
-<<<<<<< HEAD
     tk = request.user.person
     sach = Sach.objects.all()
-<<<<<<< HEAD
     
-=======
-=======
->>>>>>> 5e888d22b325df42a56fef2ddcfde41e1452029f
->>>>>>> main
     form = CreateBook()
-    
     if request.method == "POST":
         form = CreateBook(request.POST, request.FILES)
-        # form.nguoi_nhap = request.user.person
-        
+        form.nguoi_nhap = request.user.person
         if form.is_valid():
             for s in sach :
                 if s.ten_sach == form.cleaned_data.get('ten_sach') :

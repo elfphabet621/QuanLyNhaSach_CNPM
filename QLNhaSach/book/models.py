@@ -55,21 +55,9 @@ class Person(models.Model):
     
 class Sach(models.Model):
     # id = models.CharField(max_length=100, primary_key=True) # PK: id và ngay_nhap
-<<<<<<< HEAD
-    ten_sach = models.CharField(max_length=100, null=True)
-    # ngay_nhap = models.DateField(auto_now_add=True)
-    ngay_nhap = models.DateField(null=True, default=timezone.now)
-    so_luong = models.PositiveIntegerField(null=True)
-    the_loai = models.CharField(max_length=100, null=True)
-    tac_gia = models.CharField(max_length=100, null=True)
-    don_gia = models.PositiveBigIntegerField(null=True)
-    gia_ban = models.PositiveBigIntegerField(null=True)
-    nha_xuat_ban = models.CharField(max_length=100, null=True)
-    nam_xuat_ban = models.PositiveIntegerField(null=True)
-    nguoi_nhap = models.ForeignKey(Person, null=True, on_delete=models.PROTECT) 
-=======
+
     ten_sach = models.CharField('Tên sách', max_length=100, null=True)
-    ngay_nhap = models.DateField('Ngày nhập', null=True, editable=True)
+    ngay_nhap = models.DateField('Ngày nhập', null=True, default=timezone.now)
     so_luong = models.PositiveIntegerField('Số lượng', null=True)
     the_loai = models.CharField('Thể loại', max_length=100, null=True)
     tac_gia = models.CharField('Tác giả', max_length=100, null=True)
@@ -78,7 +66,6 @@ class Sach(models.Model):
     nha_xuat_ban = models.CharField('Nhà xuất bản', max_length=100, null=True)
     nam_xuat_ban = models.PositiveIntegerField('Năm xuất bản', null=True)
     nguoi_nhap = models.ForeignKey(Person, verbose_name= 'Người nhập', null=True, on_delete=models.PROTECT) 
->>>>>>> main
     anh_sach = models.ImageField(default="static/placeholder.png",null=True, blank=True)
     mo_ta = models.TextField("Mô tả ngắn", max_length=1000, null=True, blank=True)
     

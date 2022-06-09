@@ -24,15 +24,6 @@ class InvoiceForm(ModelForm):
 class CreateBook(ModelForm):
     class Meta:
         model = Sach
-<<<<<<< HEAD
         fields = ['ten_sach', 'ngay_nhap', 'so_luong', 'the_loai', 'tac_gia', 'don_gia', 'gia_ban', 'nha_xuat_ban', 'nam_xuat_ban', 'anh_sach', 'mo_ta']
-<<<<<<< HEAD
-=======
-        widgets = {
-            'ten_sach': Textarea(attrs={'cols': 30, 'rows': 1}),
-        }
-=======
-        fields = ['ten_sach', 'ngay_nhap', 'so_luong', 'the_loai', 'tac_gia', 'don_gia', 'gia_ban', 'nha_xuat_ban', 'nam_xuat_ban', 'mo_ta', 'anh_sach']
 
->>>>>>> 5e888d22b325df42a56fef2ddcfde41e1452029f
->>>>>>> main
+
