@@ -29,10 +29,8 @@ def home(request):
         else:  
             hd = HoaDon.objects.get(khach_hang = kh, da_tra=-1, tong_tien=0)
         cartItems = hd.get_cart_items
-        # print('ID HOA DON: ',hd.id_HD, hd.da_tra, hd.tong_tien)
     else:
         cartItems = 0
-    # sach = Sach.objects.all()
     
     
     sach = Sach.objects.order_by('ten_sach')
@@ -139,7 +137,8 @@ def customer_info(request):
             print(form.cleaned_data['profile_pic'])
             form.save()
     
-    context = {'form': form}
+    cart_info = get_cart_info(request)
+    context = {'form': form, 'cartItems':cart_info['cartItems']}
     return render(request, 'book/customer_info.html', context)
 
 @login_required(login_url='login')
@@ -147,9 +146,10 @@ def listInvoice(request):
     user = request.user.person
     
     invoices = HoaDon.objects.filter(khach_hang__id=user.id)
-    print(invoices)
+    # print(invoices)
 
-    context = {'invoices': invoices}
+    cart_info = get_cart_info(request)
+    context = {'invoices': invoices, 'cartItems':cart_info['cartItems']}
     return render(request, 'book/list_invoice.html', context)
 
 @login_required(login_url='login')
@@ -157,7 +157,8 @@ def reviewInvoice(request, pk):
     invoice = HoaDon.objects.get(id_HD=pk)
     details = ChiTietHoaDon.objects.filter(hoa_don=invoice)
     remain = invoice.tong_tien - invoice.da_tra
-    context = {'invoice': invoice, 'remain': remain, 'details': details}
+    cart_info = get_cart_info(request)
+    context = {'invoice': invoice, 'remain': remain, 'details': details,  'cartItems':cart_info['cartItems']}
     return render(request, 'book/invoice.html', context)
 
 @unauthenticated_user
@@ -200,11 +201,12 @@ def logoutUser(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['thủ kho'])
 def book_entry(request):
-    tk = request.user.person
     form = CreateBook()
+    
     if request.method == "POST":
         form = CreateBook(request.POST, request.FILES)
-        form.nguoi_nhap = request.user.person
+        # form.nguoi_nhap = request.user.person
+        
         if form.is_valid():
             form.save()
 
@@ -266,14 +268,13 @@ def debt_report(request):
                                         ngay_lap_HD__month=current_month,
                                         da_tra__gt=-1)
     list_debt = []
-    
+    is_empty = True
     if request.method == "POST":
         current_month = int(request.POST.get('month'))
         current_year = int(request.POST.get('year'))
         hd_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
                                         ngay_lap_HD__month=current_month,
                                         da_tra__gt=-1)
-        print(current_month, current_year)
         
         # nợ đầu: accumulate từ tháng current_month-1 trở về trước
         debt_users = defaultdict(int)
@@ -281,32 +282,29 @@ def debt_report(request):
             hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=current_year, ngay_lap_HD__month= i, da_tra__gt=-1)
             
             for hd in hd_month_i:
-                print(hd)
                 if hd.tong_tien - hd.da_tra != 0:
                     debt_users[hd.khach_hang] += (hd.tong_tien - hd.da_tra)
-                    # print(hd)
-        print(debt_users)
         
         # với những khách nợ, coi thử tháng current_month có phát sinh (nợ) thêm j ko
         incur_user = defaultdict(int)
         for user in debt_users.keys():
             hd_cur_month = HoaDon.objects.filter(khach_hang = user,
-                                                ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month)
-            # print('kiem tra: ', hd_cur_month[0].tong_tien)
-            try:
-                phat_sinh = hd_cur_month[0].tong_tien - hd_cur_month[0].da_tra 
-            except:
-                phat_sinh = 0
-            incur_user[user] += phat_sinh
+                                                ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month, da_tra__gt=-1)
+            for hd in hd_cur_month: # 1 kh có thể có nhiều hd
+                phat_sinh = hd.tong_tien - hd.da_tra 
+                incur_user[user] += phat_sinh
             
         # biến các debt_users thành các instance thuộc model Debt
         list_debt = []
         for kh, no_dau in debt_users.items():
             debt_user = Debt(khach_hang = kh, no_dau = no_dau, phat_sinh = incur_user[kh])
             list_debt.append(debt_user)
+            
+        if list_debt: is_empty = False
     
-    context = {'hd_month': hd_month, 'list_debt': list_debt,
-                'months': [i for i in range(1,13)], 'current_month': current_month}
+    context = {'hd_month': hd_month, 'list_debt': list_debt, 'is_empty': is_empty,
+                'months': [i for i in range(1,13)], 'current_month': current_month,
+                'years': [2019, 2020, 2021, 2022], 'current_year': current_year}
     
     return render(request, 'book/debt_report.html', context= context)
 
@@ -319,6 +317,25 @@ def inventory_report(request):
 
 @allowed_users(allowed_roles=['khách hàng'])
 def pay_debt(request):
-    context = {}
+    kh = Person.objects.filter(user = request.user)
+    debt_bills = HoaDon.objects.filter(khach_hang = kh[0], da_tra__gt=-1)
+    
+    hd_no = []
+    is_debt = False
+    for bill in debt_bills:
+        if bill.tong_tien - bill.da_tra != 0: 
+            hd_no.append(bill)
+    if hd_no:
+        is_debt = True 
+    
+    if request.method == "POST":
+        bill_id = request.POST.get('which')
+        which_bill = HoaDon.objects.get(id_HD=bill_id)
+        which_bill.da_tra = which_bill.tong_tien
+        which_bill.save()
+        
+        return redirect('/pay_debt')
+        
+    context = {'hd_no': hd_no, 'is_debt': is_debt}
     return render(request, 'book/pay_debt.html', context= context)
 
