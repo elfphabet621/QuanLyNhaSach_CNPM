@@ -6,14 +6,18 @@
 {% block content %}
 <style>
   #messages{
-    background-color: grey;
-    color: #fff;
-    padding: 10px;
-    margin-top: 10px;
-    width: 790px;
-    height: 50px;
-    padding-left: 20px;
-    left: 100px;
+    position: relative;
+    text-align: center;
+    color:#000000;
+    top: -1017px;
+    background-color: yellow;
+    padding: 5px;
+    width: 700px;
+    height: 30px;
+    border-radius: 30px;
+    left: 170px;
+    font-weight: bold;
+    font-size: 15px;
   }
 
   #id_ten_sach{
@@ -150,7 +154,7 @@
   #id_mo_ta{
   position: relative;
   top:-184px;
-  border-radius: 50px;
+  border-radius: 20px;
   width: 600px;
   height: 100px;
   padding-left: 20px;
@@ -248,18 +252,33 @@
   color: #ffffff;
 }
 
+.luu_y{
+  position: relative;
+  color: red;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  font-weight: bold;
+  font-style: italic;
+  opacity: 70%;
+  top: -492px;
+  left: 480px;
+}
+
 </style>
 <form autocomplete="off" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <div><p class="main_title">Nhập sách mới</p></div>
   <hr>
+  
   <div class="ts_title"><strong>Tên sách</strong></div>
-    <div class="cl_ten_sach">
-      {{form.ten_sach}}
-    </div><br>
-    <div class="ttg_title"><strong>Tên tác giả</strong></div>
-    <div class="">{{form.tac_gia}}</div>
+  <div class="cl_ten_sach">
+    {{form.ten_sach}}
+  </div><br>
+
+  <div class="ttg_title"><strong>Tên tác giả</strong></div>
+  <div class="">{{form.tac_gia}}</div>
   <br>
+
   <div class="tl_title"><strong>Thể loại</strong></div>
   <div>{{form.the_loai}}</div>
   
@@ -279,6 +298,7 @@
   {{form.gia_ban}}
 
   <div class="sl_title"><strong>Số lượng</strong></div>
+    
   {{form.so_luong}}
 
   <div class="mt_title"><strong>Mô tả</strong></div>
@@ -287,12 +307,16 @@
   <div class="as_title"><strong>Ảnh sách</strong></div>
   {{form.anh_sach}}
   <br>
+  
   <div class="submit">
-    <input class="btn" type="submit">
+    <input class="btn" type="submit" value="Lưu">
   </div>
+
+  <p class="luu_y">(* Lượng nhập từ 150 trở lên và lượng tồn ít hơn 300)</p>
   {% for message in messages %}
     <p id="messages">{{message}}</p>
   {% endfor %}
+
 </form>
 
 <script>
