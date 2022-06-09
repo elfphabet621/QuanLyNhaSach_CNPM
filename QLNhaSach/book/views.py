@@ -212,7 +212,7 @@ def book_entry(request):
         if form.is_valid():
             for s in sach :
                 if s.ten_sach == form.cleaned_data.get('ten_sach') :
-                    if  (form.cleaned_data.get('so_luong') <= 150) | (s.so_luong >= 300) :
+                    if  (form.cleaned_data.get('so_luong') < 150) | (s.so_luong >= 300) :
                         return redirect('book_entry')
                         messages.info(request, 'Number of book add must be higher 150 and Book in inventory must have lower 300 :')
                     else :
@@ -229,7 +229,7 @@ def book_entry(request):
                         s.save()
                         return redirect('book_entry')
 
-            if  form.cleaned_data.get('so_luong') <= 150 :
+            if  form.cleaned_data.get('so_luong') < 150 :
                 return redirect('book_entry')
                 messages.info(request, 'Number of book add must be higher 150')
             else :
