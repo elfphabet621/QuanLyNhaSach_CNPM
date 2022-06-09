@@ -204,6 +204,7 @@ def logoutUser(request):
 def book_entry(request):
     tk = request.user.person
     sach = Sach.objects.all()
+    ns = NhapSach(so_luong=0)
     
     form = CreateBook()
     if request.method == "POST":
@@ -227,6 +228,13 @@ def book_entry(request):
                         s.mo_ta = form.cleaned_data.get('mo_ta')
                         s.so_luong += form.cleaned_data.get('so_luong')
                         s.save()
+                        
+                        # cập nhật ns
+                        ns.ten_sach = s.ten_sach
+                        ns.ngay_nhap = s.ngay_nhap 
+                        ns.so_luong = s.so_luong
+                        ns.save()
+                        
                         return redirect('book_entry')
 
             if  form.cleaned_data.get('so_luong') < 150 :
@@ -244,6 +252,13 @@ def book_entry(request):
                 form.mo_ta = form.cleaned_data.get('mo_ta')
                 form.so_luong = form.cleaned_data.get('so_luong')
                 form.save()
+                
+                # cập nhật ns
+                ns.ten_sach = form.ten_sach
+                ns.ngay_nhap = form.ngay_nhap 
+                ns.so_luong = form.so_luong
+                ns.save()
+                        
                 messages.info(request, 'Success')
                 return redirect('book_entry')
         else:
