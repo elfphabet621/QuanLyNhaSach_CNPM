@@ -72,35 +72,40 @@ python manage.py runserver
 <br>
 
 # Hướng dẫn deploy project lên Heroku.
-<Điền vào đây>
+- Bước 1: đăng nhập Heroku, tại giao diện chọn New $\to$ Create New App
+- Bước 2: tạo app có tên qlns-group5 và nhấn **Create App**, được kết quả như hình dưới 
+- Bước 4: bấm vào **qlns-group5**. ở tab **Deploy**, chọn **GitHub** và kết nối tới tài khoản github của mình. Sau khi kết nối thành công, thì thẻ **GitHub** hiển thị chữ <font color='green'>Connected</font>
+- Bước 5: tạo 1 repo tên **"QLNhaSach"** trên GitHub và clone hoặc pull GitHub [này](https://github.com/LeKiet258/QLNhaSach) về repo vừa tạo.
+- Bước 6: trở lại Heroku, ta tìm kiếm repo **QLNhaSach** vừa tạo ở ô tìm kiếm. Kết quả là nó tìm thấy repo này $\to$ ấn **Connect**
+- Bước 7: chỉnh lại nhánh để deploy là nhánh **master** (hoặc **main** nếu repo chỉ có 1 branch này) 
+- Bước 8: ấn **Deploy branch**, chờ cho Heroku chạy. Sau khi chạy thành công, sẽ có nút <font color='green'>View</font> $\to$ ấn vào nút <font color='green'>View</font> để tới trang web sau khi deploy 
 
 ---
 # Link Google Drive hoặc Youtube video demo
-[link]
+[link](https://drive.google.com/drive/folders/1VAljnaSdJ3CFKZkjPJd3iN1vkvWRX2TR)
 
 ---
 # Current status
 
 | Page             | Role     |Chức năng                          | Tính năng                                                             |
 | ---------------- | -------- |---------------------------------- | --------------------------------------------------------------------- |
-| register         | guest    | Đăng kí                           | - Cho phép guest tạo tài khoản để thực hiện mua sách             |
-| login            | guest    | Đăng nhập                         | - Cho phép người dùng đăng nhập vào tài khoản cá nhân (tài khoản đã đăng ký)  |
-| home             | user     | Trưng bày sách                   | - Hiển thị tất cả sách trong website <br> - Cho phép thêm sách vào giỏ hàng <br> -  Xem được số lượng sách trong giỏ                                                                                |
-| user information | user     | Hiện thông tin khách hàng         | - Xem và chỉnh sửa thông tin cá nhân                                      |
-| Hóa đơn          | user     | Hiện các hóa đơn đã thanh toán    | - Hiện sơ bộ thông tin hóa đơn đã thanh toán như ID, ngày lập, tổng tiền, ...        |
-| Chi tiết hóa đơn | user     | Hiện thông tin cụ thể hóa đơn     | - Hiện toàn bộ thông tin sách, số lượng, tiền sách, số tiền thanh toán, số tiền còn lại <br> - Thanh toán hóa đơn nếu còn nợ                                                                                                                      |
-| Giỏ hàng         | user     | Hiện sản phẩm đã được cho vào giỏ | - Hiện các sách và số lượng đã chọn <br> - Chỉnh sửa số lượng sách đã chọn (tăng giảm) <br> - Xóa sách khỏi giỏ hàng <br> - Tiến hành thanh toán                                                                                                  |
-| Thanh toán       | user     | Chọn cách thanh toán              | - Lấy input thông tin khách hàng <br> - Chọn phương thức thanh toán - Thanh toán và lưu thông tin hóa đơn |
-| Nhập sách        | thủ kho  | Nhập sách mới vào kho             | - Nhập thông tin sách mới vào database                            |
-| Báo cáo tồn      | thủ kho  | Xem báo cáo tháng                 | - Xem báo cáo tồn theo tháng-năm gồm: tồn đầu, phát sinh, tồn cuối                               |
-| Báo cáo nợ       | thủ kho  | Xem báo cáo tháng                 | - Xem báo cáo nợ theo tháng-năm gồm: nợ đầu, phát sinh, nợ cuối                                 |
+| register         | guest    | đăng kí                           | - Kiểm tra input sai và cho guest tiếp tục nhập                       |
+| login            | guest    | đăng nhập                         | - Kiểm tra input và tìm role user để redirect đến page đúng với role  |
+| home             | user     | Giới thiệu sách                   | - Xem được bìa và giá những cuốn sách được hiện lên <br> - Thêm sách vào giỏ hàng <br> - Chọn thể loại sách <br> -  Xem được số lượng sách trong giỏ                                                                                    |
+| user information | user     | Hiện thông tin khách hàng         | - Xem và chỉnh thông tin cá nhân                                      |
+| Hóa đơn          | user     | Hiện các hóa đơn đã thanh toán    | - Hiện sơ bộ thông tin hóa đơn như ID, ngày lập, tổng tiền,...        |
+| Chi tiết hóa đơn | user     | Hiện thông tin cụ thể hóa đơn     | - Hiện toàn bộ thông tin sách, số lượng, tiền sách, số tiền thanh toán, số tiền còn lại <br> - Thanh toán hóa đơn                                                                                                                        |
+| Giỏ hàng         | user     | Hiện sản phẩm đã được cho vào giỏ | - Hiện các sách và số lượng đã chọn <br> - Chỉnh sửa số lượng sách đã chọn (tăng giảm) <br> - Bỏ sách khỏi giỏ hàng <br> - Xem tổng tiền                                                                                                   |
+| Thanh toán       | user     | Chọn cách thanh toán              | - Lấy input thông tin khách hàng <br> - Chọn phương thức thanh toán   |
+| Nhập sách        | thủ kho  | Nhập sách mới vào kho             | - Lấy thông tin sách mới nhập vào database                            |
+| Báo cáo tồn      | thủ kho  | Xem báo cáo tháng                 | - Xem được tồn đầu, phát sinh, tồn cuối                               |
+| Báo cáo nợ       | thủ kho  | Xem báo cáo tháng                 | - Xem được nợ đầu, phát sinh, nợ cuối                                 |
 
 ---
 # Future work
-- Cải thiện UX/UI của website nhằm thu hút người dùng và phù hợp với xu hướng hiện đại
-- Thêm chức năng lọc (filter) theo một khoảng giá, theo tác giả, theo độ hot của sách
-- Cải tiến chức năng Tìm kiếm thành Tìm kiếm nâng cao
-- Nâng cấp kho sách thêm phong phú hơn
-- Thêm màn hình hiển thị sách theo thể loại
-- Thêm chức năng đánh giá của người dùng
-- Sử dụng các phương pháp học máy để đề xuất sách cho người dùng
+- Sửa background các page <br>
+- Cấp quyền các role đặc biệt <br>
+- Lựa chọn và tìm kiếm sách bằng tên và thể loại <br>
+- Xuất ra các cách thanh toán cụ thể <br>
+- Thêm page riêng cho các roll đặc biệt admin, nhân viên, thủ kho <br>
+- Thêm các cách thanh toán khác
