@@ -21,7 +21,7 @@ Xây dựng một hệ thống quản lý thuận tiện cho nhà sách trên n�
 ---
 # Tham khảo chéo các project liên quan : 
 - Project: https://github.com/divanov11/crash-course-CRM/tree/Part-20-Password-Reset-Email
-- Project: []
+- Project: https://github.com/justdjango/django-ecommerce
 
 ---
 # Môi trường thực thi (phiên bản hệ điều hành, SDK, Dev Tools, cơ sở dữ liệu, etc.)
