@@ -96,7 +96,7 @@ python manage.py runserver
 | Báo cáo nợ       | thủ kho  | Xem báo cáo tháng                 | - Xem được nợ đầu, phát sinh, nợ cuối                                 |
 
 ---
-# Future works
+# Future work
 - Sửa background các page <br>
 - Cấp quyền các role đặc biệt <br>
 - Lựa chọn và tìm kiếm sách bằng tên và thể loại <br>
