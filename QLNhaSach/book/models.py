@@ -165,4 +165,11 @@ class Debt(models.Model):
     @property
     def no_cuoi(self): return self.no_dau + self.phat_sinh
     
+# util model
+class Inventory(models.Model):
+    ten_sach = models.CharField('Tên sách', max_length=100, null=True)
+    ton_dau = models.FloatField(null=True)
+    phat_sinh = models.FloatField(null=True)
 
+    @property
+    def ton_cuoi(self): return self.ton_dau + self.phat_sinh
