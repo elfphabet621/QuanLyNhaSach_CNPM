@@ -19,11 +19,6 @@ Với xu thế mua hàng trên Internet ngày một tăng của người dùng �
 Xây dựng một hệ thống quản lý thuận tiện cho nhà sách trên nền tảng là web, nhóm chúng em đã lên ý tưởng và thực hiện đồ án mang tên “Quản lý nhà sách”. Đồ án mong muốn mang lại một hệ thống quản lý thông minh, chính xác và hiệu quả nhất cho các doanh nghiệp bán sách. 
 
 ---
-# Tham khảo chéo các project liên quan : 
-- Project: https://github.com/divanov11/crash-course-CRM/tree/Part-20-Password-Reset-Email
-- Project: https://github.com/justdjango/django-ecommerce
-
----
 # Môi trường thực thi (phiên bản hệ điều hành, SDK, Dev Tools, cơ sở dữ liệu, etc.)
 - Framework: Django <br>
 - Ngôn ngữ lập trình : python3
@@ -83,7 +78,6 @@ python manage.py runserver
 ---
 # Link Google Drive hoặc Youtube video demo
 - Link Google Drive: [link](https://drive.google.com/drive/folders/1VAljnaSdJ3CFKZkjPJd3iN1vkvWRX2TR)
-- Link Youtube: [link]()
 
 ---
 # Current status
@@ -110,3 +104,17 @@ python manage.py runserver
 - Xuất ra các cách thanh toán cụ thể <br>
 - Thêm page riêng cho các roll đặc biệt admin, nhân viên, thủ kho <br>
 - Thêm các cách thanh toán khác
+
+---
+# Tham khảo chéo các project liên quan : 
+- Project: https://github.com/divanov11/crash-course-CRM/tree/Part-20-Password-Reset-Email
+- Project: https://github.com/justdjango/django-ecommerce
+
+---
+# Các tham khảo khác : 
+- [cs.unb.ca](http://www.cs.unb.ca/~bhavsar/courses/cs3013/cs3013/lab7.htm)
+- [Fix django.forms](https://www.youtube.com/watch?v=ufI9Skz10xM)
+- [Django Ecommerce Website](https://www.youtube.com/playlist?list=PL-51WBLyFTg0omnamUjL1TCVov7yDTRng)
+- [Django (3.0) Crash Course Tutorials | Customer Management App](https://www.youtube.com/playlist?list=PL-51WBLyFTg2vW-_6XBoUpE7vpmoR3ztO)
+- [W3Schools Online Web Tutorials](https://www.w3schools.com/)
+- [Boootstrap](https://getbootstrap.com/)
