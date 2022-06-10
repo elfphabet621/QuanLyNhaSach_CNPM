@@ -1,0 +1,48 @@
+{%  extends 'book/main.html' %}
+{% block content %}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<div class="page-content container">
+    <div class="page-header text-blue-d2">
+        <h1 class="page-title text-secondary-d1 text-center">
+            Trả nợ
+        </h1>
+
+{% if is_debt == True %}
+    <div class="table-responsive">
+        <table class="table table-striped table-borderless border-0 border-b-2 brc-default-l1">
+            <thead class="bg-none bgc-default-tp1">
+                <tr class="text-black">
+                    <th>Ngày</th>
+                    <th>Hóa đơn</th>
+                    <th>Nợ</th>
+                </tr>
+            </thead>
+
+            <tbody class="text-95 text-secondary-d3">
+                {% for hd in hd_no %}
+                <tr></tr>
+                <tr>
+                    <td>{{hd.ngay_lap_HD}}</td>
+                    <td>{{hd.id_HD}}</td>
+                    
+                    {% load subtract %}
+                    <td>{{hd.tong_tien|subtract:hd.da_tra}}</td>
+                    
+                    <form method="POST">
+                        {% csrf_token %}
+                        <th><button class="btn btn-sm btn-info" name="which" type="submit" value="{{ hd.id_HD }}">Thanh toán</button></th>
+                </tr> 
+                {% endfor %}
+                
+        </table>
+    </div>
+
+{% else %}
+    <div class="container text-center">
+        <p>Không có thông tin</p>
+    </div>
+    
+{% endif %}
+
+{% endblock content %}

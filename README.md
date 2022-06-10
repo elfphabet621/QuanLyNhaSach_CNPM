@@ -81,24 +81,25 @@ python manage.py runserver
 ---
 ## Current status: tóm tắt những gì đã hoàn thành 
 
-| Page             | Role     |Chức năng      | Tính năng |
-| ---------------- | -------- |-------------- | --------- |
-| register         | guest    | đăng kí                 | - Kiểm tra input sai và cho guest tiếp tục nhập |
-| login            | guest    | đăng nhập               | - Kiểm tra input và tìm role user để redirect đến page đúng với role |
-| home             | user     | Giới thiệu sách | - Xem được bìa và giá những cuốn sách được hiện lên <br> - Thêm sách vào giỏ hàng <br> - Chọn thể loại sách <br> -  Xem được số lượng sách trong giỏ |
-| user information | user     | Hiện thông tin khách hàng         | - Xem và chỉnh thông tin cá nhân |
-| Hóa đơn          | user     | Hiện các hóa đơn đã thanh toán         | - Hiện sơ bộ thông tin hóa đơn như ID, ngày lập, tổng tiền,...  |
-| Giỏ hàng         | user     | Hiện sản phẩm đã được cho vào giỏ         | - Hiện các sách và số lượng đã chọn <br> - Chỉnh sửa số lượng sách đã chọn (tăng giảm) <br> - Bỏ sách khỏi giỏ hàng <br> - Xem tổng tiền |
-| Thanh toán       | user     | Chọn cách thanh toán         | - Lấy input thông tin khách hàng <br> - Chọn phương thức thanh toán |
-| Nhập sách        | thủ kho  | Nhập sách mới vào kho         | - Lấy thông tin sách mới nhập vào database  |
+| Page             | Role     |Chức năng                          | Tính năng                                                             |
+| ---------------- | -------- |---------------------------------- | --------------------------------------------------------------------- |
+| register         | guest    | đăng kí                           | - Kiểm tra input sai và cho guest tiếp tục nhập                       |
+| login            | guest    | đăng nhập                         | - Kiểm tra input và tìm role user để redirect đến page đúng với role  |
+| home             | user     | Giới thiệu sách                   | - Xem được bìa và giá những cuốn sách được hiện lên <br> - Thêm sách vào giỏ hàng <br> - Chọn thể loại sách <br> -  Xem được số lượng sách trong giỏ                                                                                    |
+| user information | user     | Hiện thông tin khách hàng         | - Xem và chỉnh thông tin cá nhân                                      |
+| Hóa đơn          | user     | Hiện các hóa đơn đã thanh toán    | - Hiện sơ bộ thông tin hóa đơn như ID, ngày lập, tổng tiền,...        |
+| Chi tiết hóa đơn | user     | Hiện thông tin cụ thể hóa đơn     | - Hiện toàn bộ thông tin sách, số lượng, tiền sách, số tiền thanh toán, số tiền còn lại <br> - Thanh toán hóa đơn                                                                                                                        |
+| Giỏ hàng         | user     | Hiện sản phẩm đã được cho vào giỏ | - Hiện các sách và số lượng đã chọn <br> - Chỉnh sửa số lượng sách đã chọn (tăng giảm) <br> - Bỏ sách khỏi giỏ hàng <br> - Xem tổng tiền                                                                                                   |
+| Thanh toán       | user     | Chọn cách thanh toán              | - Lấy input thông tin khách hàng <br> - Chọn phương thức thanh toán   |
+| Nhập sách        | thủ kho  | Nhập sách mới vào kho             | - Lấy thông tin sách mới nhập vào database                            |
+| Báo cáo tồn      | thủ kho  | Xem báo cáo tháng                 | - Xem được tồn đầu, phát sinh, tồn cuối                               |
+| Báo cáo nợ       | thủ kho  | Xem báo cáo tháng                 | - Xem được nợ đầu, phát sinh, nợ cuối                                 |
 
 ---
 ## Future works: tóm tắt những gì cần làm thêm
 - Sửa background các page <br>
-- Cấp quyến các role đặc biệt <br>
+- Cấp quyền các role đặc biệt <br>
 - Lựa chọn và tìm kiếm sách bằng tên và thể loại <br>
 - Xuất ra các cách thanh toán cụ thể <br>
-- Thêm page chi tiết hóa đơn <br>
 - Thêm page riêng cho các roll đặc biệt admin, nhân viên, thủ kho <br>
-- Thêm page báo cáo tồn <br>
-- Thêm page báo cáo nợ <br>
+- Thêm các cách thanh toán khác
