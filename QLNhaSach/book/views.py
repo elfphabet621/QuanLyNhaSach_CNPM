@@ -1,17 +1,19 @@
 from django.shortcuts import render, redirect
 from .forms import CreateUserForm
+from .forms import CreateBook
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
 from .models import *
 from .utils import *
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from .decorators import unauthenticated_user, allowed_users
 import math, json
 from .filters import BookFilter
 from collections import defaultdict
-import datetime
+from collections import Counter
+from datetime import date
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Trang chủ
@@ -201,16 +203,71 @@ def logoutUser(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['thủ kho'])
 def book_entry(request):
-    form = CreateBook()
+    tk = request.user.person
+    sach = Sach.objects.all()
+    ns = NhapSach(so_luong=0)
     
+    form = CreateBook()
     if request.method == "POST":
         form = CreateBook(request.POST, request.FILES)
-        # form.nguoi_nhap = request.user.person
-        
+        form.nguoi_nhap = request.user.person
         if form.is_valid():
-            form.save()
+            for s in sach :
+                if s.ten_sach == form.cleaned_data.get('ten_sach') :
+                    if  (form.cleaned_data.get('so_luong') < 150) | (s.so_luong >= 300) :
+                        messages.info(request, 'Lượng nhập tối thiểu 150 và lượng tồn phải nhỏ hơn 300')
+                        return redirect('book_entry')
+                    else :
+                        s.ten_sach = form.cleaned_data.get('ten_sach')
+                        s.ngay_nhap = form.cleaned_data.get('ngay_nhap')
+                        s.the_loai = form.cleaned_data.get('the_loai') 
+                        s.tac_gia = form.cleaned_data.get('tac_gia')
+                        s.don_gia = form.cleaned_data.get('don_gia')
+                        s.gia_ban = form.cleaned_data.get('gia_ban')
+                        s.nha_xuat_ban = form.cleaned_data.get('nha_xuat_ban')
+                        s.nam_xuat_ban = form.cleaned_data.get('nam_xuat_ban')
+                        s.mo_ta = form.cleaned_data.get('mo_ta')
+                        s.so_luong += form.cleaned_data.get('so_luong')
+                        s.save()
+                        
+                        # cập nhật ns
+                        ns.ten_sach = s.ten_sach
+                        ns.ngay_nhap = s.ngay_nhap 
+                        ns.so_luong = s.so_luong
+                        ns.save()
+                        
+                        messages.info(request, 'Success')
+                        return redirect('book_entry')
 
-    context = {'form': form}
+            if  form.cleaned_data.get('so_luong') < 150 :
+                messages.info(request, 'Số lượng sách nhập phải lớn hơn 150')
+                return redirect('book_entry')
+            else :
+                form.ten_sach = form.cleaned_data.get('ten_sach')
+                form.ngay_nhap = form.cleaned_data.get('ngay_nhap')
+                form.the_loai = form.cleaned_data.get('the_loai') 
+                form.tac_gia = form.cleaned_data.get('tac_gia')
+                form.don_gia = form.cleaned_data.get('don_gia')
+                form.gia_ban = form.cleaned_data.get('gia_ban')
+                form.nha_xuat_ban = form.cleaned_data.get('nha_xuat_ban')
+                form.nam_xuat_ban = form.cleaned_data.get('nam_xuat_ban')
+                form.mo_ta = form.cleaned_data.get('mo_ta')
+                form.so_luong = form.cleaned_data.get('so_luong')
+                form.save()
+                
+                # cập nhật ns
+                ns.ten_sach = form.ten_sach
+                ns.ngay_nhap = form.ngay_nhap 
+                ns.so_luong = form.so_luong
+                ns.save()
+                        
+                messages.info(request, 'Thành công')
+                return redirect('book_entry')
+        else:
+            messages.info(request, 'Nhập sai thông tin')
+            return redirect('book_entry')
+
+    context = {'form': form, 'sach': sach}
     return render(request, 'book/book_entry.html', context)
 
 # Tạo một cuốn sách mới
@@ -309,10 +366,70 @@ def debt_report(request):
     return render(request, 'book/debt_report.html', context= context)
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['thủ kho'])
 def inventory_report(request):
-    #book = Sach.objects.get(id=pk) # truy vấn sách có mã pk từ csdl
     
-    context = {}
+    book_list = Sach.objects.all()
+    is_empty = False
+    inventory = []
+    select_month, select_year = 6,2022
+    if request.method == "POST":
+        select_month = int(request.POST.get('month'))
+        select_year = int(request.POST.get('year'))
+        if select_month > date.today().month:
+            is_empty = True
+        sell_book = defaultdict(int)
+        entry_book = defaultdict(int)
+        for i in range(select_month,date.today().month + 1):
+            # Lọc ra số sách bán từ tháng được chọn đến tháng hiện tại. 
+            hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=select_year, ngay_lap_HD__month= i)
+            for hd in hd_month_i:
+                cthds =  ChiTietHoaDon.objects.filter(hoa_don=hd)
+                for cthd in cthds:
+                    sell_book[cthd.sach.ten_sach] += cthd.so_luong
+
+            ns_month_i = NhapSach.objects.filter(ngay_nhap__year=select_year, ngay_nhap__month= i)
+            for ns in ns_month_i:
+                entry_book[ns.ten_sach] += ns.so_luong
+        # TỒN ĐẦU: sách hiện tại - phát sinh từ tháng chọn ( với phát sinh = nhập - bán )
+        #TỔNG PHÁT SINH TỪ THÁNG CHỌN ĐẾN HIỆN TẠI:
+
+        phatsinh_n_month_book = {k: entry_book.get(k,0) - sell_book.get(k,0) for k in set(entry_book) | set(sell_book)}
+        for book in book_list:
+            for s, sl in phatsinh_n_month_book.items():
+                if book.ten_sach == s:
+                    book.so_luong -= sl
+
+
+        phatsinh_month = defaultdict(int)
+        for book in book_list:
+            phatsinh_month[book.ten_sach] = 0
+        #PHÁT SINH TRONG THÁNG ĐƯỢC CHỌN:
+        sell_book_month = defaultdict(int)
+        entry_book_month = defaultdict(int)
+        hd_month = HoaDon.objects.filter(ngay_lap_HD__year=select_year, ngay_lap_HD__month= select_month)
+        for hd in hd_month:
+            cthds = ChiTietHoaDon.objects.filter(hoa_don=hd)
+            for cthd in cthds:
+                sell_book_month[cthd.sach.ten_sach] += cthd.so_luong
+
+        ns_month = NhapSach.objects.filter(ngay_nhap__year=select_year, ngay_nhap__month=select_month)
+        for ns in ns_month:
+            entry_book_month[ns.ten_sach] += ns.so_luong
+
+        phatsinh_month_book = {k: entry_book_month.get(k,0) - sell_book_month.get(k,0) for k in set(entry_book_month) | set(sell_book_month)}
+        phatsinh_1_month = {k: phatsinh_month.get(k,0) + phatsinh_month_book.get(k,0) for k in set(phatsinh_month) | set(phatsinh_month_book)}
+
+        
+        for book in book_list:
+            book_inventory = Inventory(ten_sach= book.ten_sach, ton_dau = book.so_luong, phat_sinh = phatsinh_1_month[book.ten_sach])
+            inventory.append(book_inventory)
+       
+                
+    
+    context = {'inventory':inventory, 'is_empty': is_empty,
+                'months': [i for i in range(1,13)], 'select_month': select_month,
+                'years': [2022], 'select_year': select_year}
     return render(request, 'book/inventory_report.html', context= context)
 
 @allowed_users(allowed_roles=['khách hàng'])
