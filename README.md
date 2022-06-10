@@ -82,7 +82,8 @@ python manage.py runserver
 
 ---
 # Link Google Drive hoặc Youtube video demo
-[link](https://drive.google.com/drive/folders/1VAljnaSdJ3CFKZkjPJd3iN1vkvWRX2TR)
+- Link Google Drive: [link](https://drive.google.com/drive/folders/1VAljnaSdJ3CFKZkjPJd3iN1vkvWRX2TR)
+- Link Youtube: [link]()
 
 ---
 # Current status
