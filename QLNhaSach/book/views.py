@@ -15,6 +15,7 @@ from collections import defaultdict
 from collections import Counter
 from datetime import date
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import datetime
 
 # Trang chủ
 def home(request):
@@ -41,7 +42,7 @@ def home(request):
 
     page = request.GET.get('page', 1)
     paginator = Paginator(sach, 12)
-   
+    
     try:
         sach = paginator.page(page)
     except PageNotAnInteger:
@@ -136,7 +137,11 @@ def customer_info(request):
     if request.method == "POST":
         form = CustomerInfo(request.POST, request.FILES, instance=customer)
         if form.is_valid():
+            if form.cleaned_data['profile_pic'] is None:
+                form['profile_pic'] = "profile1.png"
+
             print(form.cleaned_data['profile_pic'])
+
             form.save()
     
     cart_info = get_cart_info(request)
@@ -147,8 +152,7 @@ def customer_info(request):
 def listInvoice(request):
     user = request.user.person
     
-    invoices = HoaDon.objects.filter(khach_hang__id=user.id)
-    # print(invoices)
+    invoices = HoaDon.objects.filter(khach_hang__id=user.id).exclude(tong_tien=0, da_tra=-1)
 
     cart_info = get_cart_info(request)
     context = {'invoices': invoices, 'cartItems':cart_info['cartItems']}
@@ -322,8 +326,31 @@ def book_details(request, pk):
 def debt_report(request):
     current_year, current_month = 2022, 1
     hd_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
-                                        ngay_lap_HD__month=current_month,
-                                        da_tra__gt=-1)
+                                    ngay_lap_HD__month=current_month)
+    
+    # nợ đầu: accumulate từ tháng current_month-1 trở về trước
+    debt_users = defaultdict(int)
+    for i in range(1, current_month):
+        hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=current_year, ngay_lap_HD__month= i)
+        for hd in hd_month_i:
+            if hd.tong_tien - hd.da_tra != 0:
+                debt_users[hd.khach_hang] += (hd.tong_tien - hd.da_tra)
+    
+    # với những khách nợ, coi thử tháng current_month có phát sinh (nợ) thêm j ko
+    incur_user = defaultdict(int)
+    for user in debt_users.keys():
+        hd_cur_month = HoaDon.objects.filter(khach_hang = user,
+                                            ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month)
+        # print('kiem tra: ', hd_cur_month[0].tong_tien)
+        try:
+            phat_sinh = hd_cur_month[0].tong_tien - hd_cur_month[0].da_tra 
+            # if hd_cur_month[0].da_tra == -1: để sửa giỏ hàng, chưa test
+            #     phat_sinh = 0
+        except:
+            phat_sinh = 0
+        incur_user[user] += phat_sinh
+        
+    # biến các debt_users thành các instance thuộc model Debt
     list_debt = []
     is_empty = True
     if request.method == "POST":
@@ -432,6 +459,22 @@ def inventory_report(request):
                 'years': [2022], 'select_year': select_year}
     return render(request, 'book/inventory_report.html', context= context)
 
+
+def create_invoice(request):
+    context = {}
+
+    data = json.loads(request.body)
+
+    kh = request.user.person
+    hd = HoaDon.objects.get(khach_hang = kh, da_tra=-1, tong_tien=0)
+    hd.da_tra = data['pay']
+    hd.phuong_thuc_thanh_toan = "Tiền mặt" if data['method'] == "tien-mat" else "Thẻ ngân hàng"
+    hd.tong_tien = data['total']
+    date = datetime.datetime.now()
+    hd.ngay_lap_HD = date
+    hd.save()
+
+    return render(request, 'book/success.html', context=context)
 @allowed_users(allowed_roles=['khách hàng'])
 def pay_debt(request):
     kh = Person.objects.filter(user = request.user)
