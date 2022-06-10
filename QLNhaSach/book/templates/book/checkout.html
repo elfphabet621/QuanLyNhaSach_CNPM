@@ -127,18 +127,26 @@
     }
 
     document.getElementById('payment').addEventListener('click', function(){
-        alert('Đã thanh toán');
+        // alert('Đã thanh toán');
+        
+        submitData()
 
-        window.location.href = "{% url 'home' %}"
     })
 
-    function submitFormData(){
+    function submitData(){
 
         // lấy thông tin từ form, ví dụ
-        shippingInfo.address = form.address.value
+        var pay = document.getElementById('pay').value;
+        var method = document.getElementById('payment-option').value;
+
+        if (pay === "")
+        {
+            pay = {{hd.get_cart_total}}
+        }
+        console.log(method)
 
         // url của html muốn truyền post tới, theo video đã gửi trên group
-        var url= '/process_order/'
+        var url= '/success/'
 
         // câu lệnh fetch
         fetch(url, {
@@ -147,20 +155,24 @@
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken,
             },
-            body:JSON.stringify({'shipping': shippingInfo}) // truyền thông data muốn gửi 
+            body:JSON.stringify({'pay': pay, 'total': {{hd.get_cart_total}}, 'method': method}) // truyền thông data muốn gửi 
         })
 
-        .then((response) => response.json()) 
-
-        .then((data) => {
-            console.log('Success: ', data); // send data thành công, xong
-
-            // clear cart, có thể bị lỗi vì mình làm hơi khác
-            // cart = {}
-            // document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
-
-            window.location.href = "{% url 'home' %}" // chuyển hướng về home
+        .then((response) =>{
+            response.json();
+            window.location.href = "{% url 'home' %}"
         })
+
+
+        // .then((data) => {
+        //     console.log('Success: ', data); // send data thành công, xong
+
+        //     // clear cart, có thể bị lỗi vì mình làm hơi khác
+        //     // cart = {}
+        //     // document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
+
+        //     window.location.href = "{% url 'success' %}" // chuyển hướng về home
+        // })
     }
 </script>
 

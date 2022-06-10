@@ -21,7 +21,7 @@ class Person(models.Model):
     dia_chi = models.CharField('Địa chỉ', max_length=1000, null=True)
     email = models.CharField('Email', max_length=50, null=True)
     # chuc_vu = models.CharField('Chức vụ', max_length=100, null=True, choices=list_chucvu)
-    profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
+    profile_pic = models.ImageField(default="profile1.png", null=True)
     user = models.OneToOneField(User, blank=True, null=True, on_delete=models.CASCADE) # a user can have 1 customer, a customer have a user
     
     def __str__(self):
