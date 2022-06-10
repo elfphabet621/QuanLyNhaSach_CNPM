@@ -5,220 +5,63 @@
 
 {% block content %}
 <style>
+  body{
+    text-align: center;
+  }
   #messages{
-    position: relative;
+    position: absolute;
     text-align: center;
     color:#000000;
-    top: -1017px;
+    top: 160px;
     background-color: yellow;
     padding: 5px;
     width: 700px;
     height: 30px;
     border-radius: 30px;
-    left: 170px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
     font-weight: bold;
     font-size: 15px;
   }
 
-  #id_ten_sach{
-   position: relative;
-   border-radius: 50px;
-  width: 790px;
-  height: 50px;
-  padding-left: 20px;
-  left: 100px;
-  background-color: rgb(255, 255, 255);
-  }
-  .ts_title{
-    position: relative;
-    left: 110px;
+  #id_ten_sach, #id_tac_gia, #id_the_loai, #id_nha_xuat_ban, #id_ngay_nhap, #id_don_gia, #id_nam_xuat_ban, #id_gia_ban, #id_so_luong, #id_mo_ta{
+    border-radius: 50px;
+    height: 50px;
+    padding-left: 20px;
+    background-color: rgb(255, 255, 255);
   }
 
-  .nn_title{
-    position: relative;
-    left: 110px;
-  }
-  .ttg_title{
-    position: relative;
-    left: 110px;
-  }
-  #id_tac_gia{
-    position: relative;
-   border-radius: 50px;
-  width: 790px;
-  height: 50px;
-  padding-left: 20px;
-  left: 100px;
-  background-color: rgb(255, 255, 255);
+  #id_ten_sach, #id_tac_gia, #id_mo_ta{
+    width: 820px;
   }
 
-  #id_the_loai{
-    position: relative;
-   border-radius: 50px;
-  width: 380px;
-  height: 50px;
-  padding-left: 20px;
-  left: 100px;
-  background-color: rgb(255, 255, 255);
-  }
-
-  .tl_title{
-    position: relative;
-    left: 110px;
-  }
-  .nxb_title{
-    
-    position: relative;
-    left: 520px;
-    top:-75px;
-  }
-
-  #id_nha_xuat_ban{
-  position: relative;
-  top:-75px;
-  border-radius: 50px;
-  width: 380px;
-  height: 50px;
-  padding-left: 20px;
-  left: 510px;
-  background-color: rgb(255, 255, 255);
-  }
-
-  .nn_title{
-    position: relative;
-    top:-62px;
-    left: 110px;
-  }
-
-
-  .namxb_title{
-    position: relative;
-    top:-136px;
-    left: 520px;
-  }
-  #id_ngay_nhap{
-  position: relative;
-  top:-60px;
-  border-radius: 50px;
-  width: 380px;
-  height: 50px;
-  padding-left: 20px;
-  left: 100px;
-  background-color: rgb(255, 255, 255);
-  }
-
-  #id_don_gia{
-  position: relative;
-  top:-120px;
-  border-radius: 50px;
-  width: 380px;
-  height: 50px;
-  padding-left: 20px;
-  left: 100px;
-  background-color: rgb(255, 255, 255);
-  }
-
-  #id_nam_xuat_ban{
-  position: relative;
-  top:-135px;
-  border-radius: 50px;
-  width: 380px;
-  height: 50px;
-  padding-left: 20px;
-  left: 510px;
-  background-color: rgb(255, 255, 255);
-  }
-
-  #id_gia_ban{
-  position: relative;
-  top:-195px;
-  border-radius: 50px;
-  width: 380px;
-  height: 50px;
-  padding-left: 20px;
-  left: 510px;
-  background-color: rgb(255, 255, 255);
-  }
-
-  #id_so_luong{
-  position: relative;
-  top:-184px;
-  border-radius: 50px;
-  width: 200px;
-  height: 40px;
-  padding-left: 20px;
-  left: 395px;
-  background-color: rgb(255, 255, 255);
+  #id_the_loai, #id_nha_xuat_ban, #id_ngay_nhap, #id_don_gia, #id_nam_xuat_ban, #id_gia_ban,  #id_so_luong{
+    width: 310px;
   }
 
   #id_mo_ta{
-  position: relative;
-  top:-184px;
-  border-radius: 20px;
-  width: 600px;
-  height: 100px;
-  padding-left: 20px;
-  left: 180px;
-  background-color: rgb(255, 255, 255);
+    border-radius: 0;
+    border-color: #000000;
+    height: 200px;
   }
 
   input[type=submit]{
-    position: relative;
-  background-color: #04AA6D;
-  border: none;
-  color: white;
-  padding: 16px 32px;
-  text-decoration: none;
-  margin: 4px 2px;
-  cursor: pointer;
-  left: 650px;
-  top: -180px;
-  
+    background-color: #04AA6D;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: large;
+    margin: 4px 2px;
+    cursor: pointer; 
 }
 
-  #id_anh_sach{
-  position: relative;
-  top:-184px;
-  left: 230px;
-  
-  }
-
-  .dg_title{
-    position: relative;
-    top:-124px;
-    left: 110px;
-  }
-
-
-  .gb_title{
-    position: relative;
-    top:-193px;
-    left: 520px;
-  }
-
-  .sl_title{
-    position: relative;
-    top:-184px;
-    left: 410px;
-  }
-
-  .mt_title{
-    position: relative;
-    top:-184px;
-    left: 230px;
-  }
-
-  .as_title{
-    position: relative;
-    top:-184px;
-    left: 230px;
-  }
   .main_title{
     font-size: 30px;
     font-weight: bold;
   }
-
-  
 
   .autocomplete {
   /*the container must be positioned relative:*/
@@ -253,83 +96,124 @@
 }
 
 .luu_y{
-  position: relative;
   color: red;
   font-family: 'Courier New', Courier, monospace;
   font-size: 13px;
   font-weight: bold;
   font-style: italic;
   opacity: 70%;
-  top: -492px;
-  left: 480px;
 }
 
 .luu_y2{
-  position: relative;
-  color: grey;
+  color: rgb(44, 43, 43);
   font-family: 'Courier New', Courier, monospace;
   font-size: 13px;
   font-weight: bold;
   font-style: italic;
   opacity: 70%;
-  top: -700px;
-  left: 193px;
 }
 
+.form-body {
+    /* background:white; */
+    padding: 5px 10px;
+    width: 85%; 
+    margin : auto;
+}
+
+.row{
+    display: flex;
+}
+
+.input-group{
+    display: flex;
+    flex-direction: column; 
+    flex: 1;
+    margin-top: 15px;
+}
+
+.input-label{
+    align-self: flex-start;
+    margin-left: 22%;
+}
 </style>
-<form autocomplete="off" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  <div><p class="main_title">Nhập sách mới</p></div>
-  <hr>
-  
-  <div class="ts_title"><strong>Tên sách</strong></div>
-  <div class="cl_ten_sach">
-    {{form.ten_sach}}
-  </div><br>
-
-  <div class="ttg_title"><strong>Tên tác giả</strong></div>
-  <div class="">{{form.tac_gia}}</div>
+<div><p class="main_title">Nhập sách mới</p></div>
   <br>
-
-  <div class="tl_title"><strong>Thể loại</strong></div>
-  <div>{{form.the_loai}}</div>
+  <hr>
+<form autocomplete="off" method="POST" enctype="multipart/form-data" class="form-body">
+  {% csrf_token %}
   
-  <div class="nxb_title"><strong>Nhà xuất bản</strong></div>
-  {{form.nha_xuat_ban}}
+  <div class="row">
+      <div class="input-group">
+        <div class="input-label" style="margin-left: 10%;"><strong>Tên sách</strong></div>
+        <div>{{form.ten_sach}}</div>
+      </div>
+  </div>
+  
+  <div class="row">
+    <div class="input-group">
+        <div class="input-label" style="margin-left: 10%;"><strong>Tên tác giả</strong></div>
+        <div>{{form.tac_gia}}</div>
+    </div>
+</div>
 
-  <div class="nn_title"><strong>Ngày nhập</strong></div>
-  <div >{{form.ngay_nhap}}</div>
+  <div class="row">
+    <div class="input-group">
+        <div class="input-label"><strong>Thể loại</strong></div>
+        <div>{{form.the_loai}}</div>
+    </div> 
+    <div class="input-group">
+        <div class="input-label"><strong>Nhà xuất bản</strong></div>
+        <div>{{form.nha_xuat_ban}}</div>
+    </div>
+</div>
+ 
+<div class="row">
+    <div class="input-group">
+        <div class="input-label"><strong>Ngày nhập</strong><span class="luu_y2">(yy-mm-dd | dd/mm/yy)</span></div>
+        <div>{{form.ngay_nhap}}</div>
+    </div>
+         
+    <div class="input-group">
+        <div class="input-label"><strong>Năm xuất bản</strong></div>
+        <div>{{form.nam_xuat_ban}}</div>
+    </div>  
+</div>
+ 
+<div class="row">
+    <div class="input-group">
+        <div class="input-label"><strong>Đơn giá</strong></div>
+        <div>{{form.don_gia}}</div>      
 
-  <div class="namxb_title"><strong>Năm xuất bản</strong></div>
-  {{form.nam_xuat_ban}}
+    </div>
+    <div class="input-group">
+        <div class="input-label"><strong>Giá bán</strong></div>
+        <div>{{form.gia_ban}}</div>
+    </div>
+</div>
 
-  <div class="dg_title"><strong>Đơn giá</strong></div>
-  {{form.don_gia}}
+<div class="row">
+    <div class="input-group">
+        <div class="input-label"><strong>Số lượng</strong><span class="luu_y">(*tối thiểu 150)</span></div>
+        <div>{{form.so_luong}}</div>
+    </div>
+    <div class="input-group">
+        <div class="input-label"><strong>Ảnh sách</strong></div>
+        <div>{{form.anh_sach}}</div>
+    </div>
+</div>
 
-  <div class="gb_title"><strong>Giá bán</strong></div>
-  {{form.gia_ban}}
-
-  <div class="sl_title"><strong>Số lượng</strong></div>
-    
-  {{form.so_luong}}
-
-  <div class="mt_title"><strong>Mô tả</strong></div>
+  <div class="mt_title input-title"><strong>Mô tả</strong></div>
   {{form.mo_ta}}
-  
-  <div class="as_title"><strong>Ảnh sách</strong></div>
-  {{form.anh_sach}}
   <br>
   
   <div class="submit">
     <input class="btn" type="submit" value="Lưu">
   </div>
 
-  <p class="luu_y">(*tối thiểu 150)</p>
-  <p class="luu_y2">(dd/mm/yy)</p>
+  
   {% for message in messages %}
     <p id="messages">{{message}}</p>
   {% endfor %}
-
 </form>
 
 <script>
