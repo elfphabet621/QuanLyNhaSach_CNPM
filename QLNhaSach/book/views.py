@@ -214,7 +214,7 @@ def book_entry(request):
             for s in sach :
                 if s.ten_sach == form.cleaned_data.get('ten_sach') :
                     if  (form.cleaned_data.get('so_luong') < 150) | (s.so_luong >= 300) :
-                        messages.info(request, 'Number of book add must be higher 150 and Book in inventory must have lower 300')
+                        messages.info(request, 'Lượng nhập tối thiểu 150 và lượng tồn phải nhỏ hơn 300')
                         return redirect('book_entry')
                     else :
                         s.ten_sach = form.cleaned_data.get('ten_sach')
@@ -239,7 +239,7 @@ def book_entry(request):
                         return redirect('book_entry')
 
             if  form.cleaned_data.get('so_luong') < 150 :
-                messages.info(request, 'Number of book add must be higher 150')
+                messages.info(request, 'Số lượng sách nhập phải lớn hơn 150')
                 return redirect('book_entry')
             else :
                 form.ten_sach = form.cleaned_data.get('ten_sach')
@@ -260,10 +260,10 @@ def book_entry(request):
                 ns.so_luong = form.so_luong
                 ns.save()
                         
-                messages.info(request, 'Success')
+                messages.info(request, 'Thành công')
                 return redirect('book_entry')
         else:
-            messages.info(request, 'form not valid')
+            messages.info(request, 'Nhập sai thông tin')
             return redirect('book_entry')
 
     context = {'form': form, 'sach': sach}

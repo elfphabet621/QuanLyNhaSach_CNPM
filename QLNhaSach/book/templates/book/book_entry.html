@@ -264,6 +264,18 @@
   left: 480px;
 }
 
+.luu_y2{
+  position: relative;
+  color: grey;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  font-weight: bold;
+  font-style: italic;
+  opacity: 70%;
+  top: -700px;
+  left: 193px;
+}
+
 </style>
 <form autocomplete="off" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
@@ -312,7 +324,8 @@
     <input class="btn" type="submit" value="Lưu">
   </div>
 
-  <p class="luu_y">(* Lượng nhập từ 150 trở lên và lượng tồn ít hơn 300)</p>
+  <p class="luu_y">(*tối thiểu 150)</p>
+  <p class="luu_y2">(dd/mm/yy)</p>
   {% for message in messages %}
     <p id="messages">{{message}}</p>
   {% endfor %}
