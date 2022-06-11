@@ -19,11 +19,6 @@ Với xu thế mua hàng trên Internet ngày một tăng của người dùng �
 Xây dựng một hệ thống quản lý thuận tiện cho nhà sách trên nền tảng là web, nhóm chúng em đã lên ý tưởng và thực hiện đồ án mang tên “Quản lý nhà sách”. Đồ án mong muốn mang lại một hệ thống quản lý thông minh, chính xác và hiệu quả nhất cho các doanh nghiệp bán sách. 
 
 ---
-# Tham khảo chéo các project liên quan : 
-- Project: https://github.com/divanov11/crash-course-CRM/tree/Part-20-Password-Reset-Email
-- Project: []
-
----
 # Môi trường thực thi (phiên bản hệ điều hành, SDK, Dev Tools, cơ sở dữ liệu, etc.)
 - Framework: Django <br>
 - Ngôn ngữ lập trình : python3
@@ -72,11 +67,17 @@ python manage.py runserver
 <br>
 
 # Hướng dẫn deploy project lên Heroku.
-<Điền vào đây>
+- Bước 1: đăng nhập Heroku, tại giao diện chọn New $\to$ Create New App
+- Bước 2: tạo app có tên qlns-group5 và nhấn **Create App**, được kết quả như hình dưới 
+- Bước 4: bấm vào **qlns-group5**. ở tab **Deploy**, chọn **GitHub** và kết nối tới tài khoản github của mình. Sau khi kết nối thành công, thì thẻ **GitHub** hiển thị chữ <font color='green'>Connected</font>
+- Bước 5: tạo 1 repo tên **"QLNhaSach"** trên GitHub và clone hoặc pull GitHub [này](https://github.com/LeKiet258/QLNhaSach) về repo vừa tạo.
+- Bước 6: trở lại Heroku, ta tìm kiếm repo **QLNhaSach** vừa tạo ở ô tìm kiếm. Kết quả là nó tìm thấy repo này $\to$ ấn **Connect**
+- Bước 7: chỉnh lại nhánh để deploy là nhánh **master** (hoặc **main** nếu repo chỉ có 1 branch này) 
+- Bước 8: ấn **Deploy branch**, chờ cho Heroku chạy. Sau khi chạy thành công, sẽ có nút <font color='green'>View</font> $\to$ ấn vào nút <font color='green'>View</font> để tới trang web sau khi deploy 
 
 ---
 # Link Google Drive hoặc Youtube video demo
-[link]
+- Link Google Drive: [link](https://drive.google.com/drive/folders/1VAljnaSdJ3CFKZkjPJd3iN1vkvWRX2TR)
 
 ---
 # Current status
@@ -96,10 +97,24 @@ python manage.py runserver
 | Báo cáo nợ       | thủ kho  | Xem báo cáo tháng                 | - Xem được nợ đầu, phát sinh, nợ cuối                                 |
 
 ---
-# Future works
+# Future work
 - Sửa background các page <br>
 - Cấp quyền các role đặc biệt <br>
 - Lựa chọn và tìm kiếm sách bằng tên và thể loại <br>
 - Xuất ra các cách thanh toán cụ thể <br>
 - Thêm page riêng cho các roll đặc biệt admin, nhân viên, thủ kho <br>
 - Thêm các cách thanh toán khác
+
+---
+# Tham khảo chéo các project liên quan : 
+- Project: https://github.com/divanov11/crash-course-CRM/tree/Part-20-Password-Reset-Email
+- Project: https://github.com/justdjango/django-ecommerce
+
+---
+# Các tham khảo khác : 
+- [cs.unb.ca](http://www.cs.unb.ca/~bhavsar/courses/cs3013/cs3013/lab7.htm)
+- [Fix django.forms](https://www.youtube.com/watch?v=ufI9Skz10xM)
+- [Django Ecommerce Website](https://www.youtube.com/playlist?list=PL-51WBLyFTg0omnamUjL1TCVov7yDTRng)
+- [Django (3.0) Crash Course Tutorials | Customer Management App](https://www.youtube.com/playlist?list=PL-51WBLyFTg2vW-_6XBoUpE7vpmoR3ztO)
+- [W3Schools Online Web Tutorials](https://www.w3schools.com/)
+- [Boootstrap](https://getbootstrap.com/)
