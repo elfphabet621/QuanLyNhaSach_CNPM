@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
+from django.utils import timezone
 
 # Create your models here.
 class Person(models.Model):
@@ -46,16 +47,12 @@ class Person(models.Model):
             for hd in cac_hd:
                 if hd.tong_tien != hd.da_tra and hd.da_tra != -1:
                     s += hd.tong_tien - hd.da_tra
-                    print(hd, s)
+                    # print(hd, s)
             return s
-
-
-# class TheLoai(models.Model):
     
 class Sach(models.Model):
-    # id = models.CharField(max_length=100, primary_key=True) # PK: id và ngay_nhap
     ten_sach = models.CharField('Tên sách', max_length=100, null=True)
-    ngay_nhap = models.DateField('Ngày nhập', null=True, editable=True)
+    ngay_nhap = models.DateField('Ngày nhập', null=True, default=timezone.now)
     so_luong = models.PositiveIntegerField('Số lượng', null=True)
     the_loai = models.CharField('Thể loại', max_length=100, null=True)
     tac_gia = models.CharField('Tác giả', max_length=100, null=True)
@@ -72,10 +69,6 @@ class Sach(models.Model):
     
     def get_absolute_url(self):
         return f"/book/{self.id}/" 
-    
-    # def clean(self):
-    #     if self.nguoi_nhap.chuc_vu != 'thủ kho':
-    #         raise ValidationError('người nhập phải là thủ kho!')
 
     @property
     def imageURL(self):
@@ -88,11 +81,25 @@ class Sach(models.Model):
     @property
     def get_book_quantity(self):
         return self.so_luong-20
+    
+    @property
+    def get_name(self):
+        return self.ten_sach
         
     class Meta: # vì django ko cho tạo PK 2 thuộc tính nên làm cách này
         unique_together = ('id', 'ngay_nhap',)
         verbose_name_plural = "Sách"
 
+class NhapSach(models.Model):
+    ten_sach = models.CharField('Tên sách', max_length=100, null=True)
+    ngay_nhap = models.DateField('Ngày nhập', null=True, default=timezone.now)
+    so_luong = models.PositiveIntegerField('Số lượng', null=True)
+    
+    def __str__(self):
+        return f'{self.ten_sach}_{self.ngay_nhap}'
+    class Meta:
+        verbose_name_plural = 'Nhập sách'  
+          
 class HoaDon(models.Model):
     class Meta:
         verbose_name_plural = 'Hóa đơn'
@@ -116,7 +123,6 @@ class HoaDon(models.Model):
         # constraint: chỉ nợ tối đa 20.000d
         if self.tong_tien is not None and self.da_tra is not None and self.tong_tien - self.da_tra > 20000:
             raise ValidationError('khách hàng chỉ được phép nợ tối đa 20.000d')
-
 
     @property 
     def get_cart_total(self):
@@ -158,3 +164,12 @@ class Debt(models.Model):
     
     @property
     def no_cuoi(self): return self.no_dau + self.phat_sinh
+    
+# util model
+class Inventory(models.Model):
+    ten_sach = models.CharField('Tên sách', max_length=100, null=True)
+    ton_dau = models.FloatField(null=True)
+    phat_sinh = models.FloatField(null=True)
+
+    @property
+    def ton_cuoi(self): return self.ton_dau + self.phat_sinh

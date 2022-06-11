@@ -26,7 +26,7 @@
     <div class="row mt-4">
 		{% for s in sach %}
 			{% if s.get_book_quantity > 0 %}
-			<div class="col-md-3 mb-4">
+			<div class="col-md-3 mb-4 mt-4">
 				<div class="card h-100 book-card">
 					<a href="{{s.get_absolute_url}}" class="img-card"><img class="mx-auto" src="{{s.imageURL}}"></a>
 

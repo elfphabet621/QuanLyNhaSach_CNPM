@@ -1,6 +1,5 @@
 {% extends 'book/main.html' %}
 
-<!-- Xem chi tiết sách -->
 {% block title %}Sách{% endblock %}
 
 {% block content %}
@@ -34,7 +33,7 @@
 				</tr>
 			</table>
 			{% if user.person.get_debt <= 20000 %}
-            <div class="input-group my-3" style="width:30%;">
+            <div class="input-group my-3" style="width:40%;">
                 <input type="number" value="1" min="1" max="{{book.get_book_quantity}}" class="form-control product-qty-{{book.id}}" id="productQty" />
                 <div class="input-group-append">
 					<input type="hidden" class="product-image-{{book.id}}" value="{{book.anh_bia.url}}" />
@@ -83,6 +82,11 @@
 		var bookId = this.dataset.book
 		var action = this.dataset.action
 		var quantity = Number(document.getElementById('productQty').value)
+		var max_val = {{book.get_book_quantity}}
+		if (quantity <= 0)
+			quantity = 1
+		if (quantity > max_val)
+			quantity = max_val
 		updateCart(bookId, action, quantity)
 	})
 

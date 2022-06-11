@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'book.apps.BookConfig',
     'django.contrib.humanize',
     'django_filters',
-
+    
 ]
 
 MIDDLEWARE = [
@@ -109,11 +109,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 USE_I18N = True
 
 USE_TZ = True
+DATE_INPUT_FORMATS = ['%d/%m/%Y']
 
 
 # Static files (CSS, JavaScript, Images)
@@ -131,7 +132,5 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 # STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static').replace('\\', '/')
