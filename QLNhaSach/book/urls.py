@@ -35,4 +35,6 @@ urlpatterns = [
     path('debt_report/', views.debt_report, name='debt_report'),
     path('pay_debt/', views.pay_debt, name='pay_debt'),
     path('inventory_report/', views.inventory_report, name='inventory_report'),
+    path('create_invoice/', views.create_invoice, name='create_invoice'),
+    path('success/', views.success, name='success'),
 ]

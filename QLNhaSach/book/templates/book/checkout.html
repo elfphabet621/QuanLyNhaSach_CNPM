@@ -60,12 +60,6 @@
     </div>
     <br>
     <br>
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{form}}
-
-        <input type="submit" name="Thanh toán">
-    </form>
     
     <br>
     <br>
@@ -127,40 +121,46 @@
     }
 
     document.getElementById('payment').addEventListener('click', function(){
-        alert('Đã thanh toán');
-
-        window.location.href = "{% url 'home' %}"
+        // alert('Đã thanh toán');
+        submitData()
     })
 
-    function submitFormData(){
+    function submitData(){
+        var pay = String(document.getElementById('pay').value);
+        var method = String(document.getElementById('payment-option').value);
+        var cart_total = String({{hd.get_cart_total}});
+        var url= '/create_invoice/'
 
-        // lấy thông tin từ form, ví dụ
-        shippingInfo.address = form.address.value
-
-        // url của html muốn truyền post tới, theo video đã gửi trên group
-        var url= '/process_order/'
-
-        // câu lệnh fetch
+        if (pay === "") {pay = cart_total}
         fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': csrftoken,
             },
-            body:JSON.stringify({'shipping': shippingInfo}) // truyền thông data muốn gửi 
+            body: JSON.stringify({'pay': pay, 'total': cart_total, 'method': method}), // truyền thông data muốn gửi 
         })
+        window.location.href = "{% url 'success' %}"
 
-        .then((response) => response.json()) 
+        // .then((response) =>{
+        //     result = response.json();
+        //     window.location.href = "{% url 'success' %}"
+        //     status_code = response.status;
+        //     if(status_code != 200) {
+        //         console.log('Error in getting brand info!')
+        //         return false;
+        //     }
+        //     return result
+        //     })
 
-        .then((data) => {
-            console.log('Success: ', data); // send data thành công, xong
+        // .then(result => {
+        //     console.log(result);
 
-            // clear cart, có thể bị lỗi vì mình làm hơi khác
-            // cart = {}
-            // document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
+        // })
 
-            window.location.href = "{% url 'home' %}" // chuyển hướng về home
-        })
+        // .catch(error => {
+        // console.log(error)
+        // })
     }
 </script>
 

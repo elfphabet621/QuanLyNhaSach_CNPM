@@ -31,7 +31,8 @@ object-fit: cover;
 } 
 
 .card-title{
-	height: 40px;
+	height: 48px;
+	overflow: auto;
 }
 /* endhome */
 
