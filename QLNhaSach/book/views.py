@@ -154,8 +154,9 @@ def registerPage(request):
             #Create Customer have been taken care of (in signals)
             messages.success(request, 'Account was created for '+ username)
             return redirect('login')
-        else:
-            messages.error(request, "Unsuccessful registration. Invalid information.")
+        # else:
+        #     print("Error")
+            # messages.error(request, "Unsuccessful registration. Invalid information.")
 
     context = {'form': form}
     return render(request, 'book/register.html', context)
