@@ -42,7 +42,7 @@
           <li class="nav-item {% if request.resolver_match.view_name == 'list_invoice' %}active{% endif %}">
             <a class="nav-link" href="{% url 'list_invoice' %}">Hóa đơn</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item {% if request.resolver_match.view_name == 'pay_debt' %}active{% endif %}">
             <a class="nav-link" href="{% url 'pay_debt' %}">Trả nợ</a>
           </li>
         {% endif %}

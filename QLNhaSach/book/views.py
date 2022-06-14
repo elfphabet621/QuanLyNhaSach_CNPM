@@ -7,14 +7,14 @@ from django.contrib import messages
 from .forms import *
 from .models import *
 from .utils import *
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from .decorators import unauthenticated_user, allowed_users
-import math, json
+import json
 from .filters import BookFilter
 from collections import defaultdict
-from collections import Counter
 from datetime import date
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import datetime
 
 # Trang chủ
 def home(request):
@@ -41,7 +41,7 @@ def home(request):
 
     page = request.GET.get('page', 1)
     paginator = Paginator(sach, 12)
-   
+    
     try:
         sach = paginator.page(page)
     except PageNotAnInteger:
@@ -61,31 +61,6 @@ def cart(request):
 
 @login_required(login_url='login')
 def checkout(request):
-    ########### Kiệt ###########
-    # form = InvoiceForm()
-    # if request.method == "POST":
-    #     form = InvoiceForm(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-        
-    # if request.user.is_authenticated:
-    #     kh = request.user.person
-    #     if len(HoaDon.objects.filter(khach_hang = kh)) == 0:
-    #         newid_hd = len(HoaDon.objects.all())+1
-    #         if int(newid_hd) <= 9:
-    #             newid_hd = '0'+ str(newid_hd)
-    #         newid_hd = 'HD_0'+ str(newid_hd)
-    #         hd = HoaDon.objects.create(khach_hang = kh, id_HD=newid_hd)
-    #     else:
-    #         hd = HoaDon.objects.get(khach_hang = kh)
-    #     mat_hang = hd.chitiethoadon_set.all()
-    #     cartItems = hd.get_cart_items
-    # else:
-    #     mat_hang = []
-    #     hd = {'get_cart_total': 0, 'get_cart_item': 0}
-    #     cartItems = hd.get_cart_items
-    # context = {'mat_hang': mat_hang, 'hd': hd, 'cartItems': cartItems}
-    ############ Hạ ##############
     cart_info = get_cart_info(request)
     context = {'mat_hang': cart_info['mat_hang'], 'hd': cart_info['hd'], 'cartItems':cart_info['cartItems']}
 
@@ -136,7 +111,11 @@ def customer_info(request):
     if request.method == "POST":
         form = CustomerInfo(request.POST, request.FILES, instance=customer)
         if form.is_valid():
-            print(form.cleaned_data['profile_pic'])
+            if form.cleaned_data['profile_pic'] is None:
+                form['profile_pic'] = "profile1.png"
+
+            # print(form.cleaned_data['profile_pic'])
+
             form.save()
     
     cart_info = get_cart_info(request)
@@ -147,8 +126,7 @@ def customer_info(request):
 def listInvoice(request):
     user = request.user.person
     
-    invoices = HoaDon.objects.filter(khach_hang__id=user.id)
-    # print(invoices)
+    invoices = HoaDon.objects.filter(khach_hang__id=user.id).exclude(tong_tien=0, da_tra=-1)
 
     cart_info = get_cart_info(request)
     context = {'invoices': invoices, 'cartItems':cart_info['cartItems']}
@@ -176,8 +154,9 @@ def registerPage(request):
             #Create Customer have been taken care of (in signals)
             messages.success(request, 'Account was created for '+ username)
             return redirect('login')
-        else:
-            messages.error(request, "Unsuccessful registration. Invalid information.")
+        # else:
+        #     print("Error")
+            # messages.error(request, "Unsuccessful registration. Invalid information.")
 
     context = {'form': form}
     return render(request, 'book/register.html', context)
@@ -214,8 +193,11 @@ def book_entry(request):
         if form.is_valid():
             for s in sach :
                 if s.ten_sach == form.cleaned_data.get('ten_sach') :
-                    if  (form.cleaned_data.get('so_luong') < 150) | (s.so_luong >= 300) :
-                        messages.info(request, 'Lượng nhập tối thiểu 150 và lượng tồn phải nhỏ hơn 300')
+                    if  (form.cleaned_data.get('so_luong') < 150)  :
+                        messages.info(request, 'Lượng nhập tối thiểu 150')
+                        return redirect('book_entry')
+                    elif (s.so_luong >= 300):
+                        messages.info(request, 'Lượng tồn phải nhỏ hơn 300')
                         return redirect('book_entry')
                     else :
                         s.ten_sach = form.cleaned_data.get('ten_sach')
@@ -270,30 +252,30 @@ def book_entry(request):
     context = {'form': form, 'sach': sach}
     return render(request, 'book/book_entry.html', context)
 
-# Tạo một cuốn sách mới
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['thủ kho'])
-def createBook(request, ):
-    # if request.method == "POST":
-        # if formset.is_valid():
-        #     formset.save()
-        #     return redirect('/')
+# # Tạo một cuốn sách mới
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['thủ kho'])
+# def createBook(request, ):
+#     # if request.method == "POST":
+#         # if formset.is_valid():
+#         #     formset.save()
+#         #     return redirect('/')
 
-    context = {}
+#     context = {}
 
-    return render(request, 'book/book_form.html', context)
+#     return render(request, 'book/book_form.html', context)
 
-# Cập nhật một cuốn sách
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['thủ kho'])
-def updateBook(request):
-    # if request.method == "POST":
-        # if form.is_valid() :
-        #     form.save()
-        #     return redirect('/')
+# # Cập nhật một cuốn sách
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['thủ kho'])
+# def updateBook(request):
+#     # if request.method == "POST":
+#         # if form.is_valid() :
+#         #     form.save()
+#         #     return redirect('/')
 
-    context = {}
-    return render(request, 'book/book_form.html', context)
+#     context = {}
+#     return render(request, 'book/book_form.html', context)
 
 # Xóa một cuốn sách
 @login_required(login_url='login')
@@ -307,6 +289,7 @@ def deleteBook(request):
     context = {}
     return render(request, 'book/delete_book.html', context)
 
+@login_required(login_url='login')
 def book_details(request, pk):
     if request.user.is_authenticated:
         book = Sach.objects.get(id=pk) # truy vấn sách có mã pk từ csdl
@@ -322,8 +305,31 @@ def book_details(request, pk):
 def debt_report(request):
     current_year, current_month = 2022, 1
     hd_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
-                                        ngay_lap_HD__month=current_month,
-                                        da_tra__gt=-1)
+                                    ngay_lap_HD__month=current_month)
+    
+    # nợ đầu: accumulate từ tháng current_month-1 trở về trước
+    debt_users = defaultdict(int)
+    for i in range(1, current_month):
+        hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=current_year, ngay_lap_HD__month= i)
+        for hd in hd_month_i:
+            if hd.tong_tien - hd.da_tra != 0:
+                debt_users[hd.khach_hang] += (hd.tong_tien - hd.da_tra)
+    
+    # với những khách nợ, coi thử tháng current_month có phát sinh (nợ) thêm j ko
+    incur_user = defaultdict(int)
+    for user in debt_users.keys():
+        hd_cur_month = HoaDon.objects.filter(khach_hang = user,
+                                            ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month)
+        # print('kiem tra: ', hd_cur_month[0].tong_tien)
+        try:
+            phat_sinh = hd_cur_month[0].tong_tien - hd_cur_month[0].da_tra 
+            # if hd_cur_month[0].da_tra == -1: để sửa giỏ hàng, chưa test
+            #     phat_sinh = 0
+        except:
+            phat_sinh = 0
+        incur_user[user] += phat_sinh
+        
+    # biến các debt_users thành các instance thuộc model Debt
     list_debt = []
     is_empty = True
     if request.method == "POST":
@@ -431,6 +437,25 @@ def inventory_report(request):
                 'months': [i for i in range(1,13)], 'select_month': select_month,
                 'years': [2022], 'select_year': select_year}
     return render(request, 'book/inventory_report.html', context= context)
+
+# @login_required(login_url='login')
+def create_invoice(request):
+    context = {}
+
+    data = json.loads(request.body)
+    kh = request.user.person
+    hd = HoaDon.objects.get(khach_hang = kh, da_tra=-1, tong_tien=0)
+    hd.da_tra = data['pay']
+    hd.phuong_thuc_thanh_toan = "Tiền mặt" if data['method'] == "tien-mat" else "Thẻ ngân hàng"
+    hd.tong_tien = data['total']
+    date = datetime.datetime.now()
+    hd.ngay_lap_HD = date
+    hd.save()
+
+    return JsonResponse('HD was added', safe=False)
+
+def success(request):
+    return render (request, 'book/success.html')
 
 @allowed_users(allowed_roles=['khách hàng'])
 def pay_debt(request):
