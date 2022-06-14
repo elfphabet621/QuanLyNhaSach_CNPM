@@ -13,7 +13,7 @@ def customer_profile(sender, instance, created, **kwargs):
             newid = '0'+ str(newid)
 
         Person.objects.create(
-            id='kh_0' + newid,
+            id='kh_0' + str(newid),
             ho_ten= instance.username,
             email= instance.email,
             user=instance

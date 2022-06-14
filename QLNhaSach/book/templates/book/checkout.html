@@ -127,20 +127,32 @@
 
     function submitData(){
         var pay = String(document.getElementById('pay').value);
-        var method = String(document.getElementById('payment-option').value);
         var cart_total = String({{hd.get_cart_total}});
-        var url= '/create_invoice/'
-
         if (pay === "") {pay = cart_total}
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,
-            },
-            body: JSON.stringify({'pay': pay, 'total': cart_total, 'method': method}), // truyền thông data muốn gửi 
-        })
-        window.location.href = "{% url 'success' %}"
+        if (cart_total - parseInt(pay) > 20000){
+            alert("Số tiền nợ tối đa là 20000 vnd");
+            location.reload();
+        }
+        else if (cart_total - parseInt(pay) < 0) {
+            alert("Số tiền đã trả vượt quá số tiền cần trả");
+            location.reload(); 
+        }
+        else
+        {
+            var method = String(document.getElementById('payment-option').value);
+            var url= '/create_invoice/'
+
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({'pay': pay, 'total': cart_total, 'method': method}), // truyền thông data muốn gửi 
+            })
+            window.location.href = "{% url 'success' %}"
+        }
 
         // .then((response) =>{
         //     result = response.json();
