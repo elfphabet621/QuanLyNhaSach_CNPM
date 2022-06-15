@@ -114,8 +114,6 @@ def customer_info(request):
             if form.cleaned_data['profile_pic'] is None:
                 form['profile_pic'] = "profile1.png"
 
-            # print(form.cleaned_data['profile_pic'])
-
             form.save()
     
     cart_info = get_cart_info(request)

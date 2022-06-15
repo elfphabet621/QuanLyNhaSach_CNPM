@@ -12,7 +12,12 @@ class CreateUserForm(UserCreationForm):
 class CustomerInfo(ModelForm):
     class Meta:
         model = Person
-        fields = ['ho_ten', 'so_dien_thoai', 'email', 'profile_pic']
+        fields = ['ho_ten', 'so_dien_thoai', 'email', 'profile_pic', 'dia_chi']
+    
+    def __init__(self, *args, **kwargs):
+        super(CustomerInfo, self).__init__(*args, **kwargs) # Call to ModelForm constructor
+        self.fields['dia_chi'].widget.attrs['cols'] = 10
+        self.fields['dia_chi'].widget.attrs['rows'] = 20
 
 class InvoiceForm(ModelForm):
     class Meta:
