@@ -47,7 +47,7 @@ class Person(models.Model):
             for hd in cac_hd:
                 if hd.tong_tien != hd.da_tra and hd.da_tra != -1:
                     s += hd.tong_tien - hd.da_tra
-                    print(hd, s)
+                    # print(hd, s)
             return s
     
 class Sach(models.Model):
