@@ -7,12 +7,11 @@ from django.contrib import messages
 from .forms import *
 from .models import *
 from .utils import *
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from .decorators import unauthenticated_user, allowed_users
-import math, json
+import json
 from .filters import BookFilter
 from collections import defaultdict
-from collections import Counter
 from datetime import date
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
@@ -62,31 +61,6 @@ def cart(request):
 
 @login_required(login_url='login')
 def checkout(request):
-    ########### Kiệt ###########
-    # form = InvoiceForm()
-    # if request.method == "POST":
-    #     form = InvoiceForm(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-        
-    # if request.user.is_authenticated:
-    #     kh = request.user.person
-    #     if len(HoaDon.objects.filter(khach_hang = kh)) == 0:
-    #         newid_hd = len(HoaDon.objects.all())+1
-    #         if int(newid_hd) <= 9:
-    #             newid_hd = '0'+ str(newid_hd)
-    #         newid_hd = 'HD_0'+ str(newid_hd)
-    #         hd = HoaDon.objects.create(khach_hang = kh, id_HD=newid_hd)
-    #     else:
-    #         hd = HoaDon.objects.get(khach_hang = kh)
-    #     mat_hang = hd.chitiethoadon_set.all()
-    #     cartItems = hd.get_cart_items
-    # else:
-    #     mat_hang = []
-    #     hd = {'get_cart_total': 0, 'get_cart_item': 0}
-    #     cartItems = hd.get_cart_items
-    # context = {'mat_hang': mat_hang, 'hd': hd, 'cartItems': cartItems}
-    ############ Hạ ##############
     cart_info = get_cart_info(request)
     context = {'mat_hang': cart_info['mat_hang'], 'hd': cart_info['hd'], 'cartItems':cart_info['cartItems']}
 
@@ -140,8 +114,6 @@ def customer_info(request):
             if form.cleaned_data['profile_pic'] is None:
                 form['profile_pic'] = "profile1.png"
 
-            print(form.cleaned_data['profile_pic'])
-
             form.save()
     
     cart_info = get_cart_info(request)
@@ -180,8 +152,9 @@ def registerPage(request):
             #Create Customer have been taken care of (in signals)
             messages.success(request, 'Account was created for '+ username)
             return redirect('login')
-        else:
-            messages.error(request, "Unsuccessful registration. Invalid information.")
+        # else:
+        #     print("Error")
+            # messages.error(request, "Unsuccessful registration. Invalid information.")
 
     context = {'form': form}
     return render(request, 'book/register.html', context)
@@ -219,7 +192,7 @@ def book_entry(request):
             for s in sach :
                 if s.ten_sach == form.cleaned_data.get('ten_sach') :
                     if  (form.cleaned_data.get('so_luong') < 150) | (s.so_luong >= 300) :
-                        messages.info(request, 'Number of book add must be higher 150 and Book in inventory must have lower 300')
+                        messages.info(request, 'Lượng nhập tối thiểu 150 và lượng tồn phải nhỏ hơn 300')
                         return redirect('book_entry')
                     else :
                         s.ten_sach = form.cleaned_data.get('ten_sach')
@@ -244,7 +217,7 @@ def book_entry(request):
                         return redirect('book_entry')
 
             if  form.cleaned_data.get('so_luong') < 150 :
-                messages.info(request, 'Number of book add must be higher 150')
+                messages.info(request, 'Số lượng sách nhập phải lớn hơn 150')
                 return redirect('book_entry')
             else :
                 form.ten_sach = form.cleaned_data.get('ten_sach')
@@ -265,39 +238,39 @@ def book_entry(request):
                 ns.so_luong = form.so_luong
                 ns.save()
                         
-                messages.info(request, 'Success')
+                messages.info(request, 'Thành công')
                 return redirect('book_entry')
         else:
-            messages.info(request, 'form not valid')
+            messages.info(request, 'Nhập sai thông tin')
             return redirect('book_entry')
 
     context = {'form': form, 'sach': sach}
     return render(request, 'book/book_entry.html', context)
 
-# Tạo một cuốn sách mới
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['thủ kho'])
-def createBook(request, ):
-    # if request.method == "POST":
-        # if formset.is_valid():
-        #     formset.save()
-        #     return redirect('/')
+# # Tạo một cuốn sách mới
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['thủ kho'])
+# def createBook(request, ):
+#     # if request.method == "POST":
+#         # if formset.is_valid():
+#         #     formset.save()
+#         #     return redirect('/')
 
-    context = {}
+#     context = {}
 
-    return render(request, 'book/book_form.html', context)
+#     return render(request, 'book/book_form.html', context)
 
-# Cập nhật một cuốn sách
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['thủ kho'])
-def updateBook(request):
-    # if request.method == "POST":
-        # if form.is_valid() :
-        #     form.save()
-        #     return redirect('/')
+# # Cập nhật một cuốn sách
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['thủ kho'])
+# def updateBook(request):
+#     # if request.method == "POST":
+#         # if form.is_valid() :
+#         #     form.save()
+#         #     return redirect('/')
 
-    context = {}
-    return render(request, 'book/book_form.html', context)
+#     context = {}
+#     return render(request, 'book/book_form.html', context)
 
 # Xóa một cuốn sách
 @login_required(login_url='login')
@@ -311,6 +284,7 @@ def deleteBook(request):
     context = {}
     return render(request, 'book/delete_book.html', context)
 
+@login_required(login_url='login')
 def book_details(request, pk):
     if request.user.is_authenticated:
         book = Sach.objects.get(id=pk) # truy vấn sách có mã pk từ csdl
@@ -459,12 +433,11 @@ def inventory_report(request):
                 'years': [2022], 'select_year': select_year}
     return render(request, 'book/inventory_report.html', context= context)
 
-
+# @login_required(login_url='login')
 def create_invoice(request):
     context = {}
 
     data = json.loads(request.body)
-
     kh = request.user.person
     hd = HoaDon.objects.get(khach_hang = kh, da_tra=-1, tong_tien=0)
     hd.da_tra = data['pay']
@@ -474,7 +447,11 @@ def create_invoice(request):
     hd.ngay_lap_HD = date
     hd.save()
 
-    return render(request, 'book/success.html', context=context)
+    return JsonResponse('HD was added', safe=False)
+
+def success(request):
+    return render (request, 'book/success.html')
+
 @allowed_users(allowed_roles=['khách hàng'])
 def pay_debt(request):
     kh = Person.objects.filter(user = request.user)

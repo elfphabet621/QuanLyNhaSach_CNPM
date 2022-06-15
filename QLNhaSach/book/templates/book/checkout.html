@@ -122,50 +122,56 @@
 
     document.getElementById('payment').addEventListener('click', function(){
         // alert('Đã thanh toán');
-        
         submitData()
-
     })
 
     function submitData(){
-
-        // lấy thông tin từ form, ví dụ
-        var pay = document.getElementById('pay').value;
-        var method = document.getElementById('payment-option').value;
-
-        if (pay === "")
-        {
-            pay = {{hd.get_cart_total}}
+        var pay = String(document.getElementById('pay').value);
+        var cart_total = String({{hd.get_cart_total}});
+        if (pay === "") {pay = cart_total}
+        if (cart_total - parseInt(pay) > 20000){
+            alert("Số tiền nợ tối đa là 20000 vnd");
+            location.reload();
         }
-        console.log(method)
+        else if (cart_total - parseInt(pay) < 0) {
+            alert("Số tiền đã trả vượt quá số tiền cần trả");
+            location.reload(); 
+        }
+        else
+        {
+            var method = String(document.getElementById('payment-option').value);
+            var url= '/create_invoice/'
 
-        // url của html muốn truyền post tới, theo video đã gửi trên group
-        var url= '/success/'
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({'pay': pay, 'total': cart_total, 'method': method}), // truyền thông data muốn gửi 
+            })
+            window.location.href = "{% url 'success' %}"
+        }
 
-        // câu lệnh fetch
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken,
-            },
-            body:JSON.stringify({'pay': pay, 'total': {{hd.get_cart_total}}, 'method': method}) // truyền thông data muốn gửi 
-        })
+        // .then((response) =>{
+        //     result = response.json();
+        //     window.location.href = "{% url 'success' %}"
+        //     status_code = response.status;
+        //     if(status_code != 200) {
+        //         console.log('Error in getting brand info!')
+        //         return false;
+        //     }
+        //     return result
+        //     })
 
-        .then((response) =>{
-            response.json();
-            window.location.href = "{% url 'home' %}"
-        })
+        // .then(result => {
+        //     console.log(result);
 
+        // })
 
-        // .then((data) => {
-        //     console.log('Success: ', data); // send data thành công, xong
-
-        //     // clear cart, có thể bị lỗi vì mình làm hơi khác
-        //     // cart = {}
-        //     // document.cookie = 'cart=' + JSON.stringify(cart) + ';domain=;path=/'
-
-        //     window.location.href = "{% url 'success' %}" // chuyển hướng về home
+        // .catch(error => {
+        // console.log(error)
         // })
     }
 </script>
