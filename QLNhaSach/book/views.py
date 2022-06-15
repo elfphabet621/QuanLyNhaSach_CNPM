@@ -182,25 +182,25 @@ def logoutUser(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['thủ kho'])
 def book_entry(request):
-    tk = request.user.person
     sach = Sach.objects.all()
     ns = NhapSach(so_luong=0)
-    
     form = CreateBook()
+    
     if request.method == "POST":
         form = CreateBook(request.POST, request.FILES)
         form.nguoi_nhap = request.user.person
+        
         if form.is_valid():
-            for s in sach :
+            if form.cleaned_data.get('so_luong') < 150 :
+                messages.info(request, 'Số lượng sách nhập tối thiểu là 150')
+                return redirect('book_entry')
+            
+            for s in sach: # sách có tồn tại trong database chưa
                 if s.ten_sach == form.cleaned_data.get('ten_sach') :
-                    if  (form.cleaned_data.get('so_luong') < 150)  :
-                        messages.info(request, 'Lượng nhập tối thiểu 150')
-                        return redirect('book_entry')
-                    elif (s.so_luong >= 300):
+                    if (s.so_luong >= 300):
                         messages.info(request, 'Lượng tồn phải nhỏ hơn 300')
                         return redirect('book_entry')
                     else :
-                        s.ten_sach = form.cleaned_data.get('ten_sach')
                         s.ngay_nhap = form.cleaned_data.get('ngay_nhap')
                         s.the_loai = form.cleaned_data.get('the_loai') 
                         s.tac_gia = form.cleaned_data.get('tac_gia')
@@ -218,33 +218,29 @@ def book_entry(request):
                         ns.so_luong = s.so_luong
                         ns.save()
                         
-                        messages.info(request, 'Success')
+                        messages.info(request, 'Lưu thành công')
                         return redirect('book_entry')
-
-            if  form.cleaned_data.get('so_luong') < 150 :
-                messages.info(request, 'Số lượng sách nhập phải lớn hơn 150')
-                return redirect('book_entry')
-            else :
-                form.ten_sach = form.cleaned_data.get('ten_sach')
-                form.ngay_nhap = form.cleaned_data.get('ngay_nhap')
-                form.the_loai = form.cleaned_data.get('the_loai') 
-                form.tac_gia = form.cleaned_data.get('tac_gia')
-                form.don_gia = form.cleaned_data.get('don_gia')
-                form.gia_ban = form.cleaned_data.get('gia_ban')
-                form.nha_xuat_ban = form.cleaned_data.get('nha_xuat_ban')
-                form.nam_xuat_ban = form.cleaned_data.get('nam_xuat_ban')
-                form.mo_ta = form.cleaned_data.get('mo_ta')
-                form.so_luong = form.cleaned_data.get('so_luong')
-                form.save()
-                
-                # cập nhật ns
-                ns.ten_sach = form.ten_sach
-                ns.ngay_nhap = form.ngay_nhap 
-                ns.so_luong = form.so_luong
-                ns.save()
-                        
-                messages.info(request, 'Thành công')
-                return redirect('book_entry')
+            
+            form.ten_sach = form.cleaned_data.get('ten_sach')
+            form.ngay_nhap = form.cleaned_data.get('ngay_nhap')
+            form.the_loai = form.cleaned_data.get('the_loai') 
+            form.tac_gia = form.cleaned_data.get('tac_gia')
+            form.don_gia = form.cleaned_data.get('don_gia')
+            form.gia_ban = form.cleaned_data.get('gia_ban')
+            form.nha_xuat_ban = form.cleaned_data.get('nha_xuat_ban')
+            form.nam_xuat_ban = form.cleaned_data.get('nam_xuat_ban')
+            form.mo_ta = form.cleaned_data.get('mo_ta')
+            form.so_luong = form.cleaned_data.get('so_luong')
+            form.save()
+            
+            # cập nhật ns
+            ns.ten_sach = form.ten_sach
+            ns.ngay_nhap = form.ngay_nhap 
+            ns.so_luong = form.so_luong
+            ns.save()
+                    
+            messages.success(request, 'Lưu thành công')
+            return redirect('book_entry')
         else:
             messages.info(request, 'Nhập sai thông tin')
             return redirect('book_entry')
