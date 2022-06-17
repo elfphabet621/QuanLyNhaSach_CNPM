@@ -72,7 +72,7 @@ python manage.py runserver
 - Bước 4: bấm vào **qlns-group5**. ở tab **Deploy**, chọn **GitHub** và kết nối tới tài khoản github của mình. Sau khi kết nối thành công, thì thẻ **GitHub** hiển thị chữ <font color='green'>Connected</font>
 - Bước 5: tạo 1 repo tên **"QLNhaSach"** trên GitHub và clone hoặc pull GitHub [này](https://github.com/LeKiet258/QLNhaSach) về repo vừa tạo.
 - Bước 6: trở lại Heroku, ta tìm kiếm repo **QLNhaSach** vừa tạo ở ô tìm kiếm. Kết quả là nó tìm thấy repo này $\to$ ấn **Connect**
-- Bước 7: chỉnh lại nhánh để deploy là nhánh **master** (hoặc **main** nếu repo chỉ có 1 branch này) 
+- Bước 7: chỉnh lại nhánh để deploy là nhánh **master** 
 - Bước 8: ấn **Deploy branch**, chờ cho Heroku chạy. Sau khi chạy thành công, sẽ có nút <font color='green'>View</font> $\to$ ấn vào nút <font color='green'>View</font> để tới trang web sau khi deploy 
 
 ---
