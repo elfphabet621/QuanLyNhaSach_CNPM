@@ -382,12 +382,14 @@ def inventory_report(request):
         for i in range(select_month, date.today().month + 1):
             # Lọc ra số sách bán từ tháng được chọn đến tháng hiện tại. 
             hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=select_year, ngay_lap_HD__month= i, da_tra__gt=-1)
+            
             for hd in hd_month_i:
-                cthds =  ChiTietHoaDon.objects.filter(hoa_don=hd)
-                for cthd in cthds:
-                    sell_book[cthd.sach.ten_sach] += cthd.so_luong
+                if hd.tong_tien - hd.da_tra == 0:
+                    cthds =  ChiTietHoaDon.objects.filter(hoa_don=hd)
+                    for cthd in cthds:
+                        sell_book[cthd.sach.ten_sach] += cthd.so_luong
 
-            ns_month_i = NhapSach.objects.filter(ngay_nhap__year=select_year, ngay_nhap__month= i, da_tra__gt=-1)
+            ns_month_i = NhapSach.objects.filter(ngay_nhap__year=select_year, ngay_nhap__month= i)
             for ns in ns_month_i:
                 entry_book[ns.ten_sach] += ns.so_luong
         # TỒN ĐẦU: sách hiện tại - phát sinh từ tháng chọn ( với phát sinh = nhập - bán )
