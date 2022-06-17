@@ -381,7 +381,7 @@ def inventory_report(request):
         entry_book = defaultdict(int)
         for i in range(select_month, date.today().month + 1):
             # Lọc ra số sách bán từ tháng được chọn đến tháng hiện tại. 
-            hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=select_year, ngay_lap_HD__month= i, da_tra__gt=-1)
+            hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=select_year, ngay_lap_HD__month= i)
             
             for hd in hd_month_i:
                 if hd.tong_tien - hd.da_tra == 0:
