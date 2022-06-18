@@ -129,7 +129,12 @@
         var pay = String(document.getElementById('pay').value);
         var cart_total = String({{hd.get_cart_total}});
         if (pay === "") {pay = cart_total}
-        if (cart_total - parseInt(pay) > 20000){
+        if (/^\d+$/.test(pay) == false){
+            alert("Số tiền nhập không hợp lệ!");
+            // console.log(cart_total - parseInt(pay));
+            location.reload();
+        }
+        else if (cart_total - parseInt(pay) > 20000){
             alert("Số tiền nợ tối đa là 20000 vnd");
             location.reload();
         }
