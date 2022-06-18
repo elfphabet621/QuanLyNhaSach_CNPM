@@ -13,6 +13,7 @@ import json
 from .filters import BookFilter
 from collections import defaultdict
 from datetime import date
+from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
 
@@ -297,73 +298,61 @@ def book_details(request, pk):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['thủ kho'])
 def debt_report(request):
-    current_year, current_month = 2022, 1
-    hd_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
-                                    ngay_lap_HD__month=current_month)
-    
-    # nợ đầu: accumulate từ tháng current_month-1 trở về trước
-    debt_users = defaultdict(int)
-    for i in range(1, current_month):
-        hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=current_year, ngay_lap_HD__month= i)
-        for hd in hd_month_i:
-            if hd.tong_tien - hd.da_tra != 0:
-                debt_users[hd.khach_hang] += (hd.tong_tien - hd.da_tra)
-    
-    # với những khách nợ, coi thử tháng current_month có phát sinh (nợ) thêm j ko
-    incur_user = defaultdict(int)
-    for user in debt_users.keys():
-        hd_cur_month = HoaDon.objects.filter(khach_hang = user,
-                                            ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month)
-        # print('kiem tra: ', hd_cur_month[0].tong_tien)
-        try:
-            phat_sinh = hd_cur_month[0].tong_tien - hd_cur_month[0].da_tra 
-            # if hd_cur_month[0].da_tra == -1: để sửa giỏ hàng, chưa test
-            #     phat_sinh = 0
-        except:
-            phat_sinh = 0
-        incur_user[user] += phat_sinh
-        
-    # biến các debt_users thành các instance thuộc model Debt
     list_debt = []
     is_empty = True
-    if request.method == "POST":
-        current_month = int(request.POST.get('month'))
-        current_year = int(request.POST.get('year'))
-        hd_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
-                                        ngay_lap_HD__month=current_month,
-                                        da_tra__gt=-1)
-        
-        # nợ đầu: accumulate từ tháng current_month-1 trở về trước
-        debt_users = defaultdict(int)
-        for i in range(1, current_month):
-            hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=current_year, ngay_lap_HD__month= i, da_tra__gt=-1)
-            
-            for hd in hd_month_i:
-                if hd.tong_tien - hd.da_tra != 0:
-                    debt_users[hd.khach_hang] += (hd.tong_tien - hd.da_tra)
-        
-        # với những khách nợ, coi thử tháng current_month có phát sinh (nợ) thêm j ko
-        incur_user = defaultdict(int)
-        for user in debt_users.keys():
-            hd_cur_month = HoaDon.objects.filter(khach_hang = user,
-                                                ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month, da_tra__gt=-1)
-            for hd in hd_cur_month: # 1 kh có thể có nhiều hd
-                phat_sinh = hd.tong_tien - hd.da_tra 
-                incur_user[user] += phat_sinh
-            
-        # biến các debt_users thành các instance thuộc model Debt
-        list_debt = []
-        for kh, no_dau in debt_users.items():
-            debt_user = Debt(khach_hang = kh, no_dau = no_dau, phat_sinh = incur_user[kh])
-            list_debt.append(debt_user)
-            
-        if list_debt: is_empty = False
     
+    if request.method == "POST" or request.method == "GET":
+        # handle ngày tháng năm
+        current_year, current_month = 2022, 1 # mặc định của GET
+        
+        if request.method == "POST": # khi chọn tháng/năm
+            current_month = int(request.POST.get('month'))
+            current_year = int(request.POST.get('year'))
+        
+            hd_month = HoaDon.objects.filter(ngay_lap_HD__year=current_year, 
+                                            ngay_lap_HD__month=current_month,
+                                            da_tra__gt=-1)
+            
+            # nợ đầu: accumulate từ tháng current_month-1 trở về trước
+            debt_users = defaultdict(int)
+            for i in range(1, current_month):
+                hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=current_year, ngay_lap_HD__month= i, da_tra__gt=-1)
+                
+                for hd in hd_month_i:
+                    if hd.tong_tien - hd.da_tra != 0:
+                        debt_users[hd.khach_hang] += (hd.tong_tien - hd.da_tra)
+            
+            # với những khách nợ, coi thử tháng current_month có phát sinh (nợ) thêm j ko
+            incur_user = defaultdict(int)
+            for user in debt_users.keys():
+                hd_cur_month = HoaDon.objects.filter(khach_hang = user,
+                                                    ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month, da_tra__gt=-1)
+                for hd in hd_cur_month: # 1 kh có thể có nhiều hd
+                    phat_sinh = hd.tong_tien - hd.da_tra 
+                    incur_user[user] += phat_sinh
+            
+            # với những kh ko có nợ đầu, coi thử có phat sinh nợ trong tháng hiện tại ko
+            hd_cur_month = HoaDon.objects.filter(ngay_lap_HD__year= current_year, ngay_lap_HD__month= current_month, da_tra__gt=-1)
+            for hd in hd_cur_month: 
+                phat_sinh = hd.tong_tien - hd.da_tra 
+                if phat_sinh != 0:
+                    debt_users[hd.khach_hang] = 0
+                    incur_user[hd.khach_hang] += phat_sinh 
+            
+            # biến các debt_users thành các instance thuộc model Debt
+            list_debt = []
+            for kh, no_dau in debt_users.items():
+                debt_user = Debt(khach_hang = kh, no_dau = no_dau, phat_sinh = incur_user[kh])
+                list_debt.append(debt_user)
+                
+            if list_debt and current_month <= datetime.datetime.now().month and current_year <= datetime.datetime.now().year: 
+                is_empty = False
+        
     context = {'hd_month': hd_month, 'list_debt': list_debt, 'is_empty': is_empty,
                 'months': [i for i in range(1,13)], 'current_month': current_month,
                 'years': [2019, 2020, 2021, 2022], 'current_year': current_year}
     
-    return render(request, 'book/debt_report.html', context= context)
+    return render(request, 'book/debt_report.html', context = context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['thủ kho'])
