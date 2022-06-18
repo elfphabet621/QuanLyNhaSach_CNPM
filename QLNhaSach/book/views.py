@@ -384,7 +384,7 @@ def inventory_report(request):
             hd_month_i = HoaDon.objects.filter(ngay_lap_HD__year=select_year, ngay_lap_HD__month= i)
             
             for hd in hd_month_i:
-                if hd.tong_tien - hd.da_tra == 0:
+                if  hd.da_tra != -1:
                     cthds =  ChiTietHoaDon.objects.filter(hoa_don=hd)
                     for cthd in cthds:
                         sell_book[cthd.sach.ten_sach] += cthd.so_luong
